@@ -1,0 +1,14 @@
+{
+  "name": "bubbles",
+  "version": "1.0.0",
+  "description": "A social media app to showcase my fullstack development abilities.",
+  "main": "index.js",
+  "scripts": {
+    "start": "npm start --prefix server & npm start --prefix client",
+    "install": "cd server && npm install && cd ../client && npm install",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
