@@ -1,0 +1,86 @@
+.container{
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    border-radius: 25px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+    
+}
+
+.postHeader{
+    display: flex;
+    justify-content: space-between;
+    background-color: #c084fc;
+    border-radius: 25px 25px 0 0;
+    padding: 1.5rem;
+}
+
+.info {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    
+    
+}
+
+.info > a {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: rgb(31, 42, 71);
+}
+
+.info > span {
+    font-size: 1rem;
+    color: #6c757d;
+}
+
+.textBox{
+    padding: 1.5rem;
+    color: black;
+    font-size: 1.2rem;
+    line-height: 1.5;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: pre-wrap; 
+}
+
+.buttonsContainer{
+    width:100%;
+    height: 3rem;
+    
+    
+    display: flex;
+    
+    
+   
+    
+}
+
+.buttonsContainer div{
+    font-size: 1.2rem;
+    color: white;
+    
+    
+    
+}
+
+.likeButton, .commentButton {
+    flex: 1; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.7rem;
+    background-color: #6b21a8;
+    color: white;
+    border: none; 
+}
+
+.likeButton {
+    border-radius: 0 0 0 25px; 
+}
+
+.commentButton {
+    border-radius: 0 0 25px 0; 
+    border-left: 2px solid white; 
+}
