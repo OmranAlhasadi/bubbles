@@ -17,11 +17,9 @@
 
 .info {
     display: flex;
-    justify-content: center;
+    justify-content: baseline;
     align-items: center;
-    
-    
-    
+    gap: 1rem;  
 }
 
 .info > a {
@@ -48,21 +46,13 @@
 .buttonsContainer{
     width:100%;
     height: 3rem;
-    
-    
     display: flex;
-    
-    
-   
     
 }
 
 .buttonsContainer div{
     font-size: 1.2rem;
-    color: white;
-    
-    
-    
+    color: white;  
 }
 
 .likeButton, .commentButton {
