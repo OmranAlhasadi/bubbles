@@ -15,8 +15,7 @@ const HomePage = () => {
       <div className={styles.contentContainer}>
         <FriendsList friends={friends} />
         <Feed />
-        {/*<AboutMe text={about} />  */}
-        <TextBox isVisible={true} />
+        {<AboutMe text={about} />}
       </div>
     </div>
   );
