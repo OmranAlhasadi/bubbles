@@ -2,6 +2,7 @@ import styles from "../css/TextPost.module.css";
 
 import { useState } from "react";
 import TextBox from "../components/TextBox.js";
+import CommentBox from "./CommentBox";
 
 const TextPost = ({ text }) => {
   const [showTextbox, setShowTextbox] = useState(false);
@@ -64,7 +65,8 @@ const TextPost = ({ text }) => {
           </div>
         </div>
       </div>
-      {showTextbox && <TextBox borderRadius="0 0 25px 25px" />}
+
+      <CommentBox borderRadius="0 0 25px 25px" isVisible={showTextbox} />
     </div>
   );
 };

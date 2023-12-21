@@ -1,4 +1,10 @@
 
+@keyframes hideVisibility {
+    0% { visibility: visible; }
+    100% { visibility: hidden; }
+  }
+  
+  
 
 
 .container{
@@ -13,9 +19,29 @@
 
     transform-origin: top;
 
+    transition: max-height 0.4s ease-in-out, transform 0.4s ease-in-out;
+    transform: scaleY(0);
+    max-height: 0;
+    visibility: hidden;
+
+   
+
 
     
 }
+
+.visible{
+    visibility: visible;
+    max-height: 200px;
+    transform: scaleY(1);
+
+}
+
+.container:not(.visible) {
+    animation: hideVisibility 0.4s ease forwards;
+  }
+
+
 
 
 

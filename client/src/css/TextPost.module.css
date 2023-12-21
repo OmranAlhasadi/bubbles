@@ -80,7 +80,7 @@
     color: white;
     border: none;
     
-    transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out, border-radius 0.2s ease-in-out;
+    transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out, border-radius 0.4s ease-in-out;
     overflow: hidden;
     cursor: pointer;
 
@@ -144,3 +144,5 @@
 .isCommenting{
     border-radius: 0;
 }
+
+
