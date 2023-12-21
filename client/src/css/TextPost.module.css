@@ -1,9 +1,24 @@
-.container{
+
+.wrapper{
     display: flex;
     flex-direction: column;
     width: 90%;
+
+    
+
+    
+}
+
+
+
+.container{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
     border-radius: 25px;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+
+   
     
 }
 
@@ -63,7 +78,12 @@
     gap: 0.7rem;
     background-color: #6b21a8;
     color: white;
-    border: none; 
+    border: none;
+    
+    transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out, border-radius 0.2s ease-in-out;
+    overflow: hidden;
+    cursor: pointer;
+
 }
 
 .likeButton {
@@ -73,4 +93,54 @@
 .commentButton {
     border-radius: 0 0 25px 0; 
     border-left: 2px solid white; 
+}
+
+.likeButton:hover, .commentButton:hover{
+    background-color: #9333ea;
+}
+
+.buttonText{
+    font-size: 1.25rem;
+    text-shadow: 0 2rem 0 var(--color-text-primary);
+    transition: inherit;
+    cursor: none;
+}
+
+.likeButton:hover .buttonText, .commentButton:hover .buttonText {
+    transform: translateY(-160%);
+}
+
+
+.icon{
+    fill: black;
+    width: 24px;
+    height: 24px;
+    transition: fill 0.2s ease-in-out;
+}
+
+
+.likeButton:hover .icon, .commentButton:hover .icon {
+    fill:#5b21b6;
+    animation: shake 0.5s ease-in-out;
+}
+
+
+@keyframes shake {
+    0%, 100% {
+        transform: rotate(0);
+    }
+    25% {
+        transform: rotate(-20deg);
+    }
+    50% {
+        transform: rotate(20deg);
+    }
+    75% {
+        transform: rotate(-10deg);
+    }
+}
+
+
+.isCommenting{
+    border-radius: 0;
 }

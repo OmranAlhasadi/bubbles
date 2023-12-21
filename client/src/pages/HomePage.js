@@ -16,7 +16,7 @@ const HomePage = () => {
         <FriendsList friends={friends} />
         <Feed />
         {/*<AboutMe text={about} />  */}
-        <TextBox />
+        <TextBox isVisible={true} />
       </div>
     </div>
   );
