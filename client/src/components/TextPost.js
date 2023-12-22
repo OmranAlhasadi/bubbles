@@ -4,11 +4,17 @@ import { useState } from "react";
 import TextBox from "../components/TextBox.js";
 import CommentBox from "./CommentBox";
 
-const TextPost = ({ text }) => {
+const TextPost = ({ post }) => {
   const [showTextbox, setShowTextbox] = useState(false);
 
   const toggleTextbox = () => {
     setShowTextbox((prev) => !prev);
+  };
+
+  // Format the date
+  const formatDate = (dateString) => {
+    const options = { year: "numeric", month: "long", day: "numeric" };
+    return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
   return (
@@ -16,13 +22,13 @@ const TextPost = ({ text }) => {
       <div className={styles.container}>
         <div className={styles.postHeader}>
           <div className={styles.info}>
-            <img></img>
-            <a>Example User</a>
-            <span>posted 20/3/2019</span>
+            <img className={styles.profile} src={post.image}></img>
+            <a>{post.author ? post.author.username : "Unknown"}</a>
+            <span>{formatDate(post.createdAt)}</span>
           </div>
           <div></div>
         </div>
-        <p className={styles.textBox}>{text}</p>
+        <p className={styles.textBox}>{post.content}</p>
         <div className={styles.buttonsContainer}>
           <div
             className={`${styles.likeButton} ${
