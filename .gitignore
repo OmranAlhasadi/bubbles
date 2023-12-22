@@ -6,6 +6,7 @@
 # Server environment variables
 /server/.env
 /server/node_modules
+/server/utils/populateUsers.js
 
 # Logs
 /logs
