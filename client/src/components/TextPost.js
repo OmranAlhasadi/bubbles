@@ -4,7 +4,7 @@ import { useState } from "react";
 import TextBox from "../components/TextBox.js";
 import CommentBox from "./CommentBox";
 
-const TextPost = ({ post }) => {
+const TextPost = ({ post, isNew = false }) => {
   const [showTextbox, setShowTextbox] = useState(false);
 
   const toggleTextbox = () => {
@@ -18,7 +18,7 @@ const TextPost = ({ post }) => {
   };
 
   return (
-    <div className={styles.wrapper}>
+    <div className={`${styles.wrapper} ${isNew ? styles.newPost : ""}`}>
       <div className={styles.container}>
         <div className={styles.postHeader}>
           <div className={styles.info}>
