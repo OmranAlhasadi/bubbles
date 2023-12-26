@@ -74,3 +74,11 @@
     border: none;
     cursor: pointer;
 }
+
+.container > .submit{
+    display: none;
+}
+
+.visible > .submit {
+    display: block;
+}

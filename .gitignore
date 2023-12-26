@@ -21,6 +21,7 @@ yarn-error.log*
 # Client-specific ignores
 /client/build
 /client/node_modules
+/client/WIP
 
 # macOS files
 .DS_Store

@@ -50,3 +50,8 @@
     color:#6b21a8;
     cursor: pointer;
 }
+
+.isLoading{
+    justify-self: center;
+    align-self: center;
+}

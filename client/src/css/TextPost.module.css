@@ -1,17 +1,35 @@
 @keyframes expandAnimation {
-    from {
+    0% {
       max-height: 0;
-      transform: scaleY(0);
+      transform: scale(0);
     }
-    to {
+
+    
+
+    35% {
+        transform: scale(1.2);
+    }
+
+    55%{
+        transform: scale(0.85);
+    }
+
+    65%{
+        transform: scale(1.05);
+    }
+
+    70%{
+        transform: scale(0.95);
+    }
+    75% {
       max-height: 1000px;
-      transform: scaleY(1);
+      transform: scale(1);
     }
   }
   
   .newPost {
-    animation: expandAnimation 0.4s ease-out forwards;
-    transform-origin: top;
+    animation: expandAnimation 0.5s ease-out forwards;
+    
   }
 
 
