@@ -1,0 +1,66 @@
+.wrapper {
+   
+    height: 100vh;
+}
+
+.container{
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.userContainer{
+    display: flex;
+    box-sizing: border-box;
+    padding: 15px;
+    width: 100%;
+}
+
+.profile{
+    align-self: center;
+    justify-self: flex-start;
+    display: flex;
+
+    gap: 15px;
+
+    padding: 15px;
+}
+
+.userPicture{
+    aspect-ratio: 1;
+    width: 50px;
+    border-radius: 50%;
+    
+}
+
+.usernameContainer{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.userName{
+    font-size: 1.5rem;
+    color: #0f172a;
+}
+
+.content{
+    width: 80%;
+    display: flex;
+    gap: 40px;
+    padding: 40px;
+}
+
+.sidBar{
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.userPosts{
+    flex: 2;
+}
+
+
+
+
+

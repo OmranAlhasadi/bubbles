@@ -38,6 +38,7 @@ const getExample = async (req, res) => {
     const exampleUserData = {
       uid: exampleUser._id,
       username: exampleUser.username,
+      aboutMe: exampleUser.aboutMe,
     };
     res.json(exampleUserData);
   } catch (err) {

@@ -17,7 +17,7 @@ const HomePage = () => {
     <div className={styles.pageContainer}>
       <Header />
       <div className={styles.contentContainer}>
-        <FriendsList friends={friends} />
+        <FriendsList />
         <Feed />
         <div>
           <LoadingBubbles />
