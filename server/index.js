@@ -6,7 +6,7 @@ require("dotenv").config();
 const app = express();
 connectDB();
 
-// Use CORS Middleware for handling cross-origin requests
+// Accept all requests
 app.use(cors());
 
 // Middleware
@@ -15,7 +15,7 @@ const authMiddleware = require("./middlewares/authMiddleware");
 
 // Routes
 const userRoutes = require("./routes/userRoutes");
-app.use("/api", authMiddleware, userRoutes);
+app.use("/api", userRoutes);
 
 const postRoutes = require("./routes/postRoutes");
 app.use("/api", postRoutes);

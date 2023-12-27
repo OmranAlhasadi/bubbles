@@ -1,12 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import styles from "../css/Feed.module.css";
 import TextPost from "../components/TextPost.js";
 import LoadingBubbles from "../components/LoadingBubbles.js";
 import TextBox from "../components/TextBox";
 
+import { UserContext } from "../contexts/UserContext";
+
 const Feed = () => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const user = useContext(UserContext);
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -47,10 +50,44 @@ const Feed = () => {
       }
 
       let newPost = await response.json();
-      newPost.uniqueKey = Date.now(); // unique value for key so the post expanding animation works on new posts and (older) new posts will not retain the isNew class on rerenders.
+      newPost.isNew = true;
       setPosts((prevPosts) => [newPost, ...prevPosts]);
     } catch (error) {
       console.error("error creating post", error);
+    }
+  };
+
+  const handleDelete = async (postId) => {
+    try {
+      // Delete request
+      const response = await fetch(
+        `http://localhost:3001/api/posts/${postId}`,
+        {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId: user.uid }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Could not delete post");
+      }
+
+      setPosts((prevPosts) =>
+        prevPosts.map((post) =>
+          post._id === postId ? { ...post, deleting: true } : post
+        )
+      );
+
+      // Wait for the animation to complete after successful post deletion
+      setTimeout(async () => {
+        // Remove post from state
+        setPosts((prevPosts) =>
+          prevPosts.filter((post) => post._id !== postId)
+        );
+      }, 500); //duration to wait for animation to finish
+    } catch (error) {
+      console.error("Error deleting post", error);
     }
   };
 
@@ -64,9 +101,10 @@ const Feed = () => {
       {posts.map((post, index) => {
         return (
           <TextPost
-            key={post.uniqueKey || post._id}
+            key={post._id}
             post={post}
-            isNew={post.uniqueKey ? true : false}
+            isNew={post.isNew ? true : false}
+            onDelete={handleDelete}
           />
         );
       })}

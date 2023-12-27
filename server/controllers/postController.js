@@ -1,5 +1,6 @@
 const Post = require("../models/Post");
 
+// get all posts
 const getPosts = async (req, res) => {
   try {
     const posts = await Post.find()
@@ -11,6 +12,7 @@ const getPosts = async (req, res) => {
   }
 };
 
+// create a post
 const postPost = async (req, res) => {
   try {
     const { authorID, content, imageURL } = req.body;
@@ -23,6 +25,27 @@ const postPost = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).send("Server Error: Couldnt create the new post");
+  }
+};
+
+const deletePost = async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.postId);
+    const userId = req.body.userId; // Access userId from the request body
+
+    if (!post) {
+      return res.status(404).send("Post not found");
+    }
+
+    if (post.author.toString() !== userId) {
+      return res.status(403).send("Not authorized to delete this post");
+    }
+
+    await post.deleteOne();
+    res.status(200).send("Post deleted successfully");
+  } catch (error) {
+    console.error("Delete Post Error: ", error);
+    res.status(500).send("Server error");
   }
 };
 
@@ -44,4 +67,5 @@ function createPost(
 module.exports = {
   getPosts,
   postPost,
+  deletePost,
 };

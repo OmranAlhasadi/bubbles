@@ -26,10 +26,27 @@
       transform: scale(1);
     }
   }
+
+  @keyframes deleteAnimation {
+      0%{
+          max-height: 1000px;
+      }
+      100%{
+          max-height: 0px;
+          transform: scaleY(0);
+          
+      }
+  }
   
   .newPost {
     animation: expandAnimation 0.5s ease-out forwards;
     
+  }
+
+  .deleting{
+    transform-origin: top;
+    animation: deleteAnimation 0.5s ease-in-out forwards;
+      
   }
 
 
@@ -186,6 +203,26 @@
 
 .isCommenting{
     border-radius: 0;
+}
+
+.trash {
+    width: 22px;
+    height: 22px;
+
+    padding: 10px;
+    border-radius: 50%;
+
+    fill: #b91c1c;
+    cursor: pointer;
+    transition: fill 0.2s ease-in-out, background-color 0.2s ease-in-out;
+}
+
+.trash:hover {
+    fill: white;
+    background-color: #dc2626;
+    
+    animation: shake 2.3s infinite; 
+    
 }
 
 
