@@ -14,8 +14,10 @@ router.post("/register", authController.registerUser);
 router.post("/login", authController.loginUser);
 
 // User routes
-router.get("/user", getUser);
+
 router.post("/user", addUser);
+
+router.get("/user/:username", getUser);
 router.get("/example-user", getExample);
 router.get("/:userId/friends", getFriends);
 

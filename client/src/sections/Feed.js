@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
+import { useParams } from "react-router-dom";
 import styles from "../css/Feed.module.css";
 import TextPost from "../components/TextPost.js";
 import LoadingBubbles from "../components/LoadingBubbles.js";
@@ -6,7 +7,9 @@ import TextBox from "../components/TextBox";
 
 import { UserContext } from "../contexts/UserContext";
 
-const Feed = () => {
+const Feed = ({ specificUser = false }) => {
+  const { username } = useParams();
+
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const user = useContext(UserContext);
@@ -21,7 +24,6 @@ const Feed = () => {
         }
         const data = await response.json();
         setPosts(data);
-        console.log(data);
       } catch (error) {
         console.error("Error fetching posts", error);
       } finally {
@@ -29,7 +31,29 @@ const Feed = () => {
       }
     };
 
-    fetchPosts();
+    const fetchUserPosts = async (username) => {
+      try {
+        const response = await fetch(
+          `http://localhost:3001/api/posts/${username}`
+        );
+
+        if (!response.ok) {
+          throw new Error("Could not fetch user posts");
+        }
+        const data = await response.json();
+        setPosts(data);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (specificUser === false) {
+      fetchPosts();
+    } else {
+      fetchUserPosts(username);
+    }
   }, []);
 
   const createPost = async (content) => {
@@ -97,7 +121,7 @@ const Feed = () => {
 
   return (
     <div className={styles.container}>
-      <TextBox onSubmit={createPost} />
+      {!specificUser && <TextBox onSubmit={createPost} />}
       {posts.map((post, index) => {
         return (
           <TextPost

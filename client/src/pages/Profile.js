@@ -7,9 +7,15 @@ import { UserContext } from "../contexts/UserContext";
 import FriendsList from "../components/FriendsList";
 import AboutMe from "../components/AboutMe";
 import Feed from "../sections/Feed";
+import theif from "../images/thief.jpeg";
+import LoadingBubbles from "../components/LoadingBubbles";
 
 const Profile = () => {
   const user = useContext(UserContext);
+
+  if (user === null) {
+    return <LoadingBubbles size="200px" />;
+  }
 
   return (
     <div className={styles.wrapper}>
@@ -17,9 +23,9 @@ const Profile = () => {
       <div className={styles.container}>
         <div className={styles.userContainer}>
           <div className={styles.profile}>
-            <img className={styles.userPicture} />
+            <img className={styles.userPicture} src={theif} />
             <div className={styles.usernameContainer}>
-              <span className={styles.username}></span>
+              <span className={styles.username}>{user.username}</span>
             </div>
           </div>
         </div>
@@ -30,7 +36,7 @@ const Profile = () => {
             <FriendsList />
           </div>
           <div className={styles.userPosts}>
-            <Feed />
+            <Feed allPosts={false} />
           </div>
         </div>
       </div>

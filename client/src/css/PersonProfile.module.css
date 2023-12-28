@@ -6,12 +6,17 @@
 }
 
 .container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     width: 70%;
     box-sizing: border-box;
 }
 
 .userContainer{
     display: flex;
+    justify-content: space-between;
+    align-items: center;
     box-sizing: border-box;
     padding: 15px;
     width: 100%;
@@ -67,3 +72,32 @@
 
 
 
+.addFriendButton{
+    display: flex;
+    
+    box-sizing: border-box;
+    padding: 1rem;
+    gap: 10px;
+
+    border-radius: 25px;
+    background-color: #ddd6fe;
+
+    transition: background-color 0.4s ease-in-out; 
+}
+
+.addFriendSVG{
+    width: 20px;
+    height: 20px;
+
+    fill: white;
+}
+
+.addFriendText{
+    color: white;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.addFriendButton:hover{
+    background-color: #8b5cf6;
+}

@@ -3,11 +3,26 @@ const User = require("../models/User"); //User model
 // Get user information
 const getUser = async (req, res) => {
   try {
-    const users = await User.find();
-    res.json(users);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send("Server Error");
+    const username = req.params.username;
+    const user = await User.findOne({ username })
+      .populate("friends", "username") // Populate friends with their usernames
+      .select("-password"); // Exclude password from the result
+
+    if (!user) {
+      return res.status(404).send("User not found");
+    }
+
+    const userInfo = {
+      username: user.username,
+      profileImg: user.profileImg,
+      aboutMe: user.aboutMe,
+      friends: user.friends.map((friend) => friend.username),
+    };
+
+    res.json(userInfo);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Server error");
   }
 };
 
@@ -28,7 +43,7 @@ const addUser = async (req, res) => {
   }
 };
 
-// Example endpoint to fetch example user data
+//  endpoint to fetch example user data
 const getExample = async (req, res) => {
   try {
     const exampleUser = await User.findOne({ username: "Example User" });
@@ -38,6 +53,7 @@ const getExample = async (req, res) => {
     const exampleUserData = {
       uid: exampleUser._id,
       username: exampleUser.username,
+      profileImg: exampleUser.profileImg,
       aboutMe: exampleUser.aboutMe,
     };
     res.json(exampleUserData);
@@ -51,7 +67,10 @@ const getFriends = async (req, res) => {
   try {
     // Fetch the user by their ID
     const userId = req.params.userId;
-    const user = await User.findById(userId).populate("friends", "username");
+    const user = await User.findById(userId).populate(
+      "friends",
+      "username profileImg"
+    );
 
     if (!user) {
       return res.status(404).send("User not found");
@@ -60,6 +79,7 @@ const getFriends = async (req, res) => {
     // Map the friends to extract only necessary information
     const friendsData = user.friends.map((friend) => ({
       username: friend.username,
+      profileImg: friend.profileImg,
       profileLink: `/profile/${friend.username}`, // Link to the friend profile
     }));
 

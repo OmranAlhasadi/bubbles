@@ -8,11 +8,20 @@ import LoadingBubbles from "../components/LoadingBubbles";
 import LoadingRippleBubbles from "../components/LoadingRippleBubbles";
 import LoadingFloatingBubbles from "../components/LoadingFloatingBubbles";
 import SpinningCircleLoader from "../components/SpinningCircleLoader";
+import { useContext, useState } from "react";
+import { UserContext } from "../contexts/UserContext";
+import LoadingPage from "./LoadingPage";
 
 let friends = ["jhonson", "james", "johan", "jamian jones", "janina"];
 let about = "hi i am doododo and dadada how can I dededee you?";
 
 const HomePage = () => {
+  const user = useContext(UserContext);
+
+  if (user == null) {
+    return <LoadingPage />;
+  }
+
   return (
     <div className={styles.pageContainer}>
       <Header />

@@ -50,7 +50,7 @@ const FriendsList = () => {
       <ul className={styles.list}>
         {friends.map((friend) => (
           <li className={styles.item}>
-            <img src={thief}></img>
+            <img src={friend.profileImg}></img>
             <a href={friend.profileLink}>{friend.username}</a>
           </li>
         ))}

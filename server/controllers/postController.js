@@ -1,13 +1,35 @@
 const Post = require("../models/Post");
+const User = require("../models/User");
 
 // get all posts
 const getPosts = async (req, res) => {
   try {
     const posts = await Post.find()
-      .populate("author", "username name")
+      .populate("author", "username profileImg")
       .sort({ createdAt: -1 }); // Sorts the posts by createdAt in descending order
     res.json(posts);
   } catch (error) {
+    res.status(500).send("Server Error");
+  }
+};
+
+// Get all posts by a specific user
+const getUserPosts = async (req, res) => {
+  try {
+    // Find the user by username
+    const user = await User.findOne({ username: req.params.username });
+    if (!user) {
+      return res.status(404).send("User not found");
+    }
+
+    // Find posts where the author field matches the user's ID
+    const posts = await Post.find({ author: user._id })
+      .populate("author", "username profileImg")
+      .sort({ createdAt: -1 }); // Sorts the posts by createdAt in descending order
+
+    res.json(posts);
+  } catch (error) {
+    console.error("Get User Posts Error: ", error);
     res.status(500).send("Server Error");
   }
 };
@@ -20,7 +42,7 @@ const postPost = async (req, res) => {
     let newPost = createPost(authorID, content, imageURL);
     await newPost.save();
 
-    newPost = await newPost.populate("author", "username name");
+    newPost = await newPost.populate("author", "username profileImg");
     res.status(201).json(newPost);
   } catch (error) {
     console.log(error);
@@ -66,6 +88,7 @@ function createPost(
 
 module.exports = {
   getPosts,
+  getUserPosts,
   postPost,
   deletePost,
 };

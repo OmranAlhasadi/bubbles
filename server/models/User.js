@@ -4,6 +4,7 @@ const userSchema = new mongoose.Schema({
   username: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   name: String,
+  profileImg: String,
   aboutMe: String,
   friends: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
 });

@@ -33,7 +33,7 @@ const TextPost = ({ post, isNew = false, onDelete }) => {
       <div className={styles.container}>
         <div className={styles.postHeader}>
           <div className={styles.info}>
-            <img className={styles.profile} src={post.image}></img>
+            <img className={styles.profile} src={post.author.profileImg}></img>
             <a>{post.author ? post.author.username : "Unknown"}</a>
             <span>{formatDate(post.createdAt)}</span>
           </div>
