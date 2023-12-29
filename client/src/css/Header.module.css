@@ -17,8 +17,9 @@
 
 #logo {
     width: 200px;
-    height: 80px;
+    height: 50px;
     fill: #c084fc;
+    cursor: pointer;
 }
 
 
@@ -34,6 +35,7 @@
     border-radius: 50%;
     height: 45px;
     width: 45px;
+    cursor: pointer;
 }
 
 .svg{

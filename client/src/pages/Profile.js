@@ -36,7 +36,7 @@ const Profile = () => {
             <FriendsList />
           </div>
           <div className={styles.userPosts}>
-            <Feed allPosts={false} />
+            <Feed specificUser={true} />
           </div>
         </div>
       </div>

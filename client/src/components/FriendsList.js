@@ -5,14 +5,16 @@ import igor from "../images/igor.png";
 import thief from "../images/thief.jpeg";
 import LoadingRippleBubbles from "./LoadingRippleBubbles";
 import { UserContext } from "../contexts/UserContext";
+import { useParams } from "react-router-dom";
 
-const FriendsList = () => {
+const FriendsList = ({ otherUser = false }) => {
+  const { username } = useParams();
   let [friends, setFriends] = useState(null);
 
   const user = useContext(UserContext);
 
   useEffect(() => {
-    const fetchFriends = async () => {
+    /*const fetchFriends = async () => {
       // Ensure user and user.uid are available
       if (user && user.uid) {
         try {
@@ -30,10 +32,33 @@ const FriendsList = () => {
       }
     };
 
-    fetchFriends();
+    fetchFriends(); */
+
+    const getOtherUser = async () => {
+      if (user && user.uid) {
+        try {
+          const response = await fetch(
+            `http://localhost:3001/api/other-user/${username}`
+          );
+          if (!response.ok) {
+            throw new Error("Could not fetch friends");
+          }
+          const fetchedUser = await response.json();
+          setFriends(fetchedUser.friends);
+        } catch (error) {
+          console.error("Error fetching friends", error);
+        }
+      }
+    };
+    if (user === null) {
+    } else if (!otherUser && user !== null) {
+      setFriends(user.friends);
+    } else {
+      getOtherUser();
+    }
   }, [user]);
 
-  if (friends === null || friends === undefined) {
+  if (user === null || friends === null || friends === undefined) {
     return (
       <div className={styles.container}>
         <div className={styles.title}>Friends List</div>

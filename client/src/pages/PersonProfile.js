@@ -68,7 +68,7 @@ const PersonProfile = () => {
           <div className={styles.sidBar}>
             {user && user.aboutMe && <AboutMe text={person.aboutMe} />}
 
-            <FriendsList />
+            <FriendsList otherUser={true} />
           </div>
           <div className={styles.userPosts}>
             <Feed specificUser={true} />

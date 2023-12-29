@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const {
   getUser,
+  getOtherUser,
   addUser,
   getExample,
   getFriends,
@@ -18,6 +19,7 @@ router.post("/login", authController.loginUser);
 router.post("/user", addUser);
 
 router.get("/user/:username", getUser);
+router.get("/other-user/:username", getOtherUser);
 router.get("/example-user", getExample);
 router.get("/:userId/friends", getFriends);
 
