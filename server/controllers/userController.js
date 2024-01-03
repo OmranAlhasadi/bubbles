@@ -1,7 +1,7 @@
 const User = require("../models/User"); //User model
 
 // Get user info
-const getUser = async (req, res) => {
+module.exports.getUser = async (req, res) => {
   try {
     const username = req.params.username;
     const user = await User.findOne({ username })
@@ -41,7 +41,7 @@ const getUser = async (req, res) => {
 };
 
 // Get Other user information
-const getOtherUser = async (req, res) => {
+module.exports.getOtherUser = async (req, res) => {
   try {
     const username = req.params.username;
     const user = await User.findOne({ username })
@@ -71,7 +71,7 @@ const getOtherUser = async (req, res) => {
 };
 
 // Add a new user
-const addUser = async (req, res) => {
+module.exports.addUser = async (req, res) => {
   try {
     const newUser = new User({
       //user model has a name and email this is just a placeholder
@@ -88,7 +88,7 @@ const addUser = async (req, res) => {
 };
 
 //  endpoint to fetch example user data
-const getExample = async (req, res) => {
+module.exports.getExample = async (req, res) => {
   try {
     const exampleUser = await User.findOne({ username: "Example User" })
       .populate("friends", "username profileImg")
@@ -100,7 +100,7 @@ const getExample = async (req, res) => {
     }
 
     const exampleUserData = {
-      uid: exampleUser._id,
+      _id: exampleUser._id,
       username: exampleUser.username,
       profileImg: exampleUser.profileImg,
       aboutMe: exampleUser.aboutMe,
@@ -126,7 +126,7 @@ const getExample = async (req, res) => {
   }
 };
 
-const getFriends = async (req, res) => {
+module.exports.getFriends = async (req, res) => {
   try {
     // Fetch the user by their ID
     const userId = req.params.userId;
@@ -153,10 +153,64 @@ const getFriends = async (req, res) => {
   }
 };
 
-module.exports = {
-  getUser,
-  getOtherUser,
-  addUser,
-  getExample,
-  getFriends,
+module.exports.acceptFriendRequest = async (req, res) => {
+  const userId = req.params.userId; // User ID of the user accepting the request
+  const requesterUsername = req.params.requesterUsername; // Username of the user who sent the request
+
+  try {
+    const user = await User.findById(userId);
+    const requester = await User.findOne({ username: requesterUsername });
+
+    if (!user || !requester) {
+      console.log("Usernot found");
+      return res.status(404).send("User not found.");
+    }
+
+    // Remove the request from friendRequests and add to friends for the recipient
+    await User.findByIdAndUpdate(user._id, {
+      $pull: { friendRequests: requester._id },
+      $addToSet: { friends: requester._id },
+    });
+
+    // add the recipient to the friends list of the requester
+    await User.findByIdAndUpdate(requester._id, {
+      $addToSet: { friends: user._id },
+    });
+
+    // Send back the new friend's data
+    const newFriend = {
+      username: requester.username,
+      profileImg: requester.profileImg,
+      profileLink: `/profile/${requester.username}`,
+    };
+
+    res.status(200).json(newFriend);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Error accepting friend request");
+  }
+};
+
+module.exports.rejectFriendRequest = async (req, res) => {
+  const userId = req.params.userId; // User ID of the user rejecting the request
+  const requesterUsername = req.params.requesterUsername; // Username of the user who sent the request
+
+  try {
+    const user = await User.findById(userId);
+    const requester = await User.findOne({ username: requesterUsername });
+
+    if (!user || !requester) {
+      return res.status(404).send("User not found.");
+    }
+
+    // Remove the request from friendRequests
+    await User.findByIdAndUpdate(user._id, {
+      $pull: { friendRequests: requester._id },
+    });
+
+    res.status(200).send("Friend request rejected.");
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Error rejecting friend request");
+  }
 };

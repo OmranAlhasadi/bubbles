@@ -101,3 +101,27 @@
 .addFriendButton:hover{
     background-color: #8b5cf6;
 }
+
+.friendButton {
+    display: flex;
+
+    align-items: center;
+    box-sizing: border-box;
+    padding: 1rem;
+    gap: 15px;
+}
+
+.friendSVG {
+    width: 20px;
+    height: 20px;
+
+    fill: #7c3aed;
+}
+
+.friendText {
+
+    color: #7c3aed;
+    font-size: 1.3rem;
+    font-weight: 600;
+
+}

@@ -7,7 +7,7 @@ import LoadingBubbles from "./LoadingBubbles";
 
 const UserProfileWrapper = () => {
   const { username } = useParams();
-  const user = useContext(UserContext);
+  const { user, updateUser } = useContext(UserContext);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {

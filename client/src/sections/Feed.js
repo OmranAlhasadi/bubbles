@@ -12,7 +12,7 @@ const Feed = ({ specificUser = false }) => {
 
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const user = useContext(UserContext);
+  const { user, updateUser } = useContext(UserContext);
 
   useEffect(() => {
     const fetchPosts = async () => {

@@ -8,7 +8,7 @@ import { UserContext } from "../contexts/UserContext";
 
 const TextPost = ({ post, isNew = false, onDelete }) => {
   const [showTextbox, setShowTextbox] = useState(false);
-  const user = useContext(UserContext);
+  const { user, updateUser } = useContext(UserContext);
 
   const toggleTextbox = () => {
     setShowTextbox((prev) => !prev);

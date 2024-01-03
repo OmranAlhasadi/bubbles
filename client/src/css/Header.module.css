@@ -39,8 +39,8 @@
 }
 
 .svg{
-    width: 45px;
-    height: 45px;
+    width: 30px;
+    height: 30px;
     fill: #c084fc;
     transition: fill ease-in-out 0.3s;
 }
@@ -48,3 +48,37 @@
 .svg:hover{
     fill: purple;
 }
+
+.friendRequestsList {
+    position: absolute;
+    top: 60px; 
+    right: 100px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 300px; 
+    z-index: 100;
+  }
+  
+  .requestItem {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .requestItem img {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+  }
+  
+
+  .noRequestsMessage {
+    text-align: center;
+    padding: 15px;
+    font-size: 16px;
+    color: #6b7280; 
+  }
+  

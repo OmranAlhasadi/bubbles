@@ -16,7 +16,7 @@ let friends = ["jhonson", "james", "johan", "jamian jones", "janina"];
 let about = "hi i am doododo and dadada how can I dededee you?";
 
 const HomePage = () => {
-  const user = useContext(UserContext);
+  const { user, updateUser } = useContext(UserContext);
 
   if (user == null) {
     return <LoadingPage />;

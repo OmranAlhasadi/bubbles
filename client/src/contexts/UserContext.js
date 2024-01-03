@@ -5,6 +5,11 @@ export const UserContext = createContext();
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
+  // Function to update user data
+  const updateUser = (updatedData) => {
+    setUser((prevUser) => ({ ...prevUser, ...updatedData }));
+  };
+
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -22,5 +27,9 @@ export const UserProvider = ({ children }) => {
     fetchUser();
   }, []);
 
-  return <UserContext.Provider value={user}>{children}</UserContext.Provider>;
+  return (
+    <UserContext.Provider value={{ user, updateUser }}>
+      {children}
+    </UserContext.Provider>
+  );
 };

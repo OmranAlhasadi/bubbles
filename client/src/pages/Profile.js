@@ -11,7 +11,7 @@ import theif from "../images/thief.jpeg";
 import LoadingBubbles from "../components/LoadingBubbles";
 
 const Profile = () => {
-  const user = useContext(UserContext);
+  const { user, updateUser } = useContext(UserContext);
 
   if (user === null) {
     return <LoadingBubbles size="200px" />;

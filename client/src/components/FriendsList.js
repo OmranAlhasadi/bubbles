@@ -11,7 +11,7 @@ const FriendsList = ({ otherUser = false }) => {
   const { username } = useParams();
   let [friends, setFriends] = useState(null);
 
-  const user = useContext(UserContext);
+  const { user, updateUser } = useContext(UserContext);
 
   useEffect(() => {
     /*const fetchFriends = async () => {
@@ -35,7 +35,7 @@ const FriendsList = ({ otherUser = false }) => {
     fetchFriends(); */
 
     const getOtherUser = async () => {
-      if (user && user.uid) {
+      if (user && user._id) {
         try {
           const response = await fetch(
             `http://localhost:3001/api/other-user/${username}`
