@@ -59,10 +59,11 @@ const PersonProfile = () => {
     return <LoadingPage />;
   }
 
-  const relationshipStatus = getRelationshipStatus(user, person.username);
-
   const renderAddFriendButton = () => {
-    switch (relationshipStatus) {
+    const relation = getRelationshipStatus(user, username);
+    console.log(user.sentRequests);
+    console.log(relation);
+    switch (relation) {
       case "alreadyFriends":
         return (
           <div className={styles.friendButton}>
@@ -94,7 +95,10 @@ const PersonProfile = () => {
         );
       default:
         return (
-          <button className={styles.addFriendButton}>
+          <button
+            className={styles.addFriendButton}
+            onClick={() => handleSendRequest(person.username)}
+          >
             <svg className={styles.addFriendSVG} viewBox="0 0 16 16">
               <path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H1s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C9.516 10.68 8.289 10 6 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664z" />
               <path
@@ -105,6 +109,28 @@ const PersonProfile = () => {
             <span className={styles.addFriendText}>Add Friend</span>
           </button>
         );
+    }
+  };
+
+  // Function to handle sending a friend request
+  const handleSendRequest = async (recieverUsername) => {
+    try {
+      const response = await fetch(
+        `http://localhost:3001/api/user/${user._id}/send-request/${recieverUsername}`,
+        {
+          method: "POST",
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Error sending request");
+      }
+      const newRequest = await response.json();
+
+      updateUser({
+        sentRequests: [...user.sentRequests, newRequest],
+      });
+    } catch (error) {
+      console.error("Error sending friend request:", error);
     }
   };
 

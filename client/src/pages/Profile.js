@@ -23,7 +23,7 @@ const Profile = () => {
       <div className={styles.container}>
         <div className={styles.userContainer}>
           <div className={styles.profile}>
-            <img className={styles.userPicture} src={theif} />
+            <img className={styles.userPicture} src={user.profileImg} />
             <div className={styles.usernameContainer}>
               <span className={styles.username}>{user.username}</span>
             </div>
