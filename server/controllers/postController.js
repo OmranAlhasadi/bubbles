@@ -1,12 +1,23 @@
 const Post = require("../models/Post");
 const User = require("../models/User");
+const Comment = require("../models/Comment");
 
 // get all posts
-const getPosts = async (req, res) => {
+module.exports.getPosts = async (req, res) => {
   try {
     const posts = await Post.find()
       .populate("author", "username profileImg")
-      .sort({ createdAt: -1 }); // Sorts the posts by createdAt in descending order
+      .sort({ createdAt: -1 });
+
+    // Fetch and attach comments for each post
+    for (let post of posts) {
+      const comments = await Comment.find({ post: post._id }).populate(
+        "author",
+        "username profileImg"
+      );
+      post.comments = comments;
+    }
+
     res.json(posts);
   } catch (error) {
     res.status(500).send("Server Error");
@@ -14,7 +25,7 @@ const getPosts = async (req, res) => {
 };
 
 // Get all posts by a specific user
-const getUserPosts = async (req, res) => {
+module.exports.getUserPosts = async (req, res) => {
   try {
     // Find the user by username
     const user = await User.findOne({ username: req.params.username });
@@ -27,6 +38,15 @@ const getUserPosts = async (req, res) => {
       .populate("author", "username profileImg")
       .sort({ createdAt: -1 }); // Sorts the posts by createdAt in descending order
 
+    // Fetch and attach comments for each post
+    for (let post of posts) {
+      const comments = await Comment.find({ post: post._id }).populate(
+        "author",
+        "username profileImg"
+      );
+      post.comments = comments;
+    }
+
     res.json(posts);
   } catch (error) {
     console.error("Get User Posts Error: ", error);
@@ -35,7 +55,7 @@ const getUserPosts = async (req, res) => {
 };
 
 // create a post
-const postPost = async (req, res) => {
+module.exports.postPost = async (req, res) => {
   try {
     const { authorID, content, imageURL } = req.body;
 
@@ -50,7 +70,7 @@ const postPost = async (req, res) => {
   }
 };
 
-const deletePost = async (req, res) => {
+module.exports.deletePost = async (req, res) => {
   try {
     const post = await Post.findById(req.params.postId);
     const userId = req.body.userId; // Access userId from the request body
@@ -86,9 +106,27 @@ function createPost(
   });
 }
 
-module.exports = {
-  getPosts,
-  getUserPosts,
-  postPost,
-  deletePost,
+// create a Comment
+module.exports.addComment = async (req, res) => {
+  try {
+    const { authorID, content } = req.body;
+    const postID = req.params.postID;
+
+    let newComment = createComment(postID, authorID, content);
+    await newComment.save();
+
+    newComment = await newComment.populate("author", "username profileImg");
+    res.status(201).json(newComment);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Server Error: Couldnt create the new comment");
+  }
 };
+
+function createComment(postID, authorID, content) {
+  return new Comment({
+    post: postID,
+    author: authorID,
+    content: content,
+  });
+}

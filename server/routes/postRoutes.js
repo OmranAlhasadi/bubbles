@@ -9,4 +9,7 @@ router.get("/posts/:username", postController.getUserPosts);
 
 router.delete("/posts/:postId", postController.deletePost);
 
+// POST a comment
+router.post("/posts/:postID/comments", postController.addComment);
+
 module.exports = router;

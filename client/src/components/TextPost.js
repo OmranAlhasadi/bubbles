@@ -5,13 +5,19 @@ import { useState, useContext } from "react";
 import CommentBox from "./CommentBox";
 
 import { UserContext } from "../contexts/UserContext";
+import CommentSection from "./CommentSection";
 
 const TextPost = ({ post, isNew = false, onDelete }) => {
   const [showTextbox, setShowTextbox] = useState(false);
+  const [showComments, setShowComments] = useState(false);
   const { user, updateUser } = useContext(UserContext);
 
   const toggleTextbox = () => {
     setShowTextbox((prev) => !prev);
+  };
+
+  const toggleComments = () => {
+    setShowComments((prev) => !prev);
   };
 
   // Format the date
@@ -22,6 +28,36 @@ const TextPost = ({ post, isNew = false, onDelete }) => {
 
   const onDeleteClick = () => {
     onDelete(post._id);
+  };
+
+  const postComment = async (commentText) => {
+    const commentData = {
+      authorID: user._id,
+      content: commentText,
+    };
+
+    try {
+      const response = await fetch(
+        `http://localhost:3001/api/posts/${post._id}/comments`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(commentData),
+        }
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to post the comment");
+      }
+
+      const newComment = await response.json();
+      console.log("Comment Posted:", newComment);
+    } catch (error) {
+      console.error("Error posting comment:", error.message);
+    }
   };
 
   return (
@@ -49,6 +85,14 @@ const TextPost = ({ post, isNew = false, onDelete }) => {
           )}
         </div>
         <p className={styles.textBox}>{post.content}</p>
+        <div className={styles.smallBtnContainer}>
+          <button className={styles.smallBtn}>Likes</button>
+          <button
+            className={styles.smallBtn}
+            onClick={toggleComments}
+          >{`${post.comments.length} Comments`}</button>
+        </div>
+        <CommentSection comments={post.comments} isVisible={showComments} />
         <div className={styles.buttonsContainer}>
           <div
             className={`${styles.likeButton} ${
@@ -92,7 +136,11 @@ const TextPost = ({ post, isNew = false, onDelete }) => {
         </div>
       </div>
 
-      <CommentBox borderRadius="0 0 25px 25px" isVisible={showTextbox} />
+      <CommentBox
+        borderRadius="0 0 25px 25px"
+        isVisible={showTextbox}
+        handleSubmit={(commentText) => postComment(commentText)}
+      />
     </div>
   );
 };
