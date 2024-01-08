@@ -4,7 +4,11 @@ const CommentSection = ({ comments, isVisible }) => {
   return (
     <div className={`${styles.container} ${isVisible ? styles.visible : ""}`}>
       {comments.map((comment) => (
-        <Comment comment={comment} />
+        <Comment
+          key={comment._id}
+          isNew={comment.isNew ? true : false}
+          comment={comment}
+        />
       ))}
     </div>
   );

@@ -10,6 +10,7 @@ import CommentSection from "./CommentSection";
 const TextPost = ({ post, isNew = false, onDelete }) => {
   const [showTextbox, setShowTextbox] = useState(false);
   const [showComments, setShowComments] = useState(false);
+  const [comments, setComments] = useState(post.comments);
   const { user, updateUser } = useContext(UserContext);
 
   const toggleTextbox = () => {
@@ -53,8 +54,9 @@ const TextPost = ({ post, isNew = false, onDelete }) => {
         throw new Error(errorData.message || "Failed to post the comment");
       }
 
-      const newComment = await response.json();
-      console.log("Comment Posted:", newComment);
+      let newComment = await response.json();
+      newComment.isNew = true;
+      setComments((prev) => [...prev, newComment]);
     } catch (error) {
       console.error("Error posting comment:", error.message);
     }
@@ -92,7 +94,7 @@ const TextPost = ({ post, isNew = false, onDelete }) => {
             onClick={toggleComments}
           >{`${post.comments.length} Comments`}</button>
         </div>
-        <CommentSection comments={post.comments} isVisible={showComments} />
+        <CommentSection comments={comments} isVisible={showComments} />
         <div className={styles.buttonsContainer}>
           <div
             className={`${styles.likeButton} ${

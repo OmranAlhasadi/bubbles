@@ -1,9 +1,66 @@
-.container{
+@keyframes expandAnimation {
+    0% {
+      max-height: 0;
+      transform: scale(0);
+    }
+
+    
+
+    35% {
+        transform: scale(1.2);
+    }
+
+    55%{
+        transform: scale(0.85);
+    }
+
+    65%{
+        transform: scale(1.05);
+    }
+
+    70%{
+        transform: scale(0.95);
+    }
+    75% {
+      max-height: 1000px;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes deleteAnimation {
+      0%{
+          max-height: 1000px;
+      }
+      100%{
+          max-height: 0px;
+          transform: scaleY(0);
+          
+      }
+  }
+  
+
+  .newComment {
+    animation: expandAnimation 0.5s ease-out forwards;
+    
+  }
+
+  .deleting{
+    transform-origin: top;
+    animation: deleteAnimation 0.5s ease-in-out forwards;
+      
+  }
+
+
+  .container {
     display: flex;
-    gap: 30px;
+    width: 90%;
+    gap: 15px; 
+    margin-bottom: 10px; 
+    align-items: flex-start; 
+    box-sizing: border-box;
 }
 
-img{
+img {
     height: 32px;
     width: 32px;
     border-radius: 50%;
@@ -12,16 +69,55 @@ img{
 .content {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 10px; 
+    width: 100%; 
 }
 
-.username{
-    font-size: 1.5rem;
-    font-weight: 800;
+.username {
+    font-size: 1rem; 
+    font-weight: bold; 
 }
 
-.commentText{
-    font-size: 1.2rem;
-    word-wrap: break-word;
+.commentText {
+    width: 80%;
+    font-size: 1rem;
+    word-wrap: break-word; 
+    overflow-wrap: break-word; 
+}
+
+@keyframes shake {
+    0%, 100% {
+        transform: rotate(20deg);
+    }
+    25% {
+        transform: rotate(-20deg);
+    }
+    50% {
+        transform: rotate(20deg);
+    }
+    75% {
+        transform: rotate(-20deg);
+    }
+}
+
+.trash {
+    width: 22px;
+    height: 22px;
+
+    padding: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+
+    fill: #b91c1c;
+    cursor: pointer;
+    transition: fill 0.2s ease-in-out, background-color 0.2s ease-in-out;
+}
+
+.trash:hover {
+    fill: white;
+    background-color: #dc2626;
+    
+    animation: shake 2.3s infinite; 
+    
 }
 
