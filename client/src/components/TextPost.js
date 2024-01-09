@@ -62,6 +62,40 @@ const TextPost = ({ post, isNew = false, onDelete }) => {
     }
   };
 
+  const handleCommentDelete = async (commentId) => {
+    try {
+      // Delete request
+      const response = await fetch(
+        `http://localhost:3001/api/comments/${commentId}`,
+        {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId: user._id }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Could not delete comment");
+      }
+
+      setComments((prevComments) =>
+        prevComments.map((comment) =>
+          comment._id === commentId ? { ...comment, deleting: true } : comment
+        )
+      );
+
+      // Wait for the animation to complete after successful comment deletion
+      setTimeout(async () => {
+        // Remove post from state
+        setComments((prevComments) =>
+          prevComments.filter((comment) => comment._id !== commentId)
+        );
+      }, 500); //duration to wait for animation to finish
+    } catch (error) {
+      console.error("Error deleting post", error);
+    }
+  };
+
   return (
     <div
       className={`${styles.wrapper} ${isNew ? styles.newPost : ""} ${
@@ -94,7 +128,11 @@ const TextPost = ({ post, isNew = false, onDelete }) => {
             onClick={toggleComments}
           >{`${post.comments.length} Comments`}</button>
         </div>
-        <CommentSection comments={comments} isVisible={showComments} />
+        <CommentSection
+          comments={comments}
+          isVisible={showComments}
+          handleCommentDelete={handleCommentDelete}
+        />
         <div className={styles.buttonsContainer}>
           <div
             className={`${styles.likeButton} ${

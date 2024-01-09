@@ -130,3 +130,29 @@ function createComment(postID, authorID, content) {
     content: content,
   });
 }
+
+module.exports.deleteComment = async (req, res) => {
+  try {
+    const { commentID } = req.params;
+    const userID = req.body.userId;
+
+    // Find the comment
+    const comment = await Comment.findById(commentID);
+    if (!comment) {
+      return res.status(404).send("Comment not found");
+    }
+
+    // Check if the user is authorized to delete the comment
+    if (comment.author.toString() !== userID) {
+      return res.status(403).send("Not authorized to delete this comment");
+    }
+
+    // Delete the comment
+    await Comment.deleteOne({ _id: commentID });
+
+    res.status(200).send("Comment deleted successfully");
+  } catch (error) {
+    console.error("Delete Comment Error: ", error);
+    res.status(500).send("Server error");
+  }
+};

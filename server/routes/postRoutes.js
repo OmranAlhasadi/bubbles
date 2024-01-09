@@ -12,4 +12,7 @@ router.delete("/posts/:postId", postController.deletePost);
 // POST a comment
 router.post("/posts/:postID/comments", postController.addComment);
 
+// DELETE a comment
+router.delete("/comments/:commentID", postController.deleteComment);
+
 module.exports = router;

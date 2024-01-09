@@ -29,11 +29,19 @@
 
   @keyframes deleteAnimation {
       0%{
+          
+      }
+
+      50% {
+          
           max-height: 1000px;
+          transform: translateX(-200%);
+          
       }
       100%{
+
           max-height: 0px;
-          transform: scaleY(0);
+          transform: translateX(-200%);
           
       }
   }
@@ -45,7 +53,7 @@
   }
 
   .deleting{
-    transform-origin: top;
+    
     animation: deleteAnimation 0.5s ease-in-out forwards;
       
   }
