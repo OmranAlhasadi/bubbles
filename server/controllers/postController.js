@@ -1,6 +1,7 @@
 const Post = require("../models/Post");
 const User = require("../models/User");
 const Comment = require("../models/Comment");
+const Like = require("../models/Like");
 
 // get all posts
 module.exports.getPosts = async (req, res) => {
@@ -15,7 +16,14 @@ module.exports.getPosts = async (req, res) => {
         "author",
         "username profileImg"
       );
-      post.comments = comments;
+      post._doc.comments = comments;
+
+      const likes = await Like.find({ post: post._id }).populate(
+        "user",
+        "username"
+      );
+      post._doc.likes = likes.map((like) => like.user.username);
+      post._doc.likesCount = likes.length;
     }
 
     res.json(posts);
@@ -44,7 +52,14 @@ module.exports.getUserPosts = async (req, res) => {
         "author",
         "username profileImg"
       );
-      post.comments = comments;
+      post._doc.comments = comments;
+
+      const likes = await Like.find({ post: post._id }).populate(
+        "user",
+        "username"
+      );
+      post._doc.likes = likes;
+      post._doc.likesCount = likes.length;
     }
 
     res.json(posts);
@@ -100,9 +115,6 @@ function createPost(
     author: authorID,
     content: content,
     image: imageURL,
-    likes: [],
-    dislikes: [],
-    comments: [],
   });
 }
 
@@ -153,6 +165,48 @@ module.exports.deleteComment = async (req, res) => {
     res.status(200).send("Comment deleted successfully");
   } catch (error) {
     console.error("Delete Comment Error: ", error);
+    res.status(500).send("Server error");
+  }
+};
+
+// Like a post
+module.exports.likePost = async (req, res) => {
+  try {
+    const postId = req.params.postId;
+    const userId = req.body.userId;
+
+    // Check if the user already liked the post
+    const existingLike = await Like.findOne({ post: postId, user: userId });
+    if (existingLike) {
+      return res.status(400).send("Post already liked by this user.");
+    }
+
+    // Create a new like
+    const newLike = new Like({ post: postId, user: userId });
+    await newLike.save();
+
+    res.status(201).send("Post liked successfully.");
+  } catch (error) {
+    console.error("Like Post Error:", error);
+    res.status(500).send("Server error");
+  }
+};
+
+// Unlike a post
+module.exports.unlikePost = async (req, res) => {
+  try {
+    const postId = req.params.postId;
+    const userId = req.body.userId;
+
+    // Remove the like
+    const result = await Like.deleteOne({ post: postId, user: userId });
+    if (result.deletedCount === 0) {
+      return res.status(404).send("Like not found or already removed.");
+    }
+
+    res.status(200).send("Post unliked successfully.");
+  } catch (error) {
+    console.error("Unlike Post Error:", error);
     res.status(500).send("Server error");
   }
 };

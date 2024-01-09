@@ -11,7 +11,9 @@ const TextPost = ({ post, isNew = false, onDelete }) => {
   const [showTextbox, setShowTextbox] = useState(false);
   const [showComments, setShowComments] = useState(false);
   const [comments, setComments] = useState(post.comments);
+
   const { user, updateUser } = useContext(UserContext);
+  const [isLiked, setIsLiked] = useState(post.likes.includes(user.username));
 
   const toggleTextbox = () => {
     setShowTextbox((prev) => !prev);
@@ -19,6 +21,62 @@ const TextPost = ({ post, isNew = false, onDelete }) => {
 
   const toggleComments = () => {
     setShowComments((prev) => !prev);
+  };
+
+  const toggleLikeButton = () => {
+    setIsLiked((prev) => !prev);
+  };
+
+  const handleLikeButton = async () => {
+    const data = { userId: user._id };
+
+    if (!isLiked) {
+      console.log(post.likes);
+      console.log(`reying to like, status of isliked is: ${isLiked}`);
+      try {
+        const response = await fetch(
+          `http://localhost:3001/api/posts/${post._id}/like`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error("Failed to like the post");
+        }
+
+        toggleLikeButton();
+      } catch (error) {
+        console.error("Error liking post:", error.message);
+      }
+    } else if (isLiked) {
+      try {
+        const response = await fetch(
+          `http://localhost:3001/api/posts/${post._id}/like`,
+          {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error("Failed to unlike the post");
+        }
+
+        toggleLikeButton();
+      } catch (error) {
+        console.error("Error unliking post:", error.message);
+      }
+    } else {
+      console.log("Error handling liked state");
+    }
   };
 
   // Format the date
@@ -137,7 +195,8 @@ const TextPost = ({ post, isNew = false, onDelete }) => {
           <div
             className={`${styles.likeButton} ${
               showTextbox ? styles.isCommenting : ""
-            }`}
+            }    ${isLiked ? styles.liked : ""} `}
+            onClick={handleLikeButton}
           >
             <svg className={styles.icon} viewBox="0 0 478.2 478.2">
               <g>
@@ -160,7 +219,9 @@ const TextPost = ({ post, isNew = false, onDelete }) => {
                 />
               </g>
             </svg>
-            <div className={styles.buttonText}>Like</div>
+            <div className={styles.buttonText}>
+              {isLiked ? "Unlike" : "Like"}
+            </div>
           </div>
           <div
             className={`${styles.commentButton} ${
