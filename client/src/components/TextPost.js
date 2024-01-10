@@ -14,6 +14,9 @@ const TextPost = ({ post, isNew = false, onDelete }) => {
 
   const { user, updateUser } = useContext(UserContext);
   const [isLiked, setIsLiked] = useState(post.likes.includes(user.username));
+  const [isLikeHovered, setIsLikeHovered] = useState(false);
+  const [likeCount, setLikeCount] = useState(post.likes.length);
+  const [commentCount, setCommentCount] = useState(post.comments.length);
 
   const toggleTextbox = () => {
     setShowTextbox((prev) => !prev);
@@ -31,8 +34,6 @@ const TextPost = ({ post, isNew = false, onDelete }) => {
     const data = { userId: user._id };
 
     if (!isLiked) {
-      console.log(post.likes);
-      console.log(`reying to like, status of isliked is: ${isLiked}`);
       try {
         const response = await fetch(
           `http://localhost:3001/api/posts/${post._id}/like`,
@@ -50,6 +51,7 @@ const TextPost = ({ post, isNew = false, onDelete }) => {
         }
 
         toggleLikeButton();
+        setLikeCount((prev) => ++prev);
       } catch (error) {
         console.error("Error liking post:", error.message);
       }
@@ -71,6 +73,7 @@ const TextPost = ({ post, isNew = false, onDelete }) => {
         }
 
         toggleLikeButton();
+        setLikeCount((prev) => --prev);
       } catch (error) {
         console.error("Error unliking post:", error.message);
       }
@@ -115,6 +118,7 @@ const TextPost = ({ post, isNew = false, onDelete }) => {
       let newComment = await response.json();
       newComment.isNew = true;
       setComments((prev) => [...prev, newComment]);
+      setCommentCount((prev) => ++prev);
     } catch (error) {
       console.error("Error posting comment:", error.message);
     }
@@ -149,8 +153,43 @@ const TextPost = ({ post, isNew = false, onDelete }) => {
           prevComments.filter((comment) => comment._id !== commentId)
         );
       }, 500); //duration to wait for animation to finish
+      setCommentCount((prev) => --prev);
     } catch (error) {
       console.error("Error deleting post", error);
+    }
+  };
+
+  const likeSVG = (
+    <svg className={styles.icon} viewBox="0 0 16 16">
+      <path d="M8.864.046C7.908-.193 7.02.53 6.956 1.466c-.072 1.051-.23 2.016-.428 2.59-.125.36-.479 1.013-1.04 1.639-.557.623-1.282 1.178-2.131 1.41C2.685 7.288 2 7.87 2 8.72v4.001c0 .845.682 1.464 1.448 1.545 1.07.114 1.564.415 2.068.723l.048.03c.272.165.578.348.97.484.397.136.861.217 1.466.217h3.5c.937 0 1.599-.477 1.934-1.064a1.86 1.86 0 0 0 .254-.912c0-.152-.023-.312-.077-.464.201-.263.38-.578.488-.901.11-.33.172-.762.004-1.149.069-.13.12-.269.159-.403.077-.27.113-.568.113-.857 0-.288-.036-.585-.113-.856a2 2 0 0 0-.138-.362 1.9 1.9 0 0 0 .234-1.734c-.206-.592-.682-1.1-1.2-1.272-.847-.282-1.803-.276-2.516-.211a10 10 0 0 0-.443.05 9.4 9.4 0 0 0-.062-4.509A1.38 1.38 0 0 0 9.125.111zM11.5 14.721H8c-.51 0-.863-.069-1.14-.164-.281-.097-.506-.228-.776-.393l-.04-.024c-.555-.339-1.198-.731-2.49-.868-.333-.036-.554-.29-.554-.55V8.72c0-.254.226-.543.62-.65 1.095-.3 1.977-.996 2.614-1.708.635-.71 1.064-1.475 1.238-1.978.243-.7.407-1.768.482-2.85.025-.362.36-.594.667-.518l.262.066c.16.04.258.143.288.255a8.34 8.34 0 0 1-.145 4.725.5.5 0 0 0 .595.644l.003-.001.014-.003.058-.014a9 9 0 0 1 1.036-.157c.663-.06 1.457-.054 2.11.164.175.058.45.3.57.65.107.308.087.67-.266 1.022l-.353.353.353.354c.043.043.105.141.154.315.048.167.075.37.075.581 0 .212-.027.414-.075.582-.05.174-.111.272-.154.315l-.353.353.353.354c.047.047.109.177.005.488a2.2 2.2 0 0 1-.505.805l-.353.353.353.354c.006.005.041.05.041.17a.9.9 0 0 1-.121.416c-.165.288-.503.56-1.066.56z" />
+    </svg>
+  );
+
+  const unlikeSVG = (
+    <svg className={styles.icon} viewBox="0 0 16 16">
+      <path d="M8.864 15.674c-.956.24-1.843-.484-1.908-1.42-.072-1.05-.23-2.015-.428-2.59-.125-.36-.479-1.012-1.04-1.638-.557-.624-1.282-1.179-2.131-1.41C2.685 8.432 2 7.85 2 7V3c0-.845.682-1.464 1.448-1.546 1.07-.113 1.564-.415 2.068-.723l.048-.029c.272-.166.578-.349.97-.484C6.931.08 7.395 0 8 0h3.5c.937 0 1.599.478 1.934 1.064.164.287.254.607.254.913 0 .152-.023.312-.077.464.201.262.38.577.488.9.11.33.172.762.004 1.15.069.13.12.268.159.403.077.27.113.567.113.856s-.036.586-.113.856c-.035.12-.08.244-.138.363.394.571.418 1.2.234 1.733-.206.592-.682 1.1-1.2 1.272-.847.283-1.803.276-2.516.211a10 10 0 0 1-.443-.05 9.36 9.36 0 0 1-.062 4.51c-.138.508-.55.848-1.012.964zM11.5 1H8c-.51 0-.863.068-1.14.163-.281.097-.506.229-.776.393l-.04.025c-.555.338-1.198.73-2.49.868-.333.035-.554.29-.554.55V7c0 .255.226.543.62.65 1.095.3 1.977.997 2.614 1.709.635.71 1.064 1.475 1.238 1.977.243.7.407 1.768.482 2.85.025.362.36.595.667.518l.262-.065c.16-.04.258-.144.288-.255a8.34 8.34 0 0 0-.145-4.726.5.5 0 0 1 .595-.643h.003l.014.004.058.013a9 9 0 0 0 1.036.157c.663.06 1.457.054 2.11-.163.175-.059.45-.301.57-.651.107-.308.087-.67-.266-1.021L12.793 7l.353-.354c.043-.042.105-.14.154-.315.048-.167.075-.37.075-.581s-.027-.414-.075-.581c-.05-.174-.111-.273-.154-.315l-.353-.354.353-.354c.047-.047.109-.176.005-.488a2.2 2.2 0 0 0-.505-.804l-.353-.354.353-.354c.006-.005.041-.05.041-.17a.9.9 0 0 0-.121-.415C12.4 1.272 12.063 1 11.5 1" />
+    </svg>
+  );
+
+  const handleMouseEnter = () => {
+    setIsLikeHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsLikeHovered(false);
+  };
+
+  // Function to render SVG based on like and hover state
+  const renderLikeSVG = () => {
+    if (isLiked && isLikeHovered) {
+      return unlikeSVG;
+    } else {
+      /*else if (isLiked) {
+      return unlikeSVG;
+    } else if (isHovered) {
+      return unlikeSVG;
+    }*/
+      return likeSVG;
     }
   };
 
@@ -164,7 +203,9 @@ const TextPost = ({ post, isNew = false, onDelete }) => {
         <div className={styles.postHeader}>
           <div className={styles.info}>
             <img className={styles.profile} src={post.author.profileImg}></img>
-            <a>{post.author ? post.author.username : "Unknown"}</a>
+            <a href={`/profile/${post.author.username}`}>
+              {post.author ? post.author.username : "Unknown"}
+            </a>
             <span>{formatDate(post.createdAt)}</span>
           </div>
           {post.author && post.author.username === user.username && (
@@ -180,11 +221,11 @@ const TextPost = ({ post, isNew = false, onDelete }) => {
         </div>
         <p className={styles.textBox}>{post.content}</p>
         <div className={styles.smallBtnContainer}>
-          <button className={styles.smallBtn}>Likes</button>
+          <button className={styles.smallBtn}>{`${likeCount} Likes`}</button>
           <button
             className={styles.smallBtn}
             onClick={toggleComments}
-          >{`${post.comments.length} Comments`}</button>
+          >{`${commentCount} Comments`}</button>
         </div>
         <CommentSection
           comments={comments}
@@ -197,28 +238,10 @@ const TextPost = ({ post, isNew = false, onDelete }) => {
               showTextbox ? styles.isCommenting : ""
             }    ${isLiked ? styles.liked : ""} `}
             onClick={handleLikeButton}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
           >
-            <svg className={styles.icon} viewBox="0 0 478.2 478.2">
-              <g>
-                <path
-                  d="M457.575,325.1c9.8-12.5,14.5-25.9,13.9-39.7c-0.6-15.2-7.4-27.1-13-34.4c6.5-16.2,9-41.7-12.7-61.5
-          c-15.9-14.5-42.9-21-80.3-19.2c-26.3,1.2-48.3,6.1-49.2,6.3h-0.1c-5,0.9-10.3,2-15.7,3.2c-0.4-6.4,0.7-22.3,12.5-58.1
-          c14-42.6,13.2-75.2-2.6-97c-16.6-22.9-43.1-24.7-50.9-24.7c-7.5,0-14.4,3.1-19.3,8.8c-11.1,12.9-9.8,36.7-8.4,47.7
-          c-13.2,35.4-50.2,122.2-81.5,146.3c-0.6,0.4-1.1,0.9-1.6,1.4c-9.2,9.7-15.4,20.2-19.6,29.4c-5.9-3.2-12.6-5-19.8-5h-61
-          c-23,0-41.6,18.7-41.6,41.6v162.5c0,23,18.7,41.6,41.6,41.6h61c8.9,0,17.2-2.8,24-7.6l23.5,2.8c3.6,0.5,67.6,8.6,133.3,7.3
-          c11.9,0.9,23.1,1.4,33.5,1.4c17.9,0,33.5-1.4,46.5-4.2c30.6-6.5,51.5-19.5,62.1-38.6c8.1-14.6,8.1-29.1,6.8-38.3
-          c19.9-18,23.4-37.9,22.7-51.9C461.275,337.1,459.475,330.2,457.575,325.1z M48.275,447.3c-8.1,0-14.6-6.6-14.6-14.6V270.1
-          c0-8.1,6.6-14.6,14.6-14.6h61c8.1,0,14.6,6.6,14.6,14.6v162.5c0,8.1-6.6,14.6-14.6,14.6h-61V447.3z M431.975,313.4
-          c-4.2,4.4-5,11.1-1.8,16.3c0,0.1,4.1,7.1,4.6,16.7c0.7,13.1-5.6,24.7-18.8,34.6c-4.7,3.6-6.6,9.8-4.6,15.4c0,0.1,4.3,13.3-2.7,25.8
-          c-6.7,12-21.6,20.6-44.2,25.4c-18.1,3.9-42.7,4.6-72.9,2.2c-0.4,0-0.9,0-1.4,0c-64.3,1.4-129.3-7-130-7.1h-0.1l-10.1-1.2
-          c0.6-2.8,0.9-5.8,0.9-8.8V270.1c0-4.3-0.7-8.5-1.9-12.4c1.8-6.7,6.8-21.6,18.6-34.3c44.9-35.6,88.8-155.7,90.7-160.9
-          c0.8-2.1,1-4.4,0.6-6.7c-1.7-11.2-1.1-24.9,1.3-29c5.3,0.1,19.6,1.6,28.2,13.5c10.2,14.1,9.8,39.3-1.2,72.7
-          c-16.8,50.9-18.2,77.7-4.9,89.5c6.6,5.9,15.4,6.2,21.8,3.9c6.1-1.4,11.9-2.6,17.4-3.5c0.4-0.1,0.9-0.2,1.3-0.3
-          c30.7-6.7,85.7-10.8,104.8,6.6c16.2,14.8,4.7,34.4,3.4,36.5c-3.7,5.6-2.6,12.9,2.4,17.4c0.1,0.1,10.6,10,11.1,23.3
-          C444.875,295.3,440.675,304.4,431.975,313.4z"
-                />
-              </g>
-            </svg>
+            {renderLikeSVG()}
             <div className={styles.buttonText}>
               {isLiked ? "Unlike" : "Like"}
             </div>

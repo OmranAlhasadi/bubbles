@@ -3,7 +3,7 @@ import styles from "../css/Header.module.css";
 import thief from "../images/thief.jpeg";
 import settings from "../images/settings.svg";
 
-import { useContext, useState } from "react";
+import { useContext, useState, useRef, useEffect } from "react";
 import { UserContext } from "../contexts/UserContext";
 import { useNavigate } from "react-router-dom";
 
@@ -12,6 +12,7 @@ const Header = () => {
   const navigate = useNavigate();
 
   const [showRequests, setShowRequests] = useState(false);
+  const requestsRef = useRef();
 
   // toggle friend request list
   const toggleRequests = () => {
@@ -28,6 +29,25 @@ const Header = () => {
   const handleLogoClick = () => {
     navigate("/"); // Navigate to homepage
   };
+
+  useEffect(() => {
+    //check if click is outside the ref element
+    function handleClickOutside(event) {
+      if (requestsRef.current && !requestsRef.current.contains(event.target)) {
+        setShowRequests(false);
+      }
+    }
+
+    //bind the event listener
+    if (showRequests) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    //unbind the event listener on clean up
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showRequests]);
 
   // Function to handle accepting a friend request
   const handleAcceptRequest = async (requesterUsername) => {
@@ -115,7 +135,7 @@ const Header = () => {
           <path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m-5 6s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zM11 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5m.5 2.5a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1zm2 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1zm0 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1z" />
         </svg>
         {showRequests && (
-          <div className={styles.friendRequestsList}>
+          <div className={styles.friendRequestsList} ref={requestsRef}>
             {user.friendRequests.length === 0 ? (
               <div className={styles.noRequestsMessage}>No friend requests</div>
             ) : (
