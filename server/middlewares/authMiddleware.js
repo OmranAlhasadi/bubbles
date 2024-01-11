@@ -1,14 +1,12 @@
-// authenticate JWT tokens in requests
 const jwt = require("jsonwebtoken");
 
 const authMiddleware = (req, res, next) => {
-  const authHeader = req.headers.authorization;
-  const token = authHeader && authHeader.split(" ")[1];
+  const token = req.cookies.token;
   if (!token) return res.status(401).send("Access Denied");
 
   try {
     const verified = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = verified;
+    req.user = verified; // Attaching decoded user info to req
     next();
   } catch (error) {
     res.status(400).send("Invalid Token");
