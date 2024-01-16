@@ -44,17 +44,21 @@ const LoginPage = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     if (validateFields()) {
-      await loginUser(username, password);
-      navigate("/");
+      const success = await loginUser(username, password);
+      if (success) {
+        navigate("/");
+      } else {
+        console.log("Error logging in");
+      }
     }
   };
 
   return (
-    <div className={styles.Container}>
+    <div className={styles.container}>
       <div className={styles.formContainer}>
         <form className={styles.form} onSubmit={handleLogin}>
-          <div className={fieldContainer}>
-            <label className={fieldLabel} htmlFor="username">
+          <div className={styles.fieldContainer}>
+            <label className={styles.fieldLabel} htmlFor="username">
               Username
             </label>
             <input
@@ -69,8 +73,8 @@ const LoginPage = () => {
               <div className={styles.errorMsg}>{usernameError}</div>
             )}
           </div>
-          <div className={fieldContainer}>
-            <label className={fieldLabel} htmlFor="password">
+          <div className={styles.fieldContainer}>
+            <label className={styles.fieldLabel} htmlFor="password">
               Password
             </label>
             <input
@@ -94,7 +98,11 @@ const LoginPage = () => {
           <button type="button" className={styles.formButton}>
             Log in as Example User
           </button>
-          <button type="button" className={styles.formButton}>
+          <button
+            type="button"
+            className={styles.formButton}
+            onClick={navigateToSignUp}
+          >
             Sign Up with Email
           </button>
         </form>

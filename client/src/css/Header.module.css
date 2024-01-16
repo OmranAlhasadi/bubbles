@@ -82,3 +82,22 @@
     color: #6b7280; 
   }
   
+
+  .logoutButton {
+    display: flex;
+    align-items: center;
+    gap: 5px; 
+    cursor: pointer;
+    color: #c084fc; 
+    transition: color 0.3s ease-in-out;
+  }
+  
+  .logoutButton:hover {
+    color: #b91c1c; 
+  }
+  
+  .logoutButton svg {
+    fill: currentColor;
+  }
+  
+  

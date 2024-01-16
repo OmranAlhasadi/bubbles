@@ -89,7 +89,7 @@ const Feed = ({ specificUser = false }) => {
         {
           method: "DELETE",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ userId: user.uid }),
+          body: JSON.stringify({ userId: user._id }),
         }
       );
 

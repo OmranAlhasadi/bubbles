@@ -10,9 +10,9 @@ const SignupPage = () => {
   const [usernameError, setUsernameError] = useState("");
   const [password, setPassword] = useState("");
   const [passwordError, setPasswordError] = useState("");
-  const [name, setanaame] = useState("");
+  const [name, setName] = useState("");
   const [nameError, setNameError] = useState("");
-  const [eail, setEmail] = useState("");
+  const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
@@ -90,17 +90,17 @@ const SignupPage = () => {
   const handleSignup = async (e) => {
     e.preventDefault();
     if (validateFields()) {
-      await signupUser(username, password);
+      await signupUser({ username, name, email, password });
       navigate("/login");
     }
   };
 
   return (
-    <div className={styles.Container}>
+    <div className={styles.container}>
       <div className={styles.formContainer}>
-        <form className={styles.form} onSubmit={handleLogin}>
-          <div className={fieldContainer}>
-            <label className={fieldLabel} htmlFor="name">
+        <form className={styles.form} onSubmit={handleSignup}>
+          <div className={styles.fieldContainer}>
+            <label className={styles.fieldLabel} htmlFor="name">
               Full name
             </label>
             <input
@@ -113,8 +113,8 @@ const SignupPage = () => {
             />
             {nameError && <div className={styles.errorMsg}>{nameError}</div>}
           </div>
-          <div className={fieldContainer}>
-            <label className={fieldLabel} htmlFor="username">
+          <div className={styles.fieldContainer}>
+            <label className={styles.fieldLabel} htmlFor="username">
               Username
             </label>
             <input
@@ -129,8 +129,8 @@ const SignupPage = () => {
               <div className={styles.errorMsg}>{usernameError}</div>
             )}
           </div>
-          <div className={fieldContainer}>
-            <label className={fieldLabel} htmlFor="email">
+          <div className={styles.fieldContainer}>
+            <label className={styles.fieldLabel} htmlFor="email">
               Email
             </label>
             <input
@@ -143,8 +143,8 @@ const SignupPage = () => {
             />
             {emailError && <div className={styles.errorMsg}>{emailError}</div>}
           </div>
-          <div className={fieldContainer}>
-            <label className={fieldLabel} htmlFor="password">
+          <div className={styles.fieldContainer}>
+            <label className={styles.fieldLabel} htmlFor="password">
               Password
             </label>
             <input
@@ -159,8 +159,8 @@ const SignupPage = () => {
               <div className={styles.errorMsg}>{passwordError}</div>
             )}
           </div>
-          <div className={fieldContainer}>
-            <label className={fieldLabel} htmlFor="confirmPassword">
+          <div className={styles.fieldContainer}>
+            <label className={styles.fieldLabel} htmlFor="confirmPassword">
               Confirm password
             </label>
             <input

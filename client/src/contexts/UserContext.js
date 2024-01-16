@@ -13,11 +13,18 @@ export const UserProvider = ({ children }) => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password }),
       });
-      if (!response.ok) throw new Error("Login failed");
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Login failed");
+      }
+
       const data = await response.json();
       setUser(data.user); // Set user in context
+      return true; // Indicate successful login
     } catch (error) {
-      console.error("Error logging in:", error);
+      console.error("Error logging in:", error.message);
+      return false; // Indicate failed login
     }
   };
 

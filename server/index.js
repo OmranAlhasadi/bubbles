@@ -24,6 +24,9 @@ app.use("/api", userRoutes);
 const postRoutes = require("./routes/postRoutes");
 app.use("/api", postRoutes);
 
+const authRoutes = require("./routes/authRoutes");
+app.use("/api", authRoutes);
+
 /*// Serve static files from the React app
 app.use(express.static(path.join(__dirname, 'client/build')));
 

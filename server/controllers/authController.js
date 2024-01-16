@@ -20,16 +20,20 @@ exports.registerUser = async (req, res) => {
       maxAge: 3600000, // cookie expiry, should match token expiry
     });
 
-    res.json({
+    res.status(201).json({
       token,
       user: {
+        _id: user._id,
         username: user.username,
-        profileImg: user.profileImg,
+        name: user.name,
+        aboutMe: "",
+        //profileImg here later
+        friends: [],
+        friendRequests: [],
+        sentRequests: [],
         //I will add rest of details later
       },
     });
-
-    res.status(201).send("User created");
   } catch (error) {
     res.status(500).send("Error registering new user");
   }
@@ -38,7 +42,11 @@ exports.registerUser = async (req, res) => {
 //sign in
 exports.loginUser = async (req, res) => {
   try {
-    const user = await User.findOne({ username: req.body.username });
+    const user = await User.findOne({ username: req.body.username })
+      .populate("friends", "username profileImg")
+      .populate("friendRequests", "username profileImg")
+      .populate("sentRequests", "username profileImg");
+
     if (!user || !(await bcrypt.compare(req.body.password, user.password))) {
       return res.status(401).send("Invalid credentials");
     }
@@ -54,11 +62,27 @@ exports.loginUser = async (req, res) => {
       maxAge: 3600000, // cookie expiry, should match token expiry
     });
 
-    res.json({
+    res.status(201).json({
       token,
       user: {
+        _id: user._id,
         username: user.username,
-        profileImg: user.profileImg,
+        name: user.name,
+        aboutMe: user.aboutMe,
+        //profileImg here later
+        friends: user.friends.map((friend) => ({
+          username: friend.username,
+          profileImg: friend.profileImg,
+          profileLink: `/profile/${friend.username}`,
+        })),
+        friendRequests: user.friendRequests.map((request) => ({
+          username: request.username,
+          profileImg: request.profileImg,
+        })),
+        sentRequests: user.sentRequests.map((request) => ({
+          username: request.username,
+          profileImg: request.profileImg,
+        })),
         //I will add rest of details later
       },
     });

@@ -78,6 +78,11 @@ module.exports.postPost = async (req, res) => {
     await newPost.save();
 
     newPost = await newPost.populate("author", "username profileImg");
+
+    newPost._doc.comments = [];
+    newPost._doc.likes = [];
+    newPost._doc.likesCount = 0;
+
     res.status(201).json(newPost);
   } catch (error) {
     console.log(error);
@@ -98,8 +103,15 @@ module.exports.deletePost = async (req, res) => {
       return res.status(403).send("Not authorized to delete this post");
     }
 
+    // Delete all comments associated with the post
+    await Comment.deleteMany({ post: post._id });
+
+    // Delete all likes associated with the post
+    await Like.deleteMany({ post: post._id });
+
+    // Finally, delete the post itself
     await post.deleteOne();
-    res.status(200).send("Post deleted successfully");
+    res.status(200).send("Post and associated data deleted successfully");
   } catch (error) {
     console.error("Delete Post Error: ", error);
     res.status(500).send("Server error");
