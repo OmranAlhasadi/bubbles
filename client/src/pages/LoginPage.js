@@ -47,6 +47,7 @@ const LoginPage = () => {
     if (validateFields()) {
       const success = await loginUser(username, password);
       if (success) {
+        console.log("LOGGED IN, GOING TO HOMEPAGE NOW");
         navigate("/");
       } else {
         console.log("Error logging in");

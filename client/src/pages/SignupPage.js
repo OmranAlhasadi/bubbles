@@ -17,6 +17,10 @@ const SignupPage = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
 
+  const navigateToLogin = () => {
+    navigate("/login");
+  };
+
   const validateFields = () => {
     let isValid = true;
 
@@ -91,7 +95,7 @@ const SignupPage = () => {
     e.preventDefault();
     if (validateFields()) {
       await signupUser({ username, name, email, password });
-      navigate("/login");
+      navigate("/");
     }
   };
 
@@ -178,7 +182,11 @@ const SignupPage = () => {
           <button className={styles.formButton} type="submit">
             Sign up
           </button>
-          <button type="button" className={styles.loginButton}>
+          <button
+            type="button"
+            className={styles.loginButton}
+            onClick={navigateToLogin}
+          >
             Already a user? Login!
           </button>
         </form>

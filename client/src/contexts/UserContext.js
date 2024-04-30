@@ -19,8 +19,10 @@ export const UserProvider = ({ children }) => {
 
       const data = await response.json();
       setUser(data.user); // Set user in context
+      return true;
     } catch (error) {
       console.error("Error logging in:", error);
+      return false;
     }
   };
 

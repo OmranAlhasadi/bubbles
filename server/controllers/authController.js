@@ -1,40 +1,52 @@
 const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const emailService = require("../services/emailService");
 
 // signup
 exports.registerUser = async (req, res) => {
   try {
+    const existingUser = await User.findOne({ email: req.body.email });
+    if (existingUser) {
+      if (!existingUser.emailVerified) {
+        const newToken = jwt.sign(
+          { email: req.body.email },
+          process.env.JWT_SECRET,
+          { expiresIn: "1h" }
+        );
+        existingUser.emailVerificationToken = newToken;
+        await existingUser.save();
+        await emailService.sendVerificationEmail(req.body.email, newToken);
+        return res.status(200).send("A new verification email has been sent.");
+      }
+      return res.status(400).send("User already exists and is verified.");
+    }
+
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
-    const user = new User({ ...req.body, password: hashedPassword });
+    const emailVerificationToken = jwt.sign(
+      { email: req.body.email },
+      process.env.JWT_SECRET,
+      { expiresIn: "1h" }
+    );
+    const user = new User({
+      ...req.body,
+      password: hashedPassword,
+      aboutMe: "",
+      friends: [],
+      friendRequests: [],
+      sentRequests: [],
+      emailVerificationToken,
+      emailVerified: false,
+    });
+
     await user.save();
-
-    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
-    });
-
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV !== "development", // only set to true in production
-      sameSite: "strict",
-      maxAge: 3600000, // cookie expiry, should match token expiry
-    });
-
-    res.status(201).json({
-      token,
-      user: {
-        _id: user._id,
-        username: user.username,
-        name: user.name,
-        aboutMe: "",
-        //profileImg here later
-        friends: [],
-        friendRequests: [],
-        sentRequests: [],
-        //I will add rest of details later
-      },
-    });
+    await emailService.sendVerificationEmail(
+      req.body.email,
+      emailVerificationToken
+    );
+    res.status(201).send("Please check your email to verify your account.");
   } catch (error) {
+    console.error("Error registering new user", error);
     res.status(500).send("Error registering new user");
   }
 };
@@ -198,5 +210,39 @@ exports.checkAuthStatus = async (req, res) => {
     }
   } else {
     res.status(200).json({ isAuthenticated: false });
+  }
+};
+
+// Verify account email after signup
+exports.verifyEmail = async (req, res) => {
+  const { token } = req.query;
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const user = await User.findOne({
+      emailVerificationToken: token,
+      emailVerified: false,
+    });
+
+    if (!user) {
+      return res
+        .status(400)
+        .send("Verification link is invalid or has expired.");
+    }
+
+    user.emailVerified = true;
+    user.emailVerificationToken = ""; // Optionally clear the token
+    await user.save();
+
+    res.send("Email verified successfully. You may now login.");
+  } catch (error) {
+    console.error("Verification error:", error);
+    if (error.name === "TokenExpiredError") {
+      res
+        .status(400)
+        .send("Your verification link has expired. Please sign up again.");
+    } else {
+      res.status(500).send("Internal Server Error");
+    }
   }
 };

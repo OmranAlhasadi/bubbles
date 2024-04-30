@@ -11,4 +11,6 @@ router.get("/logout", authController.logoutUser);
 
 router.get("/status", authMiddleware, authController.checkAuthStatus);
 
+router.get("/verify-email", authController.verifyEmail);
+
 module.exports = router;
