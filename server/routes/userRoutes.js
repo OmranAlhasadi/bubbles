@@ -4,15 +4,11 @@ const userController = require("../controllers/userController");
 
 const authController = require("../controllers/authController");
 
-// Authentication routes
-router.post("/register", authController.registerUser);
-router.post("/login", authController.loginUser);
-
 // User routes
 
-router.post("/user", userController.addUser);
+/* router.post("/user", userController.addUser); */
 
-router.get("/user/:username", userController.getUser);
+router.get("/:username", userController.getUser);
 router.get("/other-user/:username", userController.getOtherUser);
 router.get("/example-user", userController.getExample);
 router.get("/example-user2", userController.getExample2);
@@ -20,19 +16,19 @@ router.get("/:userId/friends", userController.getFriends);
 
 // Route to send a friend request
 router.post(
-  "/user/:userId/send-request/:recieverUsername",
+  "/:userId/send-request/:recieverUsername",
   userController.sendFriendRequest
 );
 
 // Route to accept a friend request
 router.post(
-  "/user/:userId/accept-request/:requesterUsername",
+  "/:userId/accept-request/:requesterUsername",
   userController.acceptFriendRequest
 );
 
 // Route to reject a friend request
 router.post(
-  "/user/:userId/reject-request/:requesterUsername",
+  "/:userId/reject-request/:requesterUsername",
   userController.rejectFriendRequest
 );
 

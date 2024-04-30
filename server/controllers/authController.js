@@ -91,6 +91,59 @@ exports.loginUser = async (req, res) => {
   }
 };
 
+//login as example user
+
+exports.loginExampleUser = async (req, res) => {
+  try {
+    const user = await User.findOne({ username: "Example User" })
+      .populate("friends", "username profileImg")
+      .populate("friendRequests", "username profileImg")
+      .populate("sentRequests", "username profileImg");
+
+    if (!user) {
+      return res.status(401).send("Could not find example user");
+    }
+
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
+
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV !== "development", // only set to true in production
+      sameSite: "strict",
+      maxAge: 3600000, // cookie expiry, should match token expiry
+    });
+
+    res.status(201).json({
+      token,
+      user: {
+        _id: user._id,
+        username: user.username,
+        name: user.name,
+        aboutMe: user.aboutMe,
+        //profileImg here later
+        friends: user.friends.map((friend) => ({
+          username: friend.username,
+          profileImg: friend.profileImg,
+          profileLink: `/profile/${friend.username}`,
+        })),
+        friendRequests: user.friendRequests.map((request) => ({
+          username: request.username,
+          profileImg: request.profileImg,
+        })),
+        sentRequests: user.sentRequests.map((request) => ({
+          username: request.username,
+          profileImg: request.profileImg,
+        })),
+        //I will add rest of details later
+      },
+    });
+  } catch (error) {
+    res.status(500).send("Error logging in");
+  }
+};
+
 // Logout user
 exports.logoutUser = (req, res) => {
   res.clearCookie("token");
@@ -98,9 +151,51 @@ exports.logoutUser = (req, res) => {
 };
 
 // Check auth status
-exports.checkAuthStatus = (req, res) => {
+/* exports.checkAuthStatus = (req, res) => {
   if (req.user) {
     res.status(200).json({ isAuthenticated: true, user: req.user });
+  } else {
+    res.status(200).json({ isAuthenticated: false });
+  }
+}; */
+
+exports.checkAuthStatus = async (req, res) => {
+  if (req.userId) {
+    try {
+      const user = await User.findById(req.userId)
+        .populate("friends", "username profileImg")
+        .populate("friendRequests", "username profileImg")
+        .populate("sentRequests", "username profileImg");
+
+      if (!user) {
+        return res.status(404).send("User not found");
+      }
+
+      const userDetail = {
+        _id: user._id,
+        username: user.username,
+        name: user.name,
+        aboutMe: user.aboutMe,
+        friends: user.friends.map((friend) => ({
+          username: friend.username,
+          profileImg: friend.profileImg,
+          profileLink: `/profile/${friend.username}`,
+        })),
+        friendRequests: user.friendRequests.map((request) => ({
+          username: request.username,
+          profileImg: request.profileImg,
+        })),
+        sentRequests: user.sentRequests.map((request) => ({
+          username: request.username,
+          profileImg: request.profileImg,
+        })),
+      };
+
+      res.status(200).json({ isAuthenticated: true, user: userDetail });
+    } catch (error) {
+      console.error("Error fetching user details:", error);
+      res.status(500).send("Internal Server Error");
+    }
   } else {
     res.status(200).json({ isAuthenticated: false });
   }

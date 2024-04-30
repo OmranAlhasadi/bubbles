@@ -38,7 +38,8 @@ const FriendsList = ({ otherUser = false }) => {
       if (user && user._id) {
         try {
           const response = await fetch(
-            `http://localhost:3001/api/other-user/${username}`
+            `http://localhost:3001/api/user/other-user/${username}`,
+            { credentials: "include" }
           );
           if (!response.ok) {
             throw new Error("Could not fetch friends");

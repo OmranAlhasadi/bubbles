@@ -15,7 +15,7 @@ const Comment = ({ comment, isNew = false, onDelete }) => {
         comment.deleting ? styles.deleting : ""
       }`}
     >
-      <img src={comment.author.profileImg}></img>
+      <img className={styles.profile} src={comment.author.profileImg}></img>
       <div className={styles.content}>
         <span className={styles.username}>{comment.author.username}</span>
         <p className={styles.commentText}>{comment.content}</p>

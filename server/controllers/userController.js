@@ -71,7 +71,7 @@ module.exports.getOtherUser = async (req, res) => {
 };
 
 // Add a new user
-module.exports.addUser = async (req, res) => {
+/* module.exports.addUser = async (req, res) => {
   try {
     const newUser = new User({
       //user model has a name and email this is just a placeholder
@@ -85,7 +85,7 @@ module.exports.addUser = async (req, res) => {
     console.error(err.message);
     res.status(500).send("Server Error");
   }
-};
+}; */
 
 //  endpoint to fetch example user data
 module.exports.getExample = async (req, res) => {

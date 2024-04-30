@@ -2,9 +2,10 @@ import styles from "../css/LoginPage.module.css";
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../contexts/UserContext";
+import logo from "../images/logo-white.png";
 
 const LoginPage = () => {
-  const { loginUser } = useContext(UserContext);
+  const { loginUser, loginExampleUser } = useContext(UserContext);
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -53,9 +54,23 @@ const LoginPage = () => {
     }
   };
 
+  const handleExampleLogin = async (e) => {
+    e.preventDefault();
+
+    const success = await loginExampleUser();
+    if (success) {
+      navigate("/");
+    } else {
+      console.log("Error logging in Example");
+    }
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.formContainer}>
+        <div className={styles.logoContainer}>
+          <img src={logo} className={styles.logo} />
+        </div>
         <form className={styles.form} onSubmit={handleLogin}>
           <div className={styles.fieldContainer}>
             <label className={styles.fieldLabel} htmlFor="username">
@@ -95,7 +110,11 @@ const LoginPage = () => {
           <button type="button" className={styles.forgotButton}>
             forgot your password?
           </button>
-          <button type="button" className={styles.formButton}>
+          <button
+            type="button"
+            className={styles.formButton}
+            onClick={handleExampleLogin}
+          >
             Log in as Example User
           </button>
           <button

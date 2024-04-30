@@ -38,7 +38,8 @@ const PersonProfile = () => {
     const fetchPerson = async (username) => {
       try {
         const response = await fetch(
-          `http://localhost:3001/api/user/${username}`
+          `http://localhost:3001/api/user/${username}`,
+          { credentials: "include" }
         );
 
         if (!response.ok) {

@@ -17,7 +17,9 @@ const Feed = ({ specificUser = false }) => {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await fetch("http://localhost:3001/api/posts");
+        const response = await fetch("http://localhost:3001/api/posts", {
+          credentials: "include",
+        });
 
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -33,9 +35,9 @@ const Feed = ({ specificUser = false }) => {
 
     const fetchUserPosts = async (username) => {
       try {
-        const response = await fetch(
-          `http://localhost:3001/api/posts/${username}`
-        );
+        const response = await fetch("http://localhost:3001/api/posts", {
+          credentials: "include",
+        });
 
         if (!response.ok) {
           throw new Error("Could not fetch user posts");
@@ -59,13 +61,14 @@ const Feed = ({ specificUser = false }) => {
   const createPost = async (content) => {
     try {
       const postBody = {
-        authorID: "658675ce96eb5ca36fc1ea7f",
+        authorID: user._id,
         content: content,
       };
 
       const response = await fetch("http://localhost:3001/api/posts", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify(postBody),
       });
 
@@ -89,6 +92,7 @@ const Feed = ({ specificUser = false }) => {
         {
           method: "DELETE",
           headers: { "Content-Type": "application/json" },
+          credentials: "include",
           body: JSON.stringify({ userId: user._id }),
         }
       );

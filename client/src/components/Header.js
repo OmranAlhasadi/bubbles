@@ -70,6 +70,7 @@ const Header = () => {
         `http://localhost:3001/api/user/${user._id}/accept-request/${requesterUsername}`,
         {
           method: "POST",
+          credentials: "include",
         }
       );
 
@@ -97,6 +98,7 @@ const Header = () => {
         `http://localhost:3001/api/user/${user._id}/reject-request/${requesterUsername}`,
         {
           method: "POST",
+          credentials: "include",
         }
       );
       if (!response.ok) {

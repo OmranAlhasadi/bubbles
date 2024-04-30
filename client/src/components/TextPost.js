@@ -42,6 +42,7 @@ const TextPost = ({ post, isNew = false, onDelete }) => {
             headers: {
               "Content-Type": "application/json",
             },
+            credentials: "include",
             body: JSON.stringify(data),
           }
         );
@@ -64,6 +65,7 @@ const TextPost = ({ post, isNew = false, onDelete }) => {
             headers: {
               "Content-Type": "application/json",
             },
+            credentials: "include",
             body: JSON.stringify(data),
           }
         );
@@ -106,6 +108,7 @@ const TextPost = ({ post, isNew = false, onDelete }) => {
           headers: {
             "Content-Type": "application/json",
           },
+          credentials: "include",
           body: JSON.stringify(commentData),
         }
       );
@@ -128,10 +131,11 @@ const TextPost = ({ post, isNew = false, onDelete }) => {
     try {
       // Delete request
       const response = await fetch(
-        `http://localhost:3001/api/comments/${commentId}`,
+        `http://localhost:3001/api/posts/comments/${commentId}`,
         {
           method: "DELETE",
           headers: { "Content-Type": "application/json" },
+          credentials: "include",
           body: JSON.stringify({ userId: user._id }),
         }
       );

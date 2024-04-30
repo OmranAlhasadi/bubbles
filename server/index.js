@@ -8,8 +8,16 @@ const cookieParser = require("cookie-parser");
 const app = express();
 connectDB();
 
-// Accept all requests
-app.use(cors());
+// Update CORS options to reflect origin and credentials
+const corsOptions = {
+  origin: process.env.CLIENT_URL, //  change env when deploying
+  credentials: true, // to allow sending cookies and auth headers
+};
+
+app.use(cors(corsOptions));
+
+// Accept client requests requests
+app.use(cors(corsOptions));
 
 // Middleware
 app.use(cookieParser());
@@ -18,14 +26,19 @@ app.use(express.json());
 const authMiddleware = require("./middlewares/authMiddleware");
 
 // Routes
-const userRoutes = require("./routes/userRoutes");
-app.use("/api", userRoutes);
-
-const postRoutes = require("./routes/postRoutes");
-app.use("/api", postRoutes);
 
 const authRoutes = require("./routes/authRoutes");
-app.use("/api", authRoutes);
+app.use("/api/auth", authRoutes);
+
+//Token check
+
+app.use(authMiddleware);
+
+const userRoutes = require("./routes/userRoutes");
+app.use("/api/user", userRoutes);
+
+const postRoutes = require("./routes/postRoutes");
+app.use("/api/posts", postRoutes);
 
 /*// Serve static files from the React app
 app.use(express.static(path.join(__dirname, 'client/build')));
