@@ -82,6 +82,19 @@ export const UserProvider = ({ children }) => {
     }
   };
 
+  // Function to handle user logout
+  const forgotPassword = async (email) => {
+    try {
+      await fetch("http://localhost:3001/api/auth/forgot-password", {
+        method: "POST",
+        body: { email: email },
+        credentials: "include",
+      });
+    } catch (error) {
+      console.error("Error sending request", error);
+    }
+  };
+
   // Function to update user data
   const updateUser = (updatedData) => {
     setUser((prevUser) => ({ ...prevUser, ...updatedData }));
@@ -119,6 +132,7 @@ export const UserProvider = ({ children }) => {
         loginExampleUser,
         signupUser,
         logoutUser,
+        forgotPassword,
         updateUser,
       }}
     >

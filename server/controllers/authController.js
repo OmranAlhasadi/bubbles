@@ -63,6 +63,23 @@ exports.loginUser = async (req, res) => {
       return res.status(401).send("Invalid credentials");
     }
 
+    if (user.emailVerified === false) {
+      const emailVerificationToken = jwt.sign(
+        { email: user.email },
+        process.env.JWT_SECRET,
+        { expiresIn: "1h" }
+      );
+
+      await emailService.sendVerificationEmail(
+        user.email,
+        emailVerificationToken
+      );
+
+      return res
+        .status(401)
+        .send("Email not verified yet, verification link sent to email");
+    }
+
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
       expiresIn: "1h",
     });
@@ -244,5 +261,59 @@ exports.verifyEmail = async (req, res) => {
     } else {
       res.status(500).send("Internal Server Error");
     }
+  }
+};
+
+exports.forgotPassword = async (req, res) => {
+  try {
+    const user = await User.findOne({ email: req.body.email });
+    if (!user) {
+      return res.status(404).send("No account with that email address exists.");
+    }
+
+    // Generate a token with jwt or any other method you prefer
+    const resetToken = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
+    user.passwordResetToken = resetToken;
+    user.passwordResetExpires = Date.now() + 3600000; // 1 hour from now
+
+    await user.save();
+
+    const resetUrl = `http://localhost:3000/reset-password/${resetToken}`;
+    await emailService.sendPasswordResetEmail(user.email, resetUrl);
+
+    res.send(
+      "An email has been sent to your email address with further instructions."
+    );
+  } catch (error) {
+    console.error("Password reset error:", error);
+    res.status(500).send("Error sending password reset email.");
+  }
+};
+
+exports.resetPassword = async (req, res) => {
+  try {
+    const { token } = req.params;
+    const user = await User.findOne({
+      passwordResetToken: token,
+      passwordResetExpires: { $gt: Date.now() },
+    });
+
+    if (!user) {
+      return res
+        .status(400)
+        .send("Password reset token is invalid or has expired.");
+    }
+
+    user.password = await bcrypt.hash(req.body.password, 10);
+    user.passwordResetToken = undefined;
+    user.passwordResetExpires = undefined;
+    await user.save();
+
+    res.send("Your password has been changed successfully.");
+  } catch (error) {
+    console.error("Error resetting password:", error);
+    res.status(500).send("Error resetting password.");
   }
 };

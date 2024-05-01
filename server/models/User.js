@@ -12,6 +12,8 @@ const userSchema = new mongoose.Schema({
   sentRequests: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
   emailVerificationToken: String,
   emailVerified: { type: Boolean, default: false },
+  passwordResetToken: String,
+  passwordResetExpires: Date,
 });
 
 const User = mongoose.model("User", userSchema);

@@ -9,6 +9,7 @@ import PersonProfile from "./pages/PersonProfile";
 import { UserProvider } from "./contexts/UserContext.js";
 import UserProfileWrapper from "./components/UserProfileWrapper";
 import VerifyEmail from "./pages/VerifyEmail";
+import ForgotPassword from "./pages/ForgotPassword";
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/verify-email" element={<VerifyEmail />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
         </Routes>
       </Router>
     </UserProvider>
