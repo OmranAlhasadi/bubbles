@@ -11,6 +11,7 @@ import UserProfileWrapper from "./components/UserProfileWrapper";
 import VerifyEmail from "./pages/VerifyEmail";
 import ForgotPassword from "./pages/ForgotPassword";
 import PasswordReset from "./pages/PasswordReset";
+import ImageUploadPage from "./pages/ImageUpload";
 
 function App() {
   return (
@@ -38,6 +39,7 @@ function App() {
           <Route path="/verify-email" element={<VerifyEmail />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password/:token" element={<PasswordReset />} />
+          <Route path="/upload" element={<ImageUploadPage />} />
         </Routes>
       </Router>
     </UserProvider>

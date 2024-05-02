@@ -4,6 +4,8 @@ const path = require("path");
 const connectDB = require("./config/db");
 require("dotenv").config();
 const cookieParser = require("cookie-parser");
+const { createRouteHandler } = require("uploadthing/express");
+const { uploadRouter } = require("./services/uploadthing");
 
 const app = express();
 connectDB();
@@ -29,6 +31,19 @@ const authMiddleware = require("./middlewares/authMiddleware");
 
 const authRoutes = require("./routes/authRoutes");
 app.use("/api/auth", authRoutes);
+
+//image upload
+
+app.use(
+  "/api/uploadthing",
+  createRouteHandler({
+    router: uploadRouter,
+    config: {
+      uploadthingId: process.env.UPLOADTHING_APP_ID,
+      uploadthingSecret: process.env.UPLOADTHING_SECRET,
+    },
+  })
+);
 
 //Token check
 
