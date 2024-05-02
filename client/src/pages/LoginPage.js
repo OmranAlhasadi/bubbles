@@ -108,7 +108,11 @@ const LoginPage = () => {
           <button className={styles.formButton} type="submit">
             Log in
           </button>
-          <button type="button" className={styles.forgotButton}>
+          <button
+            type="button"
+            className={styles.forgotButton}
+            onClick={navigateToForgotPassword}
+          >
             forgot your password?
           </button>
           <button

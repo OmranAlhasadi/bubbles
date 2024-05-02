@@ -16,7 +16,7 @@ router.get("/verify-email", authController.verifyEmail);
 
 router.post(
   "/forgot-password",
-  passwordResetLimiter,
+
   authController.forgotPassword
 );
 

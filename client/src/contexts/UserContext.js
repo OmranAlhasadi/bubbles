@@ -87,7 +87,10 @@ export const UserProvider = ({ children }) => {
     try {
       await fetch("http://localhost:3001/api/auth/forgot-password", {
         method: "POST",
-        body: { email: email },
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email: email }),
         credentials: "include",
       });
     } catch (error) {

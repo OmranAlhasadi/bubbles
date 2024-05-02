@@ -10,6 +10,7 @@ import { UserProvider } from "./contexts/UserContext.js";
 import UserProfileWrapper from "./components/UserProfileWrapper";
 import VerifyEmail from "./pages/VerifyEmail";
 import ForgotPassword from "./pages/ForgotPassword";
+import PasswordReset from "./pages/PasswordReset";
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/verify-email" element={<VerifyEmail />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password/:token" element={<PasswordReset />} />
         </Routes>
       </Router>
     </UserProvider>
