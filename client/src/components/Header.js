@@ -67,7 +67,7 @@ const Header = () => {
 
     try {
       const response = await fetch(
-        `http://localhost:3001/api/user/${user._id}/accept-request/${requesterUsername}`,
+        `http://localhost:3001/api/user/accept-request/${requesterUsername}`,
         {
           method: "POST",
           credentials: "include",
@@ -95,7 +95,7 @@ const Header = () => {
   const handleRejectRequest = async (requesterUsername) => {
     try {
       const response = await fetch(
-        `http://localhost:3001/api/user/${user._id}/reject-request/${requesterUsername}`,
+        `http://localhost:3001/api/user/reject-request/${requesterUsername}`,
         {
           method: "POST",
           credentials: "include",

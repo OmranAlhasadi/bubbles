@@ -12,23 +12,23 @@ router.get("/:username", userController.getUser);
 router.get("/other-user/:username", userController.getOtherUser);
 router.get("/example-user", userController.getExample);
 router.get("/example-user2", userController.getExample2);
-router.get("/:userId/friends", userController.getFriends);
+router.get("/friends", userController.getFriends);
 
 // Route to send a friend request
 router.post(
-  "/:userId/send-request/:recieverUsername",
+  "/send-request/:recieverUsername",
   userController.sendFriendRequest
 );
 
 // Route to accept a friend request
 router.post(
-  "/:userId/accept-request/:requesterUsername",
+  "/accept-request/:requesterUsername",
   userController.acceptFriendRequest
 );
 
 // Route to reject a friend request
 router.post(
-  "/:userId/reject-request/:requesterUsername",
+  "/reject-request/:requesterUsername",
   userController.rejectFriendRequest
 );
 

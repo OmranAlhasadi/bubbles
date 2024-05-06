@@ -168,7 +168,7 @@ module.exports.getExample2 = async (req, res) => {
 module.exports.getFriends = async (req, res) => {
   try {
     // Fetch the user by their ID
-    const userId = req.params.userId;
+    const userId = req.userId;
     const user = await User.findById(userId).populate(
       "friends",
       "username profileImg"
@@ -193,7 +193,8 @@ module.exports.getFriends = async (req, res) => {
 };
 
 module.exports.sendFriendRequest = async (req, res) => {
-  const userId = req.params.userId; // User ID of the user sending the request
+  const userId = req.userId; // User ID of the user sending the request
+  console.log(userId);
   const recieverUsername = req.params.recieverUsername; // Username of the user who will recieve the request
 
   try {
@@ -237,7 +238,7 @@ module.exports.sendFriendRequest = async (req, res) => {
 };
 
 module.exports.acceptFriendRequest = async (req, res) => {
-  const userId = req.params.userId; // User ID of the user accepting the request
+  const userId = req.userId; // User ID of the user accepting the request
   const requesterUsername = req.params.requesterUsername; // Username of the user who sent the request
 
   try {
@@ -284,7 +285,7 @@ module.exports.acceptFriendRequest = async (req, res) => {
 };
 
 module.exports.rejectFriendRequest = async (req, res) => {
-  const userId = req.params.userId; // User ID of the user rejecting the request
+  const userId = req.userId; // User ID of the user rejecting the request
   const requesterUsername = req.params.requesterUsername; // Username of the user who sent the request
 
   try {

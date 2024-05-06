@@ -117,9 +117,10 @@ const PersonProfile = () => {
   const handleSendRequest = async (recieverUsername) => {
     try {
       const response = await fetch(
-        `http://localhost:3001/api/user/${user._id}/send-request/${recieverUsername}`,
+        `http://localhost:3001/api/user/send-request/${recieverUsername}`,
         {
           method: "POST",
+          credentials: "include",
         }
       );
       if (!response.ok) {
