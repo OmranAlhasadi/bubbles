@@ -24,14 +24,6 @@ app.use(cors(corsOptions));
 // Middleware
 app.use(cookieParser());
 
-app.use(express.json());
-const authMiddleware = require("./middlewares/authMiddleware");
-
-// Routes
-
-const authRoutes = require("./routes/authRoutes");
-app.use("/api/auth", authRoutes);
-
 //image upload
 
 app.use(
@@ -39,11 +31,20 @@ app.use(
   createRouteHandler({
     router: uploadRouter,
     config: {
+      callbackUrl: `${process.env.NGROK_DOMAIN}/api/uploadthing`,
       uploadthingId: process.env.UPLOADTHING_APP_ID,
       uploadthingSecret: process.env.UPLOADTHING_SECRET,
     },
   })
 );
+
+app.use(express.json());
+const authMiddleware = require("./middlewares/authMiddleware");
+
+// Routes
+
+const authRoutes = require("./routes/authRoutes");
+app.use("/api/auth", authRoutes);
 
 //Token check
 

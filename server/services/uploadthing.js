@@ -1,4 +1,5 @@
 const { createUploadthing } = require("uploadthing/express");
+const authMiddleware = require("../middlewares/authMiddleware");
 
 const f = createUploadthing();
 
@@ -8,9 +9,13 @@ const uploadRouter = {
       maxFileSize: "4MB",
       maxFileCount: 4,
     },
-  }).onUploadComplete((data) => {
-    console.log("upload completed", data);
-  }),
+  })
+    .middleware(async ({ req }) => {
+      return {};
+    })
+    .onUploadComplete((data) => {
+      console.log("upload completed", data);
+    }),
 };
 
 module.exports = { uploadRouter };
