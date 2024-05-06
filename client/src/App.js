@@ -34,12 +34,19 @@ function App() {
               </ProtectedRoute>
             }
           />
+          <Route
+            path="/upload"
+            element={
+              <ProtectedRoute>
+                <ImageUploadPage />
+              </ProtectedRoute>
+            }
+          />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/verify-email" element={<VerifyEmail />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password/:token" element={<PasswordReset />} />
-          <Route path="/upload" element={<ImageUploadPage />} />
         </Routes>
       </Router>
     </UserProvider>

@@ -72,7 +72,8 @@ module.exports.getUserPosts = async (req, res) => {
 // create a post
 module.exports.postPost = async (req, res) => {
   try {
-    const { authorID, content, imageURL } = req.body;
+    const authorID = req.userId;
+    const { content, imageURL } = req.body;
 
     let newPost = createPost(authorID, content, imageURL);
     await newPost.save();
@@ -93,7 +94,7 @@ module.exports.postPost = async (req, res) => {
 module.exports.deletePost = async (req, res) => {
   try {
     const post = await Post.findById(req.params.postId);
-    const userId = req.body.userId; // Access userId from the request body
+    const userId = req.userId;
 
     if (!post) {
       return res.status(404).send("Post not found");
@@ -133,7 +134,8 @@ function createPost(
 // create a Comment
 module.exports.addComment = async (req, res) => {
   try {
-    const { authorID, content } = req.body;
+    const authorID = req.userId;
+    const { content } = req.body;
     const postID = req.params.postID;
 
     let newComment = createComment(postID, authorID, content);
@@ -158,7 +160,7 @@ function createComment(postID, authorID, content) {
 module.exports.deleteComment = async (req, res) => {
   try {
     const { commentID } = req.params;
-    const userID = req.body.userId;
+    const userID = req.userId;
 
     // Find the comment
     const comment = await Comment.findById(commentID);
@@ -185,7 +187,7 @@ module.exports.deleteComment = async (req, res) => {
 module.exports.likePost = async (req, res) => {
   try {
     const postId = req.params.postId;
-    const userId = req.body.userId;
+    const userId = req.userId;
 
     // Check if the user already liked the post
     const existingLike = await Like.findOne({ post: postId, user: userId });
@@ -208,7 +210,7 @@ module.exports.likePost = async (req, res) => {
 module.exports.unlikePost = async (req, res) => {
   try {
     const postId = req.params.postId;
-    const userId = req.body.userId;
+    const userId = req.userId;
 
     // Remove the like
     const result = await Like.deleteOne({ post: postId, user: userId });

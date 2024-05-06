@@ -7,7 +7,7 @@ const uploadRouter = {
   imageUploader: f({
     image: {
       maxFileSize: "4MB",
-      maxFileCount: 4,
+      maxFileCount: 1,
     },
   })
     .middleware(async ({ req }) => {

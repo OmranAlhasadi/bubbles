@@ -61,7 +61,6 @@ const Feed = ({ specificUser = false }) => {
   const createPost = async (content) => {
     try {
       const postBody = {
-        authorID: user._id,
         content: content,
       };
 
@@ -93,7 +92,6 @@ const Feed = ({ specificUser = false }) => {
           method: "DELETE",
           headers: { "Content-Type": "application/json" },
           credentials: "include",
-          body: JSON.stringify({ userId: user._id }),
         }
       );
 

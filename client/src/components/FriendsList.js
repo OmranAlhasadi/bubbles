@@ -35,7 +35,7 @@ const FriendsList = ({ otherUser = false }) => {
     fetchFriends(); */
 
     const getOtherUser = async () => {
-      if (user && user._id) {
+      if (user) {
         try {
           const response = await fetch(
             `http://localhost:3001/api/user/other-user/${username}`,

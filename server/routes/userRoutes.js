@@ -32,4 +32,6 @@ router.post(
   userController.rejectFriendRequest
 );
 
+router.post("/update-profile-picture", userController.updateProfilePicture);
+
 module.exports = router;

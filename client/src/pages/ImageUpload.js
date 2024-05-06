@@ -1,49 +1,62 @@
 // Import necessary modules from the react and uploadthing packages
-import React from "react";
+import { useContext } from "react";
 import { generateUploadButton } from "@uploadthing/react";
+import { UserContext } from "../contexts/UserContext";
 
 // Generate the UploadButton component using generateUploadButton function
 // Assume your backend upload endpoint is set up at "/api/uploadthing" and handles "imageUploader" route.
-const UploadButton = generateUploadButton({
-  url: "http://localhost:3001/api/uploadthing", // Adjust the URL based on where your backend is hosted
-  credentials: "include",
-});
 
 const ImageUploadPage = () => {
-  // Function to handle the completion of the upload
-  const handleUploadComplete = (response) => {
-    console.log("Upload complete:", response);
-    if (response.success) {
-      alert("Upload completed successfully!");
+  const { user, updateUser } = useContext(UserContext);
+
+  const handleClientUploadComplete = async (res) => {
+    console.log("Files: ", res);
+    console.log(res[0].url);
+    if (res[0].url) {
+      try {
+        const response = await fetch(
+          "http://localhost:3001/api/user/update-profile-picture",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            credentials: "include",
+            body: JSON.stringify({ imageUrl: res[0].url }),
+          }
+        );
+
+        const data = await response.json();
+        if (response.ok) {
+          console.log("haaaaaaaaaaaaaaaaaaaa");
+          console.log(data.user);
+          updateUser(data.user); // Update user context with new user data
+          alert("Profile picture updated successfully!");
+        } else {
+          throw new Error(data.message);
+        }
+      } catch (error) {
+        console.error("Failed to update profile picture:", error);
+        alert("Failed to update profile picture.");
+      }
     } else {
-      alert("Upload failed: " + response.message);
+      alert("Upload completed, but no image URL returned.");
     }
   };
 
-  // Function to handle errors during the upload
-  const handleUploadError = (error) => {
-    console.error("Upload error:", error);
-    alert("Upload failed!");
-  };
+  const UploadButton = generateUploadButton({
+    url: "http://localhost:3001/api/uploadthing",
+  });
 
-  // Render the UploadButton in your component
   return (
     <div>
       <h1>Upload Your Profile Picture</h1>
       <UploadButton
-        endpoint="imageUploader" // This should match the route name defined in your UploadThing configuration
-        onClientUploadComplete={(res) => {
-          // Do something with the response
-          console.log("Files: ", res);
-          alert("Upload Completed");
-        }}
+        endpoint="imageUploader"
+        onClientUploadComplete={handleClientUploadComplete}
         onUploadError={(error) => {
-          // Do something with the error.
+          console.error("Upload error:", error);
           alert(`ERROR! ${error.message}`);
-        }}
-        onUploadBegin={(name) => {
-          // Do something once upload begins
-          console.log("Uploading: ", name);
         }}
       />
     </div>

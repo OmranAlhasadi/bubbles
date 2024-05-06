@@ -115,7 +115,7 @@ export const UserProvider = ({ children }) => {
 
         const data = await response.json();
         if (data.isAuthenticated) {
-          setUser(data.user);
+          updateUser(data.user);
         } else {
           setUser(null); // Ensure user is set to null if not authenticated
         }

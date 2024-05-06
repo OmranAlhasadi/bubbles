@@ -60,7 +60,7 @@ const Header = () => {
 
   // Function to handle accepting a friend request
   const handleAcceptRequest = async (requesterUsername) => {
-    if (!user || !user._id) {
+    if (!user) {
       console.error("User ID not available");
       return;
     }

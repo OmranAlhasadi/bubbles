@@ -32,6 +32,7 @@ exports.registerUser = async (req, res) => {
       ...req.body,
       password: hashedPassword,
       aboutMe: "",
+      profileImg: "",
       friends: [],
       friendRequests: [],
       sentRequests: [],
@@ -84,6 +85,15 @@ exports.loginUser = async (req, res) => {
       expiresIn: "1h",
     });
 
+    // Less sensitive token for client context
+    const contextToken = jwt.sign(
+      {
+        username: user.username,
+      },
+      process.env.JWT_SECRET,
+      { expiresIn: "1h" }
+    );
+
     res.cookie("token", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV !== "development", // only set to true in production
@@ -94,7 +104,7 @@ exports.loginUser = async (req, res) => {
     res.status(201).json({
       token,
       user: {
-        _id: user._id,
+        contextToken: contextToken,
         username: user.username,
         name: user.name,
         aboutMe: user.aboutMe,
@@ -133,9 +143,19 @@ exports.loginExampleUser = async (req, res) => {
       return res.status(401).send("Could not find example user");
     }
 
+    // Token for HTTP-only cookie
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
       expiresIn: "1h",
     });
+
+    // Less sensitive token for client context
+    const contextToken = jwt.sign(
+      {
+        username: user.username,
+      },
+      process.env.JWT_SECRET,
+      { expiresIn: "1h" }
+    );
 
     res.cookie("token", token, {
       httpOnly: true,
@@ -147,7 +167,7 @@ exports.loginExampleUser = async (req, res) => {
     res.status(201).json({
       token,
       user: {
-        _id: user._id,
+        contextToken: contextToken,
         username: user.username,
         name: user.name,
         aboutMe: user.aboutMe,
@@ -200,8 +220,17 @@ exports.checkAuthStatus = async (req, res) => {
         return res.status(404).send("User not found");
       }
 
+      // Less sensitive token for client context
+      const contextToken = jwt.sign(
+        {
+          username: user.username,
+        },
+        process.env.JWT_SECRET,
+        { expiresIn: "1h" }
+      );
+
       const userDetail = {
-        _id: user._id,
+        contextToken: contextToken,
         username: user.username,
         name: user.name,
         aboutMe: user.aboutMe,

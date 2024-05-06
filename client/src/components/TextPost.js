@@ -31,8 +31,6 @@ const TextPost = ({ post, isNew = false, onDelete }) => {
   };
 
   const handleLikeButton = async () => {
-    const data = { userId: user._id };
-
     if (!isLiked) {
       try {
         const response = await fetch(
@@ -43,7 +41,6 @@ const TextPost = ({ post, isNew = false, onDelete }) => {
               "Content-Type": "application/json",
             },
             credentials: "include",
-            body: JSON.stringify(data),
           }
         );
 
@@ -66,7 +63,6 @@ const TextPost = ({ post, isNew = false, onDelete }) => {
               "Content-Type": "application/json",
             },
             credentials: "include",
-            body: JSON.stringify(data),
           }
         );
 
@@ -96,7 +92,6 @@ const TextPost = ({ post, isNew = false, onDelete }) => {
 
   const postComment = async (commentText) => {
     const commentData = {
-      authorID: user._id,
       content: commentText,
     };
 
@@ -109,7 +104,6 @@ const TextPost = ({ post, isNew = false, onDelete }) => {
             "Content-Type": "application/json",
           },
           credentials: "include",
-          body: JSON.stringify(commentData),
         }
       );
 
@@ -136,7 +130,6 @@ const TextPost = ({ post, isNew = false, onDelete }) => {
           method: "DELETE",
           headers: { "Content-Type": "application/json" },
           credentials: "include",
-          body: JSON.stringify({ userId: user._id }),
         }
       );
 
