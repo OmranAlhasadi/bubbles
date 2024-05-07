@@ -3,10 +3,11 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    max-width: 100%;
 }
 
 .container{
-    width: 80%;
+    max-width: 90%;
     box-sizing: border-box;
 }
 
@@ -14,16 +15,10 @@
     display: flex;
     box-sizing: border-box;
     padding: 15px;
-    width: 100%;
+    max-width: 100%;
 }
 
-.content{
-    width: 80%;
-    display: flex;
-    gap: 40px;
-    padding: 40px;
-    
-}
+
 
 .profile{
     align-self: center;
@@ -54,18 +49,33 @@
     font-weight: 600;
 }
 
+.content{
+    max-width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: auto;
+    gap: 40px;
+    padding: 40px;
+    
+}
+
 
 
 .sidBar{
     display: flex;
     flex-direction: column;
+
     
+    flex: 1;
     gap: 30px;
 }
 
 .userPosts{
+   
+    display: flex;
+    justify-content: center;
     flex: 2;
-    
 }
 
 
