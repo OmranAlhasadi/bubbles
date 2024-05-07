@@ -324,7 +324,7 @@ module.exports.rejectFriendRequest = async (req, res) => {
 
 module.exports.updateProfilePicture = async (req, res) => {
   try {
-    const userId = req.userId; // Assuming your auth middleware sets req.userId
+    const userId = req.userId;
     const { imageUrl } = req.body;
 
     console.log(imageUrl);
@@ -346,5 +346,26 @@ module.exports.updateProfilePicture = async (req, res) => {
   } catch (error) {
     console.error("Failed to update profile picture:", error);
     res.status(500).send("Failed to update profile picture");
+  }
+};
+
+module.exports.updateAboutMe = async (req, res) => {
+  try {
+    const userId = req.userId;
+    const newAboutMe = req.body.content;
+
+    const user = await User.findByIdAndUpdate(
+      userId,
+      { aboutMe: newAboutMe },
+      { new: true }
+    );
+    if (!user) {
+      return res.status(404).send("User not found");
+    }
+
+    res.status(200).json({ message: "AboutMe updated successfully", user });
+  } catch (error) {
+    console.error("Failed to update aboutMe:", error);
+    res.status(500).send("Failed to update aboutMe");
   }
 };

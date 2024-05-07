@@ -11,7 +11,7 @@ import UserProfileWrapper from "./components/UserProfileWrapper";
 import VerifyEmail from "./pages/VerifyEmail";
 import ForgotPassword from "./pages/ForgotPassword";
 import PasswordReset from "./pages/PasswordReset";
-import ImageUploadPage from "./pages/ImageUpload";
+import SettingsPage from "./pages/SettingsPage";
 
 function App() {
   return (
@@ -35,10 +35,10 @@ function App() {
             }
           />
           <Route
-            path="/upload"
+            path="/settings"
             element={
               <ProtectedRoute>
-                <ImageUploadPage />
+                <SettingsPage />
               </ProtectedRoute>
             }
           />

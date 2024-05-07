@@ -6,7 +6,7 @@
 }
 
 .container{
-    width: 70%;
+    width: 80%;
     box-sizing: border-box;
 }
 
@@ -15,6 +15,14 @@
     box-sizing: border-box;
     padding: 15px;
     width: 100%;
+}
+
+.content{
+    width: 80%;
+    display: flex;
+    gap: 40px;
+    padding: 40px;
+    
 }
 
 .profile{
@@ -46,21 +54,18 @@
     font-weight: 600;
 }
 
-.content{
-    width: 80%;
-    display: flex;
-    gap: 40px;
-    padding: 40px;
-}
+
 
 .sidBar{
     display: flex;
     flex-direction: column;
+    
     gap: 30px;
 }
 
 .userPosts{
     flex: 2;
+    
 }
 
 

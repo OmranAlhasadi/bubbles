@@ -234,6 +234,7 @@ exports.checkAuthStatus = async (req, res) => {
         username: user.username,
         name: user.name,
         aboutMe: user.aboutMe,
+        profileImg: user.profileImg,
         friends: user.friends.map((friend) => ({
           username: friend.username,
           profileImg: friend.profileImg,

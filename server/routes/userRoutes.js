@@ -34,4 +34,6 @@ router.post(
 
 router.post("/update-profile-picture", userController.updateProfilePicture);
 
+router.post("/update-about-me", userController.updateAboutMe);
+
 module.exports = router;

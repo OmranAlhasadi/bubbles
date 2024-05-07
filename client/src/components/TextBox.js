@@ -1,8 +1,14 @@
 import { useState } from "react";
 import styles from "../css/TextBox.module.css";
 
-const TextBox = ({ borderRadius = "25px", onSubmit }) => {
-  const [text, setText] = useState("");
+const TextBox = ({
+  borderRadius = "25px",
+  onSubmit,
+  buttonText = "Go",
+  starterText = "",
+  placeholderText = "Write a comment",
+}) => {
+  const [text, setText] = useState(starterText);
 
   const handleSubmit = () => {
     onSubmit(text);
@@ -16,12 +22,12 @@ const TextBox = ({ borderRadius = "25px", onSubmit }) => {
       <textarea
         className={styles.textbox}
         style={borderRadiusStyle}
-        placeholder="Write a comment"
+        placeholder={placeholderText}
         value={text}
         onChange={(e) => setText(e.target.value)}
       ></textarea>
       <button className={styles.submit} onClick={handleSubmit}>
-        Go
+        {buttonText}
       </button>
     </div>
   );
