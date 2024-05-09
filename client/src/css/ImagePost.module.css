@@ -1,0 +1,352 @@
+@keyframes expandAnimation {
+    0% {
+      max-height: 0;
+      transform: scale(0);
+    }
+
+    
+
+    35% {
+        transform: scale(1.2);
+    }
+
+    55%{
+        transform: scale(0.85);
+    }
+
+    65%{
+        transform: scale(1.05);
+    }
+
+    70%{
+        transform: scale(0.95);
+    }
+    75% {
+      max-height: 1000px;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes popAnimation {
+    0% {
+      
+      transform: scale(0);
+    }
+
+    
+
+    35% {
+        transform: scale(1.2);
+    }
+
+    55%{
+        transform: scale(0.85);
+    }
+
+    65%{
+        transform: scale(1.05);
+    }
+
+    70%{
+        transform: scale(0.95);
+    }
+    75% {
+      
+      transform: scale(1);
+    }
+  }
+
+  @keyframes deleteAnimation {
+      0%{
+          max-height: 1000px;
+      }
+      100%{
+          max-height: 0px;
+          transform: scaleY(0);
+          
+      }
+  }
+  
+  .newPost {
+    animation: expandAnimation 0.5s ease-out forwards;
+    
+  }
+
+  .deleting{
+    transform-origin: top;
+    animation: deleteAnimation 0.5s ease-in-out forwards;
+      
+  }
+
+
+.wrapper{
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+
+    
+
+    
+}
+
+.bubble {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    overflow: hidden;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    position: relative;
+    border: 3px solid transparent;
+    background: linear-gradient(to bottom right, #8e44ad, #9b59b6); /* Purple gradient fill */
+    cursor: pointer;
+}
+  
+  .bubbleImg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    transition: transform 0.3s ease;
+  }
+  
+  .bubble::before {
+    content: "";
+    position: absolute;
+    top: -10%;
+    left: -10%;
+    width: 120%;
+    height: 120%;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.15), transparent);
+    transition: all 0.3s ease;
+  }
+  
+  .bubble:hover::before {
+    background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.3), transparent);
+  }
+  
+  .bubble::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    box-shadow: inset 0 0 8px rgba(255, 255, 255, 0.1), 0 0 20px rgba(142, 68, 173, 0.8); /* Purple outer glow */
+    transition: all 0.3s ease;
+  }
+  
+  .bubble:hover::after {
+    box-shadow: inset 0 0 8px rgba(255, 255, 255, 0.3), 0 0 25px rgba(142, 68, 173, 1); /* Stronger purple glow on hover */
+  }
+  
+  .bubble:hover .bubbleImg {
+    transform: scale(1.05); /* Slight scaling on hover */
+  }
+
+  .expandedImg {
+
+  }
+  
+  /* Expanded Post Styles */
+  .expanded {
+    width: 100%;
+    border-radius: 25px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+    animation: expandAnimation 0.5s ease-out forwards;
+  }
+
+.container{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    border-radius: 25px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23), 0 -10px 20px rgba(0, 0, 0, 0.19);
+
+   
+    
+}
+
+.postHeader{
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 5px solid #c084fc;
+    border-radius: 25px 25px 0 0;
+    padding: 1.5rem;
+}
+
+.profile{
+    border-radius: 50%;
+    height: 50px;
+    width: 50px;
+    object-fit: cover;
+}
+
+.info {
+    display: flex;
+    justify-content: baseline;
+    align-items: center;
+    gap: 1rem;  
+}
+
+.info > a {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: rgb(31, 42, 71);
+}
+
+.info > span {
+    font-size: 1rem;
+    color: #6c757d;
+}
+
+.textBox{
+    padding: 1.5rem;
+    color: black;
+    font-size: 1.2rem;
+    line-height: 1.5;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: pre-wrap; 
+}
+
+.buttonsContainer{
+    width:100%;
+    height: 3rem;
+    display: flex;
+    
+}
+
+.buttonsContainer div{
+    font-size: 1.2rem;
+    color: white;  
+}
+
+.likeButton, .commentButton {
+    flex: 1; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.7rem;
+    background-color: #6b21a8;
+    color: white;
+    border: none;
+    
+    transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out, border-radius 0.4s ease-in-out;
+    overflow: hidden;
+    cursor: pointer;
+
+}
+
+.likeButton {
+    border-radius: 0 0 0 25px; 
+}
+
+.commentButton {
+    border-radius: 0 0 25px 0; 
+    border-left: 2px solid white; 
+}
+
+.likeButton:hover, .commentButton:hover{
+    background-color: #f3e8ff;
+    border: 4px solid #c084fc;
+}
+
+.buttonText{
+    font-size: 1.25rem;
+    text-shadow: 0 2rem 0 var(--color-text-primary);
+    transition: inherit;
+    cursor: none;
+}
+
+.likeButton:hover .buttonText, .commentButton:hover .buttonText {
+    transform: translateY(-160%);
+    display: none;
+}
+
+
+.icon{
+    fill: white;
+    width: 24px;
+    height: 24px;
+    transition: fill 0.2s ease-in-out;
+}
+
+
+.likeButton:hover .icon, .commentButton:hover .icon {
+    fill:#5b21b6;
+    animation: shake 2.3s  infinite;
+}
+
+
+@keyframes shake {
+    0%, 100% {
+        transform: rotate(20deg);
+    }
+    25% {
+        transform: rotate(-20deg);
+    }
+    50% {
+        transform: rotate(20deg);
+    }
+    75% {
+        transform: rotate(-20deg);
+    }
+}
+
+
+.isCommenting{
+    border-radius: 0;
+}
+
+.liked {
+    
+}
+
+.trash {
+    width: 22px;
+    height: 22px;
+
+    padding: 10px;
+    border-radius: 50%;
+
+    fill: #b91c1c;
+    cursor: pointer;
+    transition: fill 0.2s ease-in-out, background-color 0.2s ease-in-out;
+}
+
+.trash:hover {
+    fill: white;
+    background-color: #dc2626;
+    
+    animation: shake 2.3s infinite; 
+    
+}
+
+
+.smallBtnContainer{
+    display: flex;
+    box-sizing: border-box;
+    padding: 1.5rem;
+    align-items: center;
+    justify-content: space-between;
+
+
+}
+
+.smallBtn{
+    color: #6c757d;
+    font-size: 1rem;
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+
+}
+
+.smallBtn:hover{
+    text-decoration: underline;
+}
+
+

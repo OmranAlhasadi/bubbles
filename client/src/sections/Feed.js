@@ -4,6 +4,7 @@ import styles from "../css/Feed.module.css";
 import TextPost from "../components/TextPost.js";
 import LoadingBubbles from "../components/LoadingBubbles.js";
 import TextBox from "../components/TextBox";
+import ImagePost from "../components/ImagePost";
 
 import { UserContext } from "../contexts/UserContext";
 
@@ -13,6 +14,24 @@ const Feed = ({ specificUser = false }) => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const { user, updateUser } = useContext(UserContext);
+
+  const imagePost = {
+    author: {
+      _id: "658547c066a8a4479498d869",
+      username: "Janae_Kuhn",
+      profileImg:
+        "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/831.jpg",
+    },
+    comments: [],
+    content:
+      "Vesco modi volutabrum expedita ustilo vitiosus delego coepi desino voluptates. Demo tondeo defleo uredo vilis absum. Benigne campana turpis vorax ipsa compello veniam coerceo.",
+    createdAt: "2023-12-29T07:51:41.728Z",
+    image: "https://picsum.photos/seed/fd0jRxJTj/640/480",
+    likes: [],
+    likesCount: 0,
+
+    _id: "658e7a8d59d69b59d6ab5a94",
+  };
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -26,6 +45,7 @@ const Feed = ({ specificUser = false }) => {
         }
         const data = await response.json();
         setPosts(data);
+        console.log(posts);
       } catch (error) {
         console.error("Error fetching posts", error);
       } finally {
@@ -124,6 +144,12 @@ const Feed = ({ specificUser = false }) => {
   return (
     <div className={styles.container}>
       {!specificUser && <TextBox onSubmit={createPost} />}
+      <ImagePost
+        key={imagePost._id}
+        post={imagePost}
+        isNew={imagePost.isNew ? true : false}
+        onDelete={handleDelete}
+      />
       {posts.map((post, index) => {
         return (
           <TextPost

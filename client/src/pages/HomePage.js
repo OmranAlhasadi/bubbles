@@ -12,9 +12,6 @@ import { useContext, useState } from "react";
 import { UserContext } from "../contexts/UserContext";
 import LoadingPage from "./LoadingPage";
 
-let friends = ["jhonson", "james", "johan", "jamian jones", "janina"];
-let about = "hi i am doododo and dadada how can I dededee you?";
-
 const HomePage = () => {
   const { user, updateUser } = useContext(UserContext);
 
@@ -28,12 +25,7 @@ const HomePage = () => {
       <div className={styles.contentContainer}>
         <FriendsList />
         <Feed />
-        <div>
-          <LoadingBubbles />
-          <LoadingRippleBubbles />
-          <LoadingFloatingBubbles />
-          <SpinningCircleLoader />
-        </div>
+        <div></div>
       </div>
     </div>
   );

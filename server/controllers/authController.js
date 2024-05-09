@@ -108,7 +108,7 @@ exports.loginUser = async (req, res) => {
         username: user.username,
         name: user.name,
         aboutMe: user.aboutMe,
-        //profileImg here later
+        profileImg: user.profileImg,
         friends: user.friends.map((friend) => ({
           username: friend.username,
           profileImg: friend.profileImg,
@@ -171,7 +171,7 @@ exports.loginExampleUser = async (req, res) => {
         username: user.username,
         name: user.name,
         aboutMe: user.aboutMe,
-        //profileImg here later
+        profileImg: user.profileImg,
         friends: user.friends.map((friend) => ({
           username: friend.username,
           profileImg: friend.profileImg,

@@ -42,3 +42,46 @@
 
 
 }
+
+
+/*Uploadthing button styling */
+
+.uploadButton {
+
+}
+
+.uploadButton > *[data-ut-element="button"] {
+    background-color: #6b21a8;
+    color: white;
+    border: none;
+    box-sizing: border-box;
+
+    transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out, border-radius 0.4s ease-in-out;
+}
+
+.uploadButton > *[data-ut-element="button"]:hover {
+    background-color: #f3e8ff;
+    border: 4px solid #c084fc;
+    color: #6b21a8;
+
+    fill: #6b21a8;
+}
+
+.uploadButton > *[data-ut-element="button"] > input {
+    
+}
+
+.uploadSVG {
+    width: 24px;
+    height: 24px;
+    fill: #f3e8ff;
+
+    transition: fill 0.2s ease-in-out
+}
+
+.uploadButton > *[data-ut-element="button"]:hover .uploadSVG{
+    fill: #6b21a8;
+    
+
+}
+
