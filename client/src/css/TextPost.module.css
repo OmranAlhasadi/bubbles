@@ -50,6 +50,40 @@
   }
 
 
+  /*pop animation styles */
+
+  
+  
+  .expanded {
+    width: 100%;
+    border-radius: 25px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    animation: popAnimation 0.5s ease-out forwards;
+  }
+  
+  @keyframes popAnimation {
+    0% {
+      transform: scale(0);
+    }
+    50% {
+      
+    }
+    75% {
+      transform: scale(0.9);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  
+  .expanded {
+    animation-iteration-count: 1; /* Run only once */
+    animation-fill-mode: forwards; /* Keep final state after animation ends */
+  }
+
+  /*end of pop animation styles */
+
+
 .wrapper{
     display: flex;
     flex-direction: column;
@@ -59,6 +93,18 @@
 
     
 }
+
+.bubble {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    overflow: hidden;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    position: relative;
+    border: 3px solid transparent;
+    background: linear-gradient(to bottom right, #8e44ad, #9b59b6);
+  }
 
 
 

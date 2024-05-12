@@ -6,6 +6,10 @@ import LoadingBubbles from "../components/LoadingBubbles.js";
 import TextBox from "../components/TextBox";
 import ImagePost from "../components/ImagePost";
 
+import Modal from "../components/Modal";
+
+import CreatePostButton from "../components/CreatePostButton";
+
 import { UserContext } from "../contexts/UserContext";
 
 const Feed = ({ specificUser = false }) => {
@@ -14,6 +18,12 @@ const Feed = ({ specificUser = false }) => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const { user, updateUser } = useContext(UserContext);
+
+  //modal stuff
+  const [isOpen, setOpen] = useState(false);
+
+  const openModal = () => setOpen(true);
+  const closeModal = () => setOpen(false);
 
   const imagePost = {
     author: {
@@ -143,7 +153,10 @@ const Feed = ({ specificUser = false }) => {
 
   return (
     <div className={styles.container}>
-      {!specificUser && <TextBox onSubmit={createPost} />}
+      {!specificUser && <CreatePostButton handleClick={openModal} />}
+      <Modal open={isOpen} onClose={closeModal}>
+        <p>This is the modal content!</p>
+      </Modal>
       <ImagePost
         key={imagePost._id}
         post={imagePost}
