@@ -9,6 +9,7 @@ import ImagePost from "../components/ImagePost";
 import Modal from "../components/Modal";
 
 import CreatePostButton from "../components/CreatePostButton";
+import CreatePostModule from "../components/CreatePostModule";
 
 import { UserContext } from "../contexts/UserContext";
 
@@ -155,7 +156,7 @@ const Feed = ({ specificUser = false }) => {
     <div className={styles.container}>
       {!specificUser && <CreatePostButton handleClick={openModal} />}
       <Modal open={isOpen} onClose={closeModal}>
-        <p>This is the modal content!</p>
+        <CreatePostModule />
       </Modal>
       <ImagePost
         key={imagePost._id}
