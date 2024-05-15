@@ -1,14 +1,19 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect, useMemo } from "react";
 import styles from "../css/CreatePostModule.module.css";
 
 import { generateUploadButton } from "@uploadthing/react";
 
 const CreatePostModule = () => {
   const [text, setText] = useState("");
+  const [imgUrl, setImgUrl] = useState("");
 
-  const UploadButton = generateUploadButton({
-    url: "http://localhost:3001/api/uploadthing",
-  });
+  const UploadButton = useMemo(
+    () =>
+      generateUploadButton({
+        url: "http://localhost:3001/api/uploadthing",
+      }),
+    []
+  );
 
   const uploadSVG = (
     <svg className={styles.uploadSVG} viewBox="0 0 16 16">
@@ -17,14 +22,47 @@ const CreatePostModule = () => {
     </svg>
   );
 
+  const closeSVG = (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className={styles.closeSVG}
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <line x1="18" y1="6" x2="6" y2="18"></line>
+      <line x1="6" y1="6" x2="18" y2="18"></line>
+    </svg>
+  );
+
+  const handleCloseImg = () => {
+    setImgUrl("");
+  };
+
   const handleClientUploadComplete = async (res) => {
     console.log("Files: ", res);
     console.log(res[0].url);
     if (res[0].url) {
+      setImgUrl(res[0].url);
     } else {
       alert("Upload completed, but no image URL returned.");
     }
   };
+
+  const cleanUp = () => {
+    setText("");
+    setImgUrl("");
+  };
+
+  useEffect(() => {
+    // Clean up when the component mounts
+    cleanUp();
+  }, []);
 
   return (
     <div className={styles.container}>
@@ -38,6 +76,14 @@ const CreatePostModule = () => {
         value={text}
         onChange={(e) => setText(e.target.value)}
       ></textarea>
+      {imgUrl && (
+        <div className={styles.postImgContainer}>
+          <button className={styles.closeSVG} onClick={handleCloseImg}>
+            {closeSVG}
+          </button>
+          <img className={styles.postImg} src={imgUrl} />
+        </div>
+      )}
       <div className={styles.buttonsContainer}>
         <UploadButton
           endpoint="imageUploader"

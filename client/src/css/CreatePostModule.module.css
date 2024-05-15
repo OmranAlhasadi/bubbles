@@ -30,6 +30,32 @@
     
 }
 
+.postImgContainer{
+    position: relative;
+}
+
+.closeSVG{
+    position: absolute;
+    top: 3px;
+    right: 3px;
+    padding: 4px;
+    border-radius: 8px;
+    background-color: white;
+    border: none;
+    cursor: pointer;
+    color: gray;
+}
+
+.closeSVG:hover {
+    background-color: #f3f3f3;
+    color: black;
+}
+
+.postImg{
+    max-width: 100%;
+    object-fit: contain;
+}
+
 .buttonsContainer{
     display: flex;
     justify-content: space-between;
@@ -85,7 +111,7 @@
 /* post button styling */
 
 .postButton{
-    width: 9rem;
+    width: 7rem;
     height: 2.5rem;
     display: flex;
     align-items: center;
@@ -94,9 +120,9 @@
     background-color: #6b21a8;
     color: white;
     border: none;
-    border-radius: 15px;
+    border-radius: 25px;
 
-    font-size: 1rem;
+    font-size: 1.15rem;
     
     transition: color 0.2s ease-in-out, transform 0.2s ease-in-out, background-color 0.2s ease-in-out, border-radius 0.4s ease-in-out;
     overflow: hidden;
