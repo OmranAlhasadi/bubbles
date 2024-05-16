@@ -3,9 +3,35 @@ import styles from "../css/CreatePostModule.module.css";
 
 import { generateUploadButton } from "@uploadthing/react";
 
-const CreatePostModule = () => {
+const CreatePostModule = ({ passNewPost }) => {
   const [text, setText] = useState("");
   const [imgUrl, setImgUrl] = useState("");
+
+  const handleCreatePost = async () => {
+    try {
+      const postBody = {
+        content: text,
+        imageURL: imgUrl,
+      };
+
+      const response = await fetch("http://localhost:3001/api/posts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify(postBody),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      let newPost = await response.json();
+      cleanUp();
+      await passNewPost(newPost);
+    } catch {
+      alert("Error creating post");
+    }
+  };
 
   const UploadButton = useMemo(
     () =>
@@ -107,7 +133,9 @@ const CreatePostModule = () => {
             },
           }}
         />
-        <button className={styles.postButton}>Post</button>
+        <button className={styles.postButton} onClick={handleCreatePost}>
+          Post
+        </button>
       </div>
     </div>
   );

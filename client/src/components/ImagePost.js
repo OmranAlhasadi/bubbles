@@ -1,6 +1,6 @@
 import styles from "../css/ImagePost.module.css";
 
-import { useState, useContext } from "react";
+import { useState, useContext, useRef, useEffect } from "react";
 
 import CommentBox from "./CommentBox";
 
@@ -19,6 +19,32 @@ const TextPost = ({ post, isNew = false, onDelete }) => {
   const [likeCount, setLikeCount] = useState(post.likes.length);
   const [commentCount, setCommentCount] = useState(post.comments.length);
 
+  const [visible, setVisible] = useState(false);
+  const observerRef = useRef(null); // Reference for the observer
+  const postRef = useRef(null); // Reference to the post div
+
+  // Intersection Observer Setup
+  useEffect(() => {
+    observerRef.current = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true); // Trigger expansion
+        }
+      },
+      {
+        threshold: 0.9, // Adjust this to control visibility percentage required
+      }
+    );
+
+    const observer = observerRef.current;
+    const target = postRef.current;
+    if (target) observer.observe(target);
+
+    return () => {
+      if (target) observer.unobserve(target);
+    };
+  }, []);
+
   const toggleTextbox = () => {
     setShowTextbox((prev) => !prev);
   };
@@ -30,8 +56,6 @@ const TextPost = ({ post, isNew = false, onDelete }) => {
   const toggleLikeButton = () => {
     setIsLiked((prev) => !prev);
   };
-
-  const toggleExpanded = () => setExpanded((prev) => !prev);
 
   const handleLikeButton = async () => {
     if (!isLiked) {
@@ -195,12 +219,12 @@ const TextPost = ({ post, isNew = false, onDelete }) => {
 
   return (
     <div
+      ref={postRef}
       className={`${styles.wrapper} ${isNew ? styles.newPost : ""} ${
         post.deleting ? styles.deleting : ""
-      } ${expanded ? styles.expanded : styles.bubble}`}
-      onClick={toggleExpanded}
+      } ${visible ? styles.expanded : styles.bubble}`}
     >
-      {expanded ? (
+      {visible ? (
         <div className={styles.container}>
           <div className={styles.postHeader}>
             <div className={styles.info}>

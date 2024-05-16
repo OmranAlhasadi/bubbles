@@ -27,34 +27,7 @@
     }
   }
 
-  @keyframes popAnimation {
-    0% {
-      
-      transform: scale(0);
-    }
-
-    
-
-    35% {
-        transform: scale(1.2);
-    }
-
-    55%{
-        transform: scale(0.85);
-    }
-
-    65%{
-        transform: scale(1.05);
-    }
-
-    70%{
-        transform: scale(0.95);
-    }
-    75% {
-      
-      transform: scale(1);
-    }
-  }
+  
 
   @keyframes deleteAnimation {
       0%{
@@ -99,7 +72,7 @@
     position: relative;
     border: 3px solid transparent;
     background: linear-gradient(to bottom right, #8e44ad, #9b59b6); /* Purple gradient fill */
-    cursor: pointer;
+    
 }
   
   .bubbleImg {
@@ -149,13 +122,33 @@
   .expandedImg {
 
   }
-  
-  /* Expanded Post Styles */
+
   .expanded {
     width: 100%;
     border-radius: 25px;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
-    animation: expandAnimation 0.5s ease-out forwards;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    animation: popAnimation 0.5s ease-out forwards;
+  }
+
+  @keyframes popAnimation {
+    0% {
+      transform: scale(0);
+    }
+    50% {
+      
+    }
+    75% {
+      transform: scale(0.9);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  
+  /* Expanded Post Styles */
+  .expanded {
+    animation-iteration-count: 1; /* Run only once */
+    animation-fill-mode: forwards; /* Keep final state after animation ends */
   }
 
 .container{
@@ -175,6 +168,7 @@
     border-bottom: 5px solid #c084fc;
     border-radius: 25px 25px 0 0;
     padding: 1.5rem;
+    max-width: 100%;
 }
 
 .profile{

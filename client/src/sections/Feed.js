@@ -89,24 +89,9 @@ const Feed = ({ specificUser = false }) => {
     }
   }, []);
 
-  const createPost = async (content) => {
+  const showNewPost = async (newPost) => {
     try {
-      const postBody = {
-        content: content,
-      };
-
-      const response = await fetch("http://localhost:3001/api/posts", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify(postBody),
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      let newPost = await response.json();
+      closeModal();
       newPost.isNew = true;
       setPosts((prevPosts) => [newPost, ...prevPosts]);
     } catch (error) {
@@ -156,16 +141,18 @@ const Feed = ({ specificUser = false }) => {
     <div className={styles.container}>
       {!specificUser && <CreatePostButton handleClick={openModal} />}
       <Modal open={isOpen} onClose={closeModal}>
-        <CreatePostModule />
+        <CreatePostModule passNewPost={showNewPost} />
       </Modal>
-      <ImagePost
-        key={imagePost._id}
-        post={imagePost}
-        isNew={imagePost.isNew ? true : false}
-        onDelete={handleDelete}
-      />
+
       {posts.map((post, index) => {
-        return (
+        return post.image ? (
+          <ImagePost
+            key={post._id}
+            post={post}
+            isNew={post.isNew ? true : false}
+            onDelete={handleDelete}
+          />
+        ) : (
           <TextPost
             key={post._id}
             post={post}
