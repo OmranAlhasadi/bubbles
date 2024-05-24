@@ -1,15 +1,22 @@
 
 .pageContainer{
-    width:100%;
-    height: 100%;
+    
     display: flex;
     flex-direction: column;
 }
 
 .contentContainer {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: flex-start;
+    gap: 2rem;
     
     
+}
+
+
+.feed{
+    display: flex;
+    justify-content: center;
+    max-width: 100%;
 }

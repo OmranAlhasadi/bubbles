@@ -165,6 +165,28 @@ module.exports.getExample2 = async (req, res) => {
   }
 };
 
+module.exports.getNewUsers = async (req, res) => {
+  try {
+    // Fetch the 5 most recently created users
+    const newUsers = await User.find({})
+      .sort({ createdAt: -1 })
+      .limit(5)
+      .select("username profileImg")
+      .exec();
+
+    const newUsersData = newUsers.map((user) => ({
+      username: user.username,
+      profileImg: user.profileImg,
+      profileLink: `/profile/${user.username}`, // Link to the user profile
+    }));
+
+    res.json(newUsersData);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+};
+
 module.exports.getFriends = async (req, res) => {
   try {
     // Fetch the user by their ID

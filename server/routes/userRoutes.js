@@ -8,11 +8,12 @@ const authController = require("../controllers/authController");
 
 /* router.post("/user", userController.addUser); */
 
-router.get("/:username", userController.getUser);
-router.get("/other-user/:username", userController.getOtherUser);
 router.get("/example-user", userController.getExample);
 router.get("/example-user2", userController.getExample2);
 router.get("/friends", userController.getFriends);
+router.get("/new-users", userController.getNewUsers);
+router.get("/:username", userController.getUser);
+router.get("/other-user/:username", userController.getOtherUser);
 
 // Route to send a friend request
 router.post(

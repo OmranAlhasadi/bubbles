@@ -26,3 +26,11 @@
         max-width: 640px;
     }
 }
+
+@media (min-width: 3000px) {
+    .container {
+        min-width: 40%;
+        max-width: 40%;
+    }
+
+}

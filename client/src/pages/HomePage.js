@@ -11,6 +11,7 @@ import SpinningCircleLoader from "../components/SpinningCircleLoader";
 import { useContext, useState } from "react";
 import { UserContext } from "../contexts/UserContext";
 import LoadingPage from "./LoadingPage";
+import NewUsers from "../components/NewUsers";
 
 const HomePage = () => {
   const { user, updateUser } = useContext(UserContext);
@@ -23,9 +24,10 @@ const HomePage = () => {
     <div className={styles.pageContainer}>
       <Header />
       <div className={styles.contentContainer}>
-        <FriendsList />
+        {/* <FriendsList /> */}
+
         <Feed />
-        <div></div>
+        <NewUsers />
       </div>
     </div>
   );

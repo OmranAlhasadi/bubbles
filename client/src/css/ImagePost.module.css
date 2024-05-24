@@ -181,6 +181,7 @@
 .info {
     display: flex;
     justify-content: baseline;
+    flex-wrap: wrap;
     align-items: center;
     gap: 1rem;  
 }
@@ -341,6 +342,21 @@
 
 .smallBtn:hover{
     text-decoration: underline;
+}
+
+
+@media (max-width: 768px) {
+    .container {
+        border-radius: 0px;
+    }
+
+    .smallBtnContainer{
+        padding: 0 1.5rem;
+    }
+    .likeButton, .commentButton {
+        border-radius: 0px;
+    
+    }
 }
 
 

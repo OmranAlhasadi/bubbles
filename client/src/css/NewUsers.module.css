@@ -1,0 +1,42 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding: 2rem;
+}
+
+.header{
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+.userList{
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.profileImg{
+    aspect-ratio: 1;
+    width: 50px;
+    border-radius: 50%;
+}
+
+.userItem{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.userName{
+    color: #2563eb;
+    font-size: 1.2rem;
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.userName:hover{
+    text-decoration: underline;
+    color: #1e40af;
+}
