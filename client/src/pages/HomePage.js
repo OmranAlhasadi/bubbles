@@ -12,9 +12,13 @@ import { useContext, useState } from "react";
 import { UserContext } from "../contexts/UserContext";
 import LoadingPage from "./LoadingPage";
 import NewUsers from "../components/NewUsers";
+import useWindowSize from "../hooks/useWindowSize";
+import CombinedModule from "../components/CombinedModule";
 
 const HomePage = () => {
   const { user, updateUser } = useContext(UserContext);
+  const { width } = useWindowSize();
+  const isMobile = width <= 826;
 
   if (user == null) {
     return <LoadingPage />;
@@ -24,10 +28,16 @@ const HomePage = () => {
     <div className={styles.pageContainer}>
       <Header />
       <div className={styles.contentContainer}>
-        {/* <FriendsList /> */}
-
-        <Feed />
-        <NewUsers />
+        {isMobile ? (
+          <>
+            <Feed />
+          </>
+        ) : (
+          <>
+            <Feed />
+            <NewUsers />
+          </>
+        )}
       </div>
     </div>
   );

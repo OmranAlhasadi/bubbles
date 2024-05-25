@@ -13,6 +13,9 @@ import CreatePostModule from "../components/CreatePostModule";
 
 import { UserContext } from "../contexts/UserContext";
 
+import useWindowSize from "../hooks/useWindowSize";
+import CombinedModule from "../components/CombinedModule";
+
 const Feed = ({ specificUser = false }) => {
   const { username } = useParams();
 
@@ -25,6 +28,11 @@ const Feed = ({ specificUser = false }) => {
 
   const openModal = () => setOpen(true);
   const closeModal = () => setOpen(false);
+
+  //rendering combined modal if small screen
+
+  const { width } = useWindowSize();
+  const isMobile = width <= 826;
 
   const imagePost = {
     author: {
@@ -139,10 +147,16 @@ const Feed = ({ specificUser = false }) => {
 
   return (
     <div className={styles.container}>
-      {!specificUser && <CreatePostButton handleClick={openModal} />}
-      <Modal open={isOpen} onClose={closeModal}>
-        <CreatePostModule passNewPost={showNewPost} />
-      </Modal>
+      {isMobile ? (
+        !specificUser && <CombinedModule passNewPost={showNewPost} />
+      ) : (
+        <>
+          {!specificUser && <CreatePostButton handleClick={openModal} />}
+          <Modal open={isOpen} onClose={closeModal}>
+            <CreatePostModule passNewPost={showNewPost} />
+          </Modal>
+        </>
+      )}
 
       {posts.map((post, index) => {
         return post.image ? (

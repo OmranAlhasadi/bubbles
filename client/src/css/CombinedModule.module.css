@@ -1,0 +1,19 @@
+.container {
+    display: flex;
+    border-radius: 25px;
+    overflow: hidden;
+    border: 1px black;
+    width: 100%;
+    max-width: 640px;
+}
+
+.newUsers , .newPost{
+    flex: 1;
+    font-size: 1rem;
+    color: white;
+    background-color: #7c3aed;
+    padding: 10px;
+
+    display: flex;
+    justify-content: center;
+}

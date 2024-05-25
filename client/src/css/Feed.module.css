@@ -4,28 +4,30 @@
     align-items: center;
     gap: 3rem;
     width: 100%;
-    max-width: 640px;
+    max-width: 520px;
+    
     
 }
 
 @media (min-width: 768px) {
     .container {
-        max-width: 640px;
+        max-width: 520px;
     }
 }
 
 @media (min-width: 1024px) {
     .container {
-        width:100%;
         max-width: 640px;
     }
 }
 
 @media (min-width: 1280px) {
     .container {
-        max-width: 640px;
+        
     }
 }
+
+
 
 @media (min-width: 3000px) {
     .container {
@@ -34,3 +36,12 @@
     }
 
 }
+
+
+
+
+
+
+
+
+
