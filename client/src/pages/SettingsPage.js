@@ -1,5 +1,4 @@
-// Import necessary modules from the react and uploadthing packages
-import { useContext } from "react";
+import { useContext, useState, useMemo } from "react";
 import { generateUploadButton } from "@uploadthing/react";
 import { UserContext } from "../contexts/UserContext";
 import TextBox from "../components/TextBox";
@@ -8,11 +7,9 @@ import "@uploadthing/react/styles.css";
 
 import styles from "../css/SettingsPage.module.css";
 
-// Generate the UploadButton component using generateUploadButton function
-// Assume your backend upload endpoint is set up at "/api/uploadthing" and handles "imageUploader" route.
-
 const SettingsPage = () => {
   const { user, updateUser } = useContext(UserContext);
+  const [text, setText] = useState(user.aboutMe ? user.aboutMe : "");
 
   const handleClientUploadComplete = async (res) => {
     console.log("Files: ", res);
@@ -49,14 +46,18 @@ const SettingsPage = () => {
     }
   };
 
-  const UploadButton = generateUploadButton({
-    url: "http://localhost:3001/api/uploadthing",
-  });
+  const UploadButton = useMemo(
+    () =>
+      generateUploadButton({
+        url: "http://localhost:3001/api/uploadthing",
+      }),
+    []
+  );
 
-  const handleAboutMe = async (content) => {
+  const handleAboutMe = async () => {
     try {
       const aboutBody = {
-        content: content,
+        content: text,
       };
 
       const response = await fetch(
@@ -110,13 +111,18 @@ const SettingsPage = () => {
           />
         </div>
         <div className={styles.aboutMeContainer}>
-          <h1>Update About Me</h1>
-          <TextBox
-            onSubmit={handleAboutMe}
-            buttonText={"Update"}
-            starterText={user.aboutMe}
-            placeholderText={"Write about yourself"}
-          />
+          <h1 className={styles.abtMeHeader}>Update About Me</h1>
+          <form className={styles.abtMeFormContainer} onSubmit={handleAboutMe}>
+            <textarea
+              className={styles.textBox}
+              placeholder={text}
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+            ></textarea>
+            <button className={styles.abtMeButton} type="submit">
+              Update
+            </button>
+          </form>
         </div>
       </div>
     </div>

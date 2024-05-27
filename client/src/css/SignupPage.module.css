@@ -10,9 +10,16 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    box-sizing: border-box;
+    padding: 24px;
     gap: 16px;
 
-    border-radius: 15px; /* Optional: to give rounded corners */
+
+    width: 100%;
+    max-width: 400px;
+
+
+    border-radius: 15px; 
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2), 0 6px 20px rgba(0, 0, 0, 0.19); /* Shadow effect */
 }
 
@@ -25,11 +32,12 @@
 }
 
 .fieldContainer{
-
+    width: 100%;
 }
 
 .fieldLabel{
     font-size: 14px;
+    font-weight: 600;
 }
 
 .inputField{
@@ -37,7 +45,23 @@
     font-size: 16px;
     padding: 8px;
     border-radius: 15px;
+
+    border: 1px solid transparent;
+    
+    background-color: rgba(255, 255, 255, 0.5);
+    transition: border-color 0.3s ease;
 }
+
+.inputField:focus{
+    border-color: #e879f9;
+    outline:none;
+    
+    box-shadow: none;
+}
+
+.inputField::placeholder {
+    color: #888; 
+  }
 
 .errorMsg{
     font-size: 14px;
@@ -54,6 +78,8 @@
     background-color: transparent;
     transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
     cursor: pointer;
+
+    width: 100%;
      
 }
 
@@ -74,5 +100,28 @@
     text-decoration: underline;
 }
 
+
+
+
+@media (max-width:600px) {
+    .formContainer{
+        border: none;
+        box-shadow: none;
+        width: 100%;
+        max-width: none;
+        
+    }
+
+    .formButton{
+        width: 100%;
+    }
+}
+
+
+@media (min-width: 2200px) {
+    .formContainer{
+        max-width: 800px;
+    }
+}
 
 
