@@ -157,13 +157,23 @@ const Header = () => {
               user.friendRequests.map((request) => (
                 <div key={request.username} className={styles.requestItem}>
                   <img src={request.profileImg} alt={request.username} />
-                  <span>{request.username}</span>
-                  <button onClick={() => handleAcceptRequest(request.username)}>
-                    Accept
-                  </button>
-                  <button onClick={() => handleRejectRequest(request.username)}>
-                    Reject
-                  </button>
+                  <div className={styles.reqInfo}>
+                    <span>{request.username}</span>
+                    <div className={styles.reqButtonsContainer}>
+                      <button
+                        className={styles.accept}
+                        onClick={() => handleAcceptRequest(request.username)}
+                      >
+                        Accept
+                      </button>
+                      <button
+                        className={styles.reject}
+                        onClick={() => handleRejectRequest(request.username)}
+                      >
+                        Reject
+                      </button>
+                    </div>
+                  </div>
                 </div>
               ))
             )}

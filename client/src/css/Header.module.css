@@ -6,8 +6,8 @@
     padding: 8px 25px 8px 25px;
     width: 100%;
     align-self: center;
-    overflow: hidden;
-
+    
+    
     position: sticky;
     top: 0;
     z-index: 5;
@@ -29,6 +29,8 @@
     display: flex;
     gap: 20px; justify-content: center;
     align-items: center;
+
+    position: relative;
 }
 
 
@@ -44,6 +46,7 @@
     height: 30px;
     fill: #c084fc;
     transition: fill ease-in-out 0.3s;
+    cursor: pointer;
 }
 
 .svg:hover{
@@ -53,26 +56,58 @@
 .friendRequestsList {
     position: absolute;
     top: 60px; 
-    right: 100px;
+    right: 0px;
     background-color: white;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 300px; 
+
+    width: 100%;
+    max-width: 300px; 
     z-index: 100;
   }
   
   .requestItem {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    
+    overflow: hidden;
+    gap: 10px;
     padding: 10px;
     border-bottom: 1px solid #ddd;
+  }
+
+  .reqInfo{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .reqButtonsContainer{
+    display:flex;
+    gap: 1rem;
   }
   
   .requestItem img {
     border-radius: 50%;
-    width: 40px;
-    height: 40px;
+    aspect-ratio: 1;
+    height: 50px;
+  }
+
+  .accept, .reject {
+    font-size: 1rem;
+    color: white;
+    box-sizing: border-box;
+    padding: 8px;
+    border: none;
+    border-radius: 15px;
+  }
+
+  .accept {
+    background-color: #22c55e;
+  }
+
+  .reject {
+    background-color: #ef4444;
   }
   
 
