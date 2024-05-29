@@ -37,7 +37,6 @@ const ForgotPassword = () => {
   const handleForgotPassword = async (e) => {
     e.preventDefault();
     if (validateFields()) {
-      console.log(email);
       const success = await forgotPassword(email);
       if (success) {
         console.log("Password request sent to email");

@@ -83,6 +83,7 @@ const Feed = ({ specificUser = false }) => {
         }
         const data = await response.json();
         setPosts(data);
+        console.log(data[0].comments);
       } catch (error) {
         console.error(error);
       } finally {

@@ -138,6 +138,8 @@ module.exports.addComment = async (req, res) => {
     const { content } = req.body;
     const postID = req.params.postID;
 
+    console.log(content);
+
     let newComment = createComment(postID, authorID, content);
     await newComment.save();
 

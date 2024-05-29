@@ -16,7 +16,6 @@ const Header = () => {
 
   // toggle friend request list
   const toggleRequests = () => {
-    console.log(user.friendRequests);
     setShowRequests(!showRequests);
   };
 

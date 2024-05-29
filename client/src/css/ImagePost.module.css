@@ -40,16 +40,7 @@
       }
   }
   
-  .newPost {
-    animation: expandAnimation 0.5s ease-out forwards;
-    
-  }
-
-  .deleting{
-    transform-origin: top;
-    animation: deleteAnimation 0.5s ease-in-out forwards;
-      
-  }
+  
 
 
 .wrapper{
@@ -61,6 +52,17 @@
 
     
 }
+
+.newPost {
+    animation: expandAnimation 0.5s ease-out forwards;
+    
+  }
+
+.deleting {
+    transform-origin: top;
+    animation: deleteAnimation 0.5s ease-in-out forwards !important;
+      
+  }
 
 .bubble {
     width: 120px;

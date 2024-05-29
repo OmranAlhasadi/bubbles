@@ -7,7 +7,7 @@ import CommentBox from "./CommentBox";
 import { UserContext } from "../contexts/UserContext";
 import CommentSection from "./CommentSection";
 
-const TextPost = ({ post, isNew = false, onDelete }) => {
+const ImagePost = ({ post, isNew = false, onDelete }) => {
   const [showTextbox, setShowTextbox] = useState(false);
   const [showComments, setShowComments] = useState(false);
   const [comments, setComments] = useState(post.comments);
@@ -131,6 +131,7 @@ const TextPost = ({ post, isNew = false, onDelete }) => {
             "Content-Type": "application/json",
           },
           credentials: "include",
+          body: JSON.stringify(commentData),
         }
       );
 
@@ -303,4 +304,4 @@ const TextPost = ({ post, isNew = false, onDelete }) => {
   );
 };
 
-export default TextPost;
+export default ImagePost;

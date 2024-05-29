@@ -27,7 +27,7 @@
     }
   }
 
-  @keyframes deleteAnimation {
+@keyframes deleteAnimation {
       0%{
           max-height: 1000px;
       }
@@ -45,7 +45,7 @@
 
   .deleting{
     transform-origin: top;
-    animation: deleteAnimation 0.5s ease-in-out forwards;
+    animation: deleteAnimation 0.5s ease-in-out forwards !important;
       
   }
 
