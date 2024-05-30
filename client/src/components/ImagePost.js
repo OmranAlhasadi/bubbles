@@ -13,6 +13,9 @@ const ImagePost = ({ post, isNew = false, onDelete }) => {
   const [comments, setComments] = useState(post.comments);
   const [expanded, setExpanded] = useState(false);
 
+  //loading image states
+  const [imageLoaded, setImageLoaded] = useState(false);
+
   const { user, updateUser } = useContext(UserContext);
   const [isLiked, setIsLiked] = useState(post.likes.includes(user.username));
   const [isLikeHovered, setIsLikeHovered] = useState(false);
@@ -249,7 +252,17 @@ const ImagePost = ({ post, isNew = false, onDelete }) => {
               </svg>
             )}
           </div>
-          <img className={styles.expandedImg} src={post.image} alt="Image" />
+          {post.image && (
+            <img
+              className={styles.expandedImg}
+              src={post.image}
+              alt="Image"
+              onLoad={() => setImageLoaded(true)}
+            />
+          )}
+          {post.image && !imageLoaded && (
+            <div className={styles.imagePlaceholder}></div>
+          )}
           <p className={styles.textBox}>{post.content}</p>
           <div className={styles.smallBtnContainer}>
             <button className={styles.smallBtn}>{`${likeCount} Likes`}</button>
@@ -292,7 +305,11 @@ const ImagePost = ({ post, isNew = false, onDelete }) => {
         </div>
       ) : (
         // Post Bubble Preview (show the image only)
-        <img className={styles.bubbleImg} src={post.image} alt="Preview" />
+        <img
+          className={styles.bubbleImg}
+          src={post.image ? post.image : post.author.profileImg}
+          alt="Preview"
+        />
       )}
 
       <CommentBox

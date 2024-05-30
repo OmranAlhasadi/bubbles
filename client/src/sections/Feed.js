@@ -64,7 +64,6 @@ const Feed = ({ specificUser = false }) => {
         }
         const data = await response.json();
         setPosts(data);
-        console.log(posts);
       } catch (error) {
         console.error("Error fetching posts", error);
       } finally {
@@ -86,7 +85,6 @@ const Feed = ({ specificUser = false }) => {
         }
         const data = await response.json();
         setPosts(data);
-        console.log(data[0].comments);
       } catch (error) {
         console.error(error);
       } finally {
@@ -171,7 +169,7 @@ const Feed = ({ specificUser = false }) => {
             onDelete={handleDelete}
           />
         ) : (
-          <TextPost
+          <ImagePost
             key={post._id}
             post={post}
             isNew={post.isNew ? true : false}

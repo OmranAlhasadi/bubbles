@@ -74,11 +74,17 @@
     border-radius: 50%;
 }
 
+.contentContainer{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
 .content {
     display: flex;
     flex-direction: column;
     gap: 10px; 
-    width: 100%; 
+    width: 80%; 
 }
 
 .username {

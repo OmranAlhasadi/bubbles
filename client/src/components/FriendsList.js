@@ -75,7 +75,7 @@ const FriendsList = ({ otherUser = false }) => {
       <div className={styles.title}>Friends List</div>
       <ul className={styles.list}>
         {friends.map((friend) => (
-          <li className={styles.item}>
+          <li key={friend.username} className={styles.item}>
             <img src={friend.profileImg}></img>
             <a href={friend.profileLink}>{friend.username}</a>
           </li>

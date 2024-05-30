@@ -8,9 +8,9 @@ const AboutMe = ({ text }) => {
       {text == null ? (
         <LoadingRippleBubbles />
       ) : (
-        <div>
+        <div className={styles.contentContainer}>
           <p className={styles.text}>{text}</p>
-          <span>Member since 1980</span>
+          <span></span>
         </div>
       )}
     </div>

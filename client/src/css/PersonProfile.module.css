@@ -140,6 +140,14 @@
     .userContainer{
         flex-direction: column;
     }
+
+    .username{
+        font-size: 1.3rem;
+    }
+
+    .userPicture{
+        width: 70px;
+    }
 }
 
 @media (min-width: 900px) {
