@@ -74,9 +74,12 @@ const Feed = ({ specificUser = false }) => {
 
     const fetchUserPosts = async (username) => {
       try {
-        const response = await fetch("http://localhost:3001/api/posts", {
-          credentials: "include",
-        });
+        const response = await fetch(
+          `http://localhost:3001/api/posts/${username}`,
+          {
+            credentials: "include",
+          }
+        );
 
         if (!response.ok) {
           throw new Error("Could not fetch user posts");

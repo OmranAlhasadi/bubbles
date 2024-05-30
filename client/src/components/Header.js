@@ -5,7 +5,7 @@ import settings from "../images/settings.svg";
 
 import { useContext, useState, useRef, useEffect } from "react";
 import { UserContext } from "../contexts/UserContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 const Header = () => {
   const { user, updateUser, logoutUser } = useContext(UserContext);
@@ -162,7 +162,15 @@ const Header = () => {
             ) : (
               user.friendRequests.map((request) => (
                 <div key={request.username} className={styles.requestItem}>
-                  <img src={request.profileImg} alt={request.username} />
+                  <img
+                    src={request.profileImg}
+                    alt={request.username}
+                    onClick={() =>
+                      (window.location.href = `/profile/${request.username}`)
+                    }
+                    style={{ cursor: "pointer" }}
+                  />
+
                   <div className={styles.reqInfo}>
                     <span>{request.username}</span>
                     <div className={styles.reqButtonsContainer}>

@@ -100,7 +100,6 @@ module.exports.getExample = async (req, res) => {
     }
 
     const exampleUserData = {
-      _id: exampleUser._id,
       username: exampleUser.username,
       profileImg: exampleUser.profileImg,
       aboutMe: exampleUser.aboutMe,
@@ -139,7 +138,6 @@ module.exports.getExample2 = async (req, res) => {
     }
 
     const exampleUserData = {
-      _id: exampleUser._id,
       username: exampleUser.username,
       profileImg: exampleUser.profileImg,
       aboutMe: exampleUser.aboutMe,
