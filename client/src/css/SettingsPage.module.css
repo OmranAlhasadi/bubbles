@@ -3,6 +3,7 @@
     align-items: center;
     justify-content: center;
     height: 100vh;
+    background-image: radial-gradient( #d8b4fe, #f5d0fe, white);
 }
 
 

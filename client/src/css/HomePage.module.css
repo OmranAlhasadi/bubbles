@@ -3,6 +3,9 @@
     
     display: flex;
     flex-direction: column;
+    background-color: whte;
+    background-image: radial-gradient( #d8b4fe, #f5d0fe, white);
+    
 }
 
 .contentContainer {
