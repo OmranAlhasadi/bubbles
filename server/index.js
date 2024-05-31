@@ -56,10 +56,10 @@ app.use("/api/auth", authRoutes);
 //app.use(authMiddleware);
 
 const userRoutes = require("./routes/userRoutes");
-app.use("/api/user", userRoutes);
+app.use("/api/user", authMiddleware, userRoutes);
 
 const postRoutes = require("./routes/postRoutes");
-app.use("/api/posts", postRoutes);
+app.use("/api/posts", authMiddleware, postRoutes);
 
 // Serve static files from the React app
 if (process.env.NODE_ENV === "production") {
