@@ -79,7 +79,7 @@ const Header = () => {
 
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_API_URL}api/user/accept-request/${requesterUsername}`,
+        `${process.env.REACT_APP_API_URL}/api/user/accept-request/${requesterUsername}`,
         {
           method: "POST",
           credentials: "include",
@@ -108,7 +108,7 @@ const Header = () => {
   const handleRejectRequest = async (requesterUsername) => {
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_API_URL}api/user/reject-request/${requesterUsername}`,
+        `${process.env.REACT_APP_API_URL}/api/user/reject-request/${requesterUsername}`,
         {
           method: "POST",
           credentials: "include",

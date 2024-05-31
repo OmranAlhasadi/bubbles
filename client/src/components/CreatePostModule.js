@@ -17,7 +17,7 @@ const CreatePostModule = ({ passNewPost }) => {
       };
 
       const response = await fetch(
-        `${process.env.REACT_APP_API_URL}api/posts`,
+        `${process.env.REACT_APP_API_URL}/api/posts`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -42,7 +42,7 @@ const CreatePostModule = ({ passNewPost }) => {
   const UploadButton = useMemo(
     () =>
       generateUploadButton({
-        url: `${process.env.REACT_APP_API_URL}api/uploadthing`,
+        url: `${process.env.REACT_APP_API_URL}/api/uploadthing`,
       }),
     []
   );

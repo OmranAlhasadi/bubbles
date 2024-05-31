@@ -49,7 +49,7 @@ function PasswordReset() {
     if (validateFields()) {
       try {
         const response = await fetch(
-          `${process.env.REACT_APP_API_URL}api/auth/reset-password/${token}`,
+          `${process.env.REACT_APP_API_URL}/api/auth/reset-password/${token}`,
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },

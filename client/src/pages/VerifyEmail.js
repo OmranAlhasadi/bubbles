@@ -13,7 +13,7 @@ const EmailVerification = () => {
 
     if (token) {
       fetch(
-        `${process.env.REACT_APP_API_URL}api/auth/verify-email?token=${token}`
+        `${process.env.REACT_APP_API_URL}/api/auth/verify-email?token=${token}`
       )
         .then((res) => res.text())
         .then((data) => setMessage(data))

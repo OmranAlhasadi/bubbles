@@ -40,7 +40,7 @@ const PersonProfile = () => {
     const fetchPerson = async (username) => {
       try {
         const response = await fetch(
-          `${process.env.REACT_APP_API_URL}api/user/${username}`,
+          `${process.env.REACT_APP_API_URL}/api/user/${username}`,
           { credentials: "include" }
         );
 
@@ -118,7 +118,7 @@ const PersonProfile = () => {
   const handleSendRequest = async (recieverUsername) => {
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_API_URL}api/user/send-request/${recieverUsername}`,
+        `${process.env.REACT_APP_API_URL}/api/user/send-request/${recieverUsername}`,
         {
           method: "POST",
           credentials: "include",

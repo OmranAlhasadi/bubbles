@@ -18,7 +18,7 @@ const SettingsPage = () => {
     if (res[0].url) {
       try {
         const response = await fetch(
-          `${process.env.REACT_APP_API_URL}api/user/update-profile-picture`,
+          `${process.env.REACT_APP_API_URL}/api/user/update-profile-picture`,
           {
             method: "POST",
             headers: {
@@ -47,7 +47,7 @@ const SettingsPage = () => {
   const UploadButton = useMemo(
     () =>
       generateUploadButton({
-        url: `${process.env.REACT_APP_API_URL}api/uploadthing`,
+        url: `${process.env.REACT_APP_API_URL}/api/uploadthing`,
       }),
     []
   );
@@ -60,7 +60,7 @@ const SettingsPage = () => {
       };
 
       const response = await fetch(
-        `${process.env.REACT_APP_API_URL}api/user/update-about-me`,
+        `${process.env.REACT_APP_API_URL}/api/user/update-about-me`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
