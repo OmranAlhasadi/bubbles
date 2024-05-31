@@ -24,7 +24,7 @@ const corsOptions = {
 };
 
 // Accept client requests requests
-app.use(cors(corsOptions));
+//app.use(cors(corsOptions));
 
 // Middleware
 app.use(cookieParser());
@@ -53,7 +53,7 @@ app.use("/api/auth", authRoutes);
 
 //Token check
 
-app.use(authMiddleware);
+//app.use(authMiddleware);
 
 const userRoutes = require("./routes/userRoutes");
 app.use("/api/user", userRoutes);
