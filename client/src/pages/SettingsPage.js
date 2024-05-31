@@ -53,7 +53,8 @@ const SettingsPage = () => {
     []
   );
 
-  const handleAboutMe = async () => {
+  const handleAboutMe = async (e) => {
+    e.preventDefault();
     try {
       const aboutBody = {
         content: text,
@@ -72,9 +73,9 @@ const SettingsPage = () => {
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-
-      const data = await response.json();
       toast.success("About Me updated successfully!");
+      const data = await response.json();
+
       updateUser(data.user);
     } catch (error) {
       toast.error("Error updating About Me");
