@@ -19,12 +19,12 @@ connectDB();
 
 // Update CORS options to reflect origin and credentials
 const corsOptions = {
-  origin: process.env.CLIENT_URL, //  change env when deploying
+  origin: process.env.CLIENT_URL,
   credentials: true, // to allow sending cookies and auth headers
 };
 
 // Accept client requests requests
-//app.use(cors(corsOptions));
+app.use(cors(corsOptions));
 
 // Middleware
 app.use(cookieParser());
@@ -53,7 +53,7 @@ app.use("/api/auth", authRoutes);
 
 //Token check
 
-//app.use(authMiddleware);
+app.use(authMiddleware);
 
 const userRoutes = require("./routes/userRoutes");
 app.use("/api/user", userRoutes);
