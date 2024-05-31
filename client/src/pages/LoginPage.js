@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { UserContext } from "../contexts/UserContext";
 import logo from "../images/logo-white.png";
 
+import { toast } from "react-toastify";
+
 const LoginPage = () => {
   const { loginUser, loginExampleUser } = useContext(UserContext);
   const navigate = useNavigate();
@@ -47,10 +49,10 @@ const LoginPage = () => {
     if (validateFields()) {
       const success = await loginUser(username, password);
       if (success) {
-        console.log("LOGGED IN, GOING TO HOMEPAGE NOW");
+        toast.success("Logged in successfully!");
         navigate("/");
       } else {
-        console.log("Error logging in");
+        toast.error("Error logging in");
       }
     }
   };
@@ -60,9 +62,10 @@ const LoginPage = () => {
 
     const success = await loginExampleUser();
     if (success) {
+      toast.success("Logged in successfully!");
       navigate("/");
     } else {
-      console.log("Error logging in Example");
+      toast.error("Error logging in");
     }
   };
 

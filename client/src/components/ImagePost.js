@@ -7,6 +7,8 @@ import CommentBox from "./CommentBox";
 import { UserContext } from "../contexts/UserContext";
 import CommentSection from "./CommentSection";
 
+import { toast } from "react-toastify";
+
 const ImagePost = ({ post, isNew = false, onDelete }) => {
   const [showTextbox, setShowTextbox] = useState(false);
   const [showComments, setShowComments] = useState(false);
@@ -80,8 +82,10 @@ const ImagePost = ({ post, isNew = false, onDelete }) => {
 
         toggleLikeButton();
         setLikeCount((prev) => ++prev);
+
+        toast.success("Post liked");
       } catch (error) {
-        console.error("Error liking post:", error.message);
+        toast.error("Error liking post");
       }
     } else if (isLiked) {
       try {
@@ -100,13 +104,15 @@ const ImagePost = ({ post, isNew = false, onDelete }) => {
           throw new Error("Failed to unlike the post");
         }
 
+        toast.success("Post unliked");
+
         toggleLikeButton();
         setLikeCount((prev) => --prev);
       } catch (error) {
-        console.error("Error unliking post:", error.message);
+        toast.error("Error unliking post");
       }
     } else {
-      console.log("Error handling liked state");
+      toast.error("Error handling liked state");
     }
   };
 
@@ -144,11 +150,14 @@ const ImagePost = ({ post, isNew = false, onDelete }) => {
       }
 
       let newComment = await response.json();
+
+      toast.success("Posted comment successfully");
+
       newComment.isNew = true;
       setComments((prev) => [...prev, newComment]);
       setCommentCount((prev) => ++prev);
     } catch (error) {
-      console.error("Error posting comment:", error.message);
+      toast.error("Error posting comment");
     }
   };
 
@@ -168,6 +177,8 @@ const ImagePost = ({ post, isNew = false, onDelete }) => {
         throw new Error("Could not delete comment");
       }
 
+      toast.success("Comment deleted successfully");
+
       setComments((prevComments) =>
         prevComments.map((comment) =>
           comment._id === commentId ? { ...comment, deleting: true } : comment
@@ -183,7 +194,7 @@ const ImagePost = ({ post, isNew = false, onDelete }) => {
       }, 500); //duration to wait for animation to finish
       setCommentCount((prev) => --prev);
     } catch (error) {
-      console.error("Error deleting post", error);
+      toast.error("Error deleting post");
     }
   };
 
@@ -209,7 +220,7 @@ const ImagePost = ({ post, isNew = false, onDelete }) => {
 
   // Function to render SVG based on like and hover state
   const renderLikeSVG = () => {
-    if (isLiked && isLikeHovered) {
+    if (isLiked) {
       return unlikeSVG;
     } else {
       /*else if (isLiked) {

@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import styles from "../css/PasswordReset.module.css";
 
+import { toast } from "react-toastify";
+
 function PasswordReset() {
   const [password, setPassword] = useState("");
   const [passwordError, setPasswordError] = useState("");
@@ -56,6 +58,7 @@ function PasswordReset() {
         );
         if (response.ok) {
           setIsResetSuccessful(true); // Set success state
+          toast.success("Password reset successfully!");
         } else {
           throw new Error("Failed to reset password");
         }
@@ -63,6 +66,7 @@ function PasswordReset() {
         setPasswordError(
           "Failed to reset password, please check network connection and try again."
         );
+        toast.error("Error resetting password");
       }
     }
   };

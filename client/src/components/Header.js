@@ -7,6 +7,8 @@ import { useContext, useState, useRef, useEffect } from "react";
 import { UserContext } from "../contexts/UserContext";
 import { useNavigate, Link } from "react-router-dom";
 
+import { toast } from "react-toastify";
+
 const Header = () => {
   const { user, updateUser, logoutUser } = useContext(UserContext);
   const navigate = useNavigate();
@@ -37,9 +39,10 @@ const Header = () => {
   const handleLogoutClick = async () => {
     try {
       await logoutUser();
+      toast.success("Logged out successfully!");
       navigate("/login");
     } catch (error) {
-      console.log(error);
+      toast.error("Error logging out");
     }
   };
 
@@ -89,6 +92,7 @@ const Header = () => {
 
       const newFriend = await response.json();
 
+      toast.success("Friend added!");
       updateUser({
         friendRequests: user.friendRequests.filter(
           (req) => req.username !== requesterUsername
@@ -96,7 +100,7 @@ const Header = () => {
         friends: [...user.friends, newFriend],
       });
     } catch (error) {
-      console.error("Error accepting friend request:", error);
+      toast.error("Error accepting friend request");
     }
   };
 
@@ -113,13 +117,14 @@ const Header = () => {
       if (!response.ok) {
         throw new Error("Error rejecting request");
       }
+      toast.success("Request rejected");
       updateUser({
         friendRequests: user.friendRequests.filter(
           (req) => req.username !== requesterUsername
         ),
       });
     } catch (error) {
-      console.error("Error rejecting friend request:", error);
+      toast.error("Error rejecting friend request");
     }
   };
 

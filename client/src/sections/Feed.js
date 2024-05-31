@@ -16,6 +16,8 @@ import { UserContext } from "../contexts/UserContext";
 import useWindowSize from "../hooks/useWindowSize";
 import CombinedModule from "../components/CombinedModule";
 
+import { toast } from "react-toastify";
+
 const Feed = ({ specificUser = false }) => {
   const { username } = useParams();
 
@@ -33,24 +35,6 @@ const Feed = ({ specificUser = false }) => {
 
   const { width } = useWindowSize();
   const isMobile = width <= 826;
-
-  const imagePost = {
-    author: {
-      _id: "658547c066a8a4479498d869",
-      username: "Janae_Kuhn",
-      profileImg:
-        "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/831.jpg",
-    },
-    comments: [],
-    content:
-      "Vesco modi volutabrum expedita ustilo vitiosus delego coepi desino voluptates. Demo tondeo defleo uredo vilis absum. Benigne campana turpis vorax ipsa compello veniam coerceo.",
-    createdAt: "2023-12-29T07:51:41.728Z",
-    image: "https://picsum.photos/seed/fd0jRxJTj/640/480",
-    likes: [],
-    likesCount: 0,
-
-    _id: "658e7a8d59d69b59d6ab5a94",
-  };
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -138,8 +122,10 @@ const Feed = ({ specificUser = false }) => {
           prevPosts.filter((post) => post._id !== postId)
         );
       }, 500); //duration to wait for animation to finish
+
+      toast.success("Post deleted successfully!");
     } catch (error) {
-      console.error("Error deleting post", error);
+      toast.error("Error deleting post");
     }
   };
 

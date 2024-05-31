@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { UserContext } from "../contexts/UserContext";
 import logo from "../images/logo-white.png";
 
+import { toast } from "react-toastify";
+
 const ForgotPassword = () => {
   const { forgotPassword } = useContext(UserContext);
   const navigate = useNavigate();
@@ -39,9 +41,9 @@ const ForgotPassword = () => {
     if (validateFields()) {
       const success = await forgotPassword(email);
       if (success) {
-        console.log("Password request sent to email");
+        toast.success("Password request sent to email");
       } else {
-        console.log("Error Sending request");
+        toast.error("Error Sending request");
       }
     }
   };

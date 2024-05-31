@@ -3,17 +3,19 @@ import { generateUploadButton } from "@uploadthing/react";
 import { UserContext } from "../contexts/UserContext";
 import TextBox from "../components/TextBox";
 
+import Header from "../components/Header";
+
 import "@uploadthing/react/styles.css";
 
 import styles from "../css/SettingsPage.module.css";
+
+import { toast } from "react-toastify";
 
 const SettingsPage = () => {
   const { user, updateUser } = useContext(UserContext);
   const [text, setText] = useState(user.aboutMe ? user.aboutMe : "");
 
   const handleClientUploadComplete = async (res) => {
-    console.log("Files: ", res);
-    console.log(res[0].url);
     if (res[0].url) {
       try {
         const response = await fetch(
@@ -30,19 +32,16 @@ const SettingsPage = () => {
 
         const data = await response.json();
         if (response.ok) {
-          console.log("haaaaaaaaaaaaaaaaaaaa");
-          console.log(data.user);
           updateUser(data.user); // Update user context with new user data
-          alert("Profile picture updated successfully!");
+          toast.success("Profile picture updated successfully!");
         } else {
           throw new Error(data.message);
         }
       } catch (error) {
-        console.error("Failed to update profile picture:", error);
-        alert("Failed to update profile picture.");
+        toast.error("Failed to update profile picture.");
       }
     } else {
-      alert("Upload completed, but no image URL returned.");
+      toast.error("Upload completed, but no image URL returned.");
     }
   };
 
@@ -75,9 +74,10 @@ const SettingsPage = () => {
       }
 
       const data = await response.json();
+      toast.success("About Me updated successfully!");
       updateUser(data.user);
     } catch (error) {
-      console.error("error updating aboutMe", error);
+      toast.error("Error updating About Me");
     }
   };
 
@@ -89,40 +89,45 @@ const SettingsPage = () => {
   ); */
 
   return (
-    <div className={styles.container}>
-      <div className={styles.settingsContainer}>
-        <div className={styles.profileContainer}>
-          <img className={styles.profile} src={user.profileImg}></img>
-          <UploadButton
-            endpoint="imageUploader"
-            className={styles.uploadButton}
-            onClientUploadComplete={handleClientUploadComplete}
-            onUploadError={(error) => {
-              console.error("Upload error:", error);
-              alert(`ERROR! ${error.message}`);
-            }}
-            /* content={{
-              button({ ready }) {
-                if (ready) return uploadSVG;
-
-                return "Getting ready...";
-              },
-            }} */
-          />
-        </div>
-        <div className={styles.aboutMeContainer}>
-          <h1 className={styles.abtMeHeader}>Update About Me</h1>
-          <form className={styles.abtMeFormContainer} onSubmit={handleAboutMe}>
-            <textarea
-              className={styles.textBox}
-              placeholder={text}
-              value={text}
-              onChange={(e) => setText(e.target.value)}
-            ></textarea>
-            <button className={styles.abtMeButton} type="submit">
-              Update
-            </button>
-          </form>
+    <div className={styles.wrapper}>
+      <Header />
+      <div className={styles.container}>
+        <div className={styles.settingsContainer}>
+          <div className={styles.profileContainer}>
+            <img className={styles.profile} src={user.profileImg}></img>
+            <UploadButton
+              endpoint="imageUploader"
+              className={styles.uploadButton}
+              onClientUploadComplete={handleClientUploadComplete}
+              onUploadError={(error) => {
+                console.error("Upload error:", error);
+                alert(`ERROR! ${error.message}`);
+              }}
+              /* content={{
+                button({ ready }) {
+                  if (ready) return uploadSVG;
+                  return "Getting ready...";
+                },
+              }} */
+            />
+          </div>
+          <div className={styles.aboutMeContainer}>
+            <h1 className={styles.abtMeHeader}>Update About Me</h1>
+            <form
+              className={styles.abtMeFormContainer}
+              onSubmit={handleAboutMe}
+            >
+              <textarea
+                className={styles.textBox}
+                placeholder={text}
+                value={text}
+                onChange={(e) => setText(e.target.value)}
+              ></textarea>
+              <button className={styles.abtMeButton} type="submit">
+                Update
+              </button>
+            </form>
+          </div>
         </div>
       </div>
     </div>

@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams, useLocation } from "react-router-dom";
 
+import { toast } from "react-toastify";
+
 const EmailVerification = () => {
   const location = useLocation();
   const [message, setMessage] = useState("Verifying your email...");

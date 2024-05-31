@@ -3,6 +3,8 @@ import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../contexts/UserContext";
 
+import { toast } from "react-toastify";
+
 const SignupPage = () => {
   const { signupUser } = useContext(UserContext);
   const navigate = useNavigate();
@@ -94,8 +96,19 @@ const SignupPage = () => {
   const handleSignup = async (e) => {
     e.preventDefault();
     if (validateFields()) {
-      await signupUser({ username, name, email, password });
-      navigate("/");
+      try {
+        const success = await signupUser({ username, name, email, password });
+
+        if (success) {
+          toast.success(
+            "Verification link sent to your email please verify so you can login"
+          );
+
+          navigate("/");
+        }
+      } catch (error) {
+        toast.error("Error Signingup/sending verification link to email");
+      }
     }
   };
 

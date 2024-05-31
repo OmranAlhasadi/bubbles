@@ -1,3 +1,11 @@
+.wrapper {
+
+    display: flex;
+    flex-direction: column;
+    background-image: radial-gradient( #d8b4fe, #f5d0fe, white);
+
+}
+
 .container {
     display: flex;
     align-items: center;

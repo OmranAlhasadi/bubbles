@@ -3,6 +3,8 @@ import styles from "../css/CreatePostModule.module.css";
 
 import { generateUploadButton } from "@uploadthing/react";
 
+import { toast } from "react-toastify";
+
 const CreatePostModule = ({ passNewPost }) => {
   const [text, setText] = useState("");
   const [imgUrl, setImgUrl] = useState("");
@@ -28,8 +30,9 @@ const CreatePostModule = ({ passNewPost }) => {
       let newPost = await response.json();
       cleanUp();
       await passNewPost(newPost);
+      toast.success("Post added successfully!");
     } catch {
-      alert("Error creating post");
+      toast.error("Error creating post");
     }
   };
 
@@ -71,12 +74,10 @@ const CreatePostModule = ({ passNewPost }) => {
   };
 
   const handleClientUploadComplete = async (res) => {
-    console.log("Files: ", res);
-    console.log(res[0].url);
     if (res[0].url) {
       setImgUrl(res[0].url);
     } else {
-      alert("Upload completed, but no image URL returned.");
+      toast.error("Upload completed, but no image URL returned.");
     }
   };
 

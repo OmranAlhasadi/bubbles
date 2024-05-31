@@ -10,6 +10,8 @@ import Feed from "../sections/Feed";
 import theif from "../images/thief.jpeg";
 import LoadingPage from "./LoadingPage";
 
+import { toast } from "react-toastify";
+
 const getRelationshipStatus = (user, personUsername) => {
   if (user.friends.some((friend) => friend.username === personUsername)) {
     return "alreadyFriends";
@@ -62,8 +64,7 @@ const PersonProfile = () => {
 
   const renderAddFriendButton = () => {
     const relation = getRelationshipStatus(user, username);
-    console.log(user.sentRequests);
-    console.log(relation);
+
     switch (relation) {
       case "alreadyFriends":
         return (
@@ -128,11 +129,13 @@ const PersonProfile = () => {
       }
       const newRequest = await response.json();
 
+      toast.success("Request sent successfully!");
+
       updateUser({
         sentRequests: [...user.sentRequests, newRequest],
       });
     } catch (error) {
-      console.error("Error sending friend request:", error);
+      toast.error("Error sending friend request");
     }
   };
 
