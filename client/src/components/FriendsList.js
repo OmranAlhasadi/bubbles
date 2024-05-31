@@ -14,31 +14,11 @@ const FriendsList = ({ otherUser = false }) => {
   const { user, updateUser } = useContext(UserContext);
 
   useEffect(() => {
-    /*const fetchFriends = async () => {
-      // Ensure user and user.uid are available
-      if (user && user.uid) {
-        try {
-          const response = await fetch(
-            `http://localhost:3001/api/${user.uid}/friends`
-          );
-          if (!response.ok) {
-            throw new Error("Could not fetch friends");
-          }
-          const fetchedFriends = await response.json();
-          setFriends(fetchedFriends);
-        } catch (error) {
-          console.error("Error fetching friends", error);
-        }
-      }
-    };
-
-    fetchFriends(); */
-
     const getOtherUser = async () => {
       if (user) {
         try {
           const response = await fetch(
-            `http://localhost:3001/api/user/other-user/${username}`,
+            `${process.env.REACT_APP_API_URL}/api/user/other-user/${username}`,
             { credentials: "include" }
           );
           if (!response.ok) {

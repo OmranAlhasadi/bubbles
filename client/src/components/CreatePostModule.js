@@ -16,12 +16,15 @@ const CreatePostModule = ({ passNewPost }) => {
         imageURL: imgUrl,
       };
 
-      const response = await fetch("http://localhost:3001/api/posts", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify(postBody),
-      });
+      const response = await fetch(
+        `${process.env.REACT_APP_API_URL}/api/posts`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify(postBody),
+        }
+      );
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -39,7 +42,7 @@ const CreatePostModule = ({ passNewPost }) => {
   const UploadButton = useMemo(
     () =>
       generateUploadButton({
-        url: "http://localhost:3001/api/uploadthing",
+        url: `${process.env.REACT_APP_API_URL}/api/uploadthing`,
       }),
     []
   );

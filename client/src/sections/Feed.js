@@ -39,9 +39,12 @@ const Feed = ({ specificUser = false }) => {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await fetch("http://localhost:3001/api/posts", {
-          credentials: "include",
-        });
+        const response = await fetch(
+          `${process.env.REACT_APP_API_URL}/api/posts`,
+          {
+            credentials: "include",
+          }
+        );
 
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -58,7 +61,7 @@ const Feed = ({ specificUser = false }) => {
     const fetchUserPosts = async (username) => {
       try {
         const response = await fetch(
-          `http://localhost:3001/api/posts/${username}`,
+          `${process.env.REACT_APP_API_URL}/api/posts/${username}`,
           {
             credentials: "include",
           }
@@ -97,7 +100,7 @@ const Feed = ({ specificUser = false }) => {
     try {
       // Delete request
       const response = await fetch(
-        `http://localhost:3001/api/posts/${postId}`,
+        `${process.env.REACT_APP_API_URL}/api/posts/${postId}`,
         {
           method: "DELETE",
           headers: { "Content-Type": "application/json" },

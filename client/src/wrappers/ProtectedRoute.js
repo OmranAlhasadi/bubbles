@@ -11,7 +11,7 @@ const ProtectedRoute = ({ children }) => {
       const checkAuthStatus = async () => {
         try {
           const response = await fetch(
-            "http://localhost:3001/api/auth/status",
+            `${process.env.REACT_APP_API_URL}/api/auth/status`,
             {
               credentials: "include",
             }

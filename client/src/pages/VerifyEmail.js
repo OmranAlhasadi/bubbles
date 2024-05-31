@@ -12,7 +12,9 @@ const EmailVerification = () => {
     const token = queryParams.get("token");
 
     if (token) {
-      fetch(`http://localhost:3001/api/auth/verify-email?token=${token}`)
+      fetch(
+        `${process.env.REACT_APP_API_URL}/api/auth/verify-email?token=${token}`
+      )
         .then((res) => res.text())
         .then((data) => setMessage(data))
         .catch((err) =>

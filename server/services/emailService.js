@@ -2,7 +2,7 @@ const sendgridMail = require("@sendgrid/mail");
 sendgridMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 exports.sendVerificationEmail = async (email, token) => {
-  const verificationUrl = `http://localhost:3000/verify-email?token=${token}`;
+  const verificationUrl = `${process.env.CLIENT_URL}/verify-email?token=${token}`;
   const mailOptions = {
     to: email,
     from: "throwawayomran@gmail.com",

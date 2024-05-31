@@ -278,7 +278,7 @@ exports.verifyEmail = async (req, res) => {
     }
 
     user.emailVerified = true;
-    user.emailVerificationToken = ""; // Optionally clear the token
+    user.emailVerificationToken = "";
     await user.save();
 
     res.send("Email verified successfully. You may now login.");
@@ -310,7 +310,7 @@ exports.forgotPassword = async (req, res) => {
 
     await user.save();
 
-    const resetUrl = `http://localhost:3000/reset-password/${resetToken}`;
+    const resetUrl = `${process.env.CLIENT_URL}/reset-password/${resetToken}`;
     await emailService.sendPasswordResetEmail(user.email, resetUrl);
 
     res.send(

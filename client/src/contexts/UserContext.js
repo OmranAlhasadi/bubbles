@@ -8,12 +8,15 @@ export const UserProvider = ({ children }) => {
   // Function to handle user login
   const loginUser = async (username, password) => {
     try {
-      const response = await fetch("http://localhost:3001/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }),
-        credentials: "include",
-      });
+      const response = await fetch(
+        `${process.env.REACT_APP_API_URL}/api/auth/login`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username, password }),
+          credentials: "include",
+        }
+      );
 
       if (!response.ok) throw new Error("Login failed");
 
@@ -31,7 +34,7 @@ export const UserProvider = ({ children }) => {
   const loginExampleUser = async () => {
     try {
       const response = await fetch(
-        "http://localhost:3001/api/auth/login-example",
+        `${process.env.REACT_APP_API_URL}/api/auth/login-example`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -53,12 +56,15 @@ export const UserProvider = ({ children }) => {
   // Function to handle user signup
   const signupUser = async (userData) => {
     try {
-      const response = await fetch("http://localhost:3001/api/auth/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(userData),
-        credentials: "include",
-      });
+      const response = await fetch(
+        `${process.env.REACT_APP_API_URL}/api/auth/register`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(userData),
+          credentials: "include",
+        }
+      );
 
       if (!response.ok) throw new Error("Signup failed");
 
@@ -72,7 +78,7 @@ export const UserProvider = ({ children }) => {
   // Function to handle user logout
   const logoutUser = async () => {
     try {
-      await fetch("http://localhost:3001/api/auth/logout", {
+      await fetch(`${process.env.REACT_APP_API_URL}/api/auth/logout`, {
         method: "GET",
         credentials: "include",
       });
@@ -85,7 +91,7 @@ export const UserProvider = ({ children }) => {
   // Function to handle user logout
   const forgotPassword = async (email) => {
     try {
-      await fetch("http://localhost:3001/api/auth/forgot-password", {
+      await fetch(`${process.env.REACT_APP_API_URL}/api/auth/forgot-password`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -107,9 +113,12 @@ export const UserProvider = ({ children }) => {
   useEffect(() => {
     const checkAuthStatus = async () => {
       try {
-        const response = await fetch("http://localhost:3001/api/auth/status", {
-          credentials: "include",
-        });
+        const response = await fetch(
+          `${process.env.REACT_APP_API_URL}/api/auth/status`,
+          {
+            credentials: "include",
+          }
+        );
 
         if (!response.ok) throw new Error("Auth check failed");
 

@@ -5,8 +5,13 @@
 
 # Server environment variables
 /server/.env
+/server/.env.production
 /server/node_modules
 /server/utils/populateUsers.js
+
+# Client environment variables
+/client/.env
+/client/.env.production
 
 # Logs
 /logs
