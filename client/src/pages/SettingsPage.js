@@ -1,7 +1,6 @@
 import { useContext, useState, useMemo } from "react";
 import { generateUploadButton } from "@uploadthing/react";
 import { UserContext } from "../contexts/UserContext";
-import TextBox from "../components/TextBox";
 
 import Header from "../components/Header";
 
