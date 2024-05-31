@@ -4,7 +4,7 @@ const authMiddleware = (req, res, next) => {
   const token = req.cookies.token;
   /* console.log("Token received:", token); */ // Check what token is received
   if (!token || token === undefined)
-    return res.status(401).send("Access Denied");
+    return res.status(401).send("Access Denied jjjjjjjj");
 
   try {
     const verified = jwt.verify(token, process.env.JWT_SECRET);
