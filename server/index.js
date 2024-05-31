@@ -23,8 +23,6 @@ const corsOptions = {
   credentials: true, // to allow sending cookies and auth headers
 };
 
-app.use(cors(corsOptions));
-
 // Accept client requests requests
 app.use(cors(corsOptions));
 
