@@ -53,7 +53,7 @@ app.use("/api/auth", authRoutes);
 
 //Token check
 
-app.use(authMiddleware);
+//app.use(authMiddleware);
 
 const userRoutes = require("./routes/userRoutes");
 app.use("/api/user", userRoutes);
