@@ -9,7 +9,7 @@ export const UserProvider = ({ children }) => {
   const loginUser = async (username, password) => {
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_API_URL}/api/auth/login`,
+        `${process.env.REACT_APP_API_URL}api/auth/login`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -34,7 +34,7 @@ export const UserProvider = ({ children }) => {
   const loginExampleUser = async () => {
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_API_URL}/api/auth/login-example`,
+        `${process.env.REACT_APP_API_URL}api/auth/login-example`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -57,7 +57,7 @@ export const UserProvider = ({ children }) => {
   const signupUser = async (userData) => {
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_API_URL}/api/auth/register`,
+        `${process.env.REACT_APP_API_URL}api/auth/register`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -78,7 +78,7 @@ export const UserProvider = ({ children }) => {
   // Function to handle user logout
   const logoutUser = async () => {
     try {
-      await fetch(`${process.env.REACT_APP_API_URL}/api/auth/logout`, {
+      await fetch(`${process.env.REACT_APP_API_URL}api/auth/logout`, {
         method: "GET",
         credentials: "include",
       });
@@ -91,7 +91,7 @@ export const UserProvider = ({ children }) => {
   // Function to handle user logout
   const forgotPassword = async (email) => {
     try {
-      await fetch(`${process.env.REACT_APP_API_URL}/api/auth/forgot-password`, {
+      await fetch(`${process.env.REACT_APP_API_URL}api/auth/forgot-password`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -114,7 +114,7 @@ export const UserProvider = ({ children }) => {
     const checkAuthStatus = async () => {
       try {
         const response = await fetch(
-          `${process.env.REACT_APP_API_URL}/api/auth/status`,
+          `${process.env.REACT_APP_API_URL}api/auth/status`,
           {
             credentials: "include",
           }

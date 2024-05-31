@@ -66,7 +66,7 @@ const ImagePost = ({ post, isNew = false, onDelete }) => {
     if (!isLiked) {
       try {
         const response = await fetch(
-          `${process.env.REACT_APP_API_URL}/api/posts/${post._id}/like`,
+          `${process.env.REACT_APP_API_URL}api/posts/${post._id}/like`,
           {
             method: "POST",
             headers: {
@@ -90,7 +90,7 @@ const ImagePost = ({ post, isNew = false, onDelete }) => {
     } else if (isLiked) {
       try {
         const response = await fetch(
-          `${process.env.REACT_APP_API_URL}/api/posts/${post._id}/like`,
+          `${process.env.REACT_APP_API_URL}api/posts/${post._id}/like`,
           {
             method: "DELETE",
             headers: {
@@ -133,7 +133,7 @@ const ImagePost = ({ post, isNew = false, onDelete }) => {
 
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_API_URL}/api/posts/${post._id}/comments`,
+        `${process.env.REACT_APP_API_URL}api/posts/${post._id}/comments`,
         {
           method: "POST",
           headers: {
@@ -165,7 +165,7 @@ const ImagePost = ({ post, isNew = false, onDelete }) => {
     try {
       // Delete request
       const response = await fetch(
-        `${process.env.REACT_APP_API_URL}/api/posts/comments/${commentId}`,
+        `${process.env.REACT_APP_API_URL}api/posts/comments/${commentId}`,
         {
           method: "DELETE",
           headers: { "Content-Type": "application/json" },

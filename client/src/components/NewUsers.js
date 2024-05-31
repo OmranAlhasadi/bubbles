@@ -10,7 +10,7 @@ const NewUsers = () => {
     const fetchNewUsers = async () => {
       try {
         const res = await fetch(
-          `${process.env.REACT_APP_API_URL}/api/user/new-users`,
+          `${process.env.REACT_APP_API_URL}api/user/new-users`,
           {
             credentials: "include",
           }

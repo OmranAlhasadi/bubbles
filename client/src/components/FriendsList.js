@@ -18,7 +18,7 @@ const FriendsList = ({ otherUser = false }) => {
       if (user) {
         try {
           const response = await fetch(
-            `${process.env.REACT_APP_API_URL}/api/user/other-user/${username}`,
+            `${process.env.REACT_APP_API_URL}api/user/other-user/${username}`,
             { credentials: "include" }
           );
           if (!response.ok) {
