@@ -17,9 +17,13 @@ exports.registerUser = async (req, res) => {
         existingUser.emailVerificationToken = newToken;
         await existingUser.save();
         await emailService.sendVerificationEmail(req.body.email, newToken);
-        return res.status(200).send("A new verification email has been sent.");
+        return res
+          .status(200)
+          .json({ message: "A new verification email has been sent." });
       }
-      return res.status(400).send("User already exists and is verified.");
+      return res
+        .status(400)
+        .json({ message: "User already exists and is verified." });
     }
 
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
@@ -45,10 +49,12 @@ exports.registerUser = async (req, res) => {
       req.body.email,
       emailVerificationToken
     );
-    res.status(201).send("Please check your email to verify your account.");
+    res
+      .status(201)
+      .json({ message: "Please check your email to verify your account." });
   } catch (error) {
     console.error("Error registering new user", error);
-    res.status(500).send("Error registering new user");
+    res.status(500).json({ message: "Error registering new user" });
   }
 };
 
@@ -61,7 +67,7 @@ exports.loginUser = async (req, res) => {
       .populate("sentRequests", "username profileImg");
 
     if (!user || !(await bcrypt.compare(req.body.password, user.password))) {
-      return res.status(401).send("Invalid credentials");
+      return res.status(401).json({ message: "Invalid credentials" });
     }
 
     if (user.emailVerified === false) {
@@ -78,7 +84,9 @@ exports.loginUser = async (req, res) => {
 
       return res
         .status(401)
-        .send("Email not verified yet, verification link sent to email");
+        .json({
+          message: "Email not verified yet, verification link sent to email",
+        });
     }
 
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
@@ -126,7 +134,7 @@ exports.loginUser = async (req, res) => {
       },
     });
   } catch (error) {
-    res.status(500).send("Error logging in");
+    res.status(500).json({ message: "Error logging in" });
   }
 };
 
@@ -140,7 +148,7 @@ exports.loginExampleUser = async (req, res) => {
       .populate("sentRequests", "username profileImg");
 
     if (!user) {
-      return res.status(401).send("Could not find example user");
+      return res.status(401).json({ message: "Could not find example user" });
     }
 
     // Token for HTTP-only cookie
@@ -189,14 +197,14 @@ exports.loginExampleUser = async (req, res) => {
       },
     });
   } catch (error) {
-    res.status(500).send("Error logging in");
+    res.status(500).json({ message: "Error logging in" });
   }
 };
 
 // Logout user
 exports.logoutUser = (req, res) => {
   res.clearCookie("token");
-  res.status(200).send("Logged out successfully");
+  res.status(200).json({ message: "Logged out successfully" });
 };
 
 // Check auth status
@@ -217,7 +225,7 @@ exports.checkAuthStatus = async (req, res) => {
         .populate("sentRequests", "username profileImg");
 
       if (!user) {
-        return res.status(404).send("User not found");
+        return res.status(404).json({ message: "User not found" });
       }
 
       // Less sensitive token for client context
@@ -253,7 +261,7 @@ exports.checkAuthStatus = async (req, res) => {
       res.status(200).json({ isAuthenticated: true, user: userDetail });
     } catch (error) {
       console.error("Error fetching user details:", error);
-      res.status(500).send("Internal Server Error");
+      res.status(500).json({ message: "Internal Server Error" });
     }
   } else {
     res.status(200).json({ isAuthenticated: false });
@@ -274,22 +282,24 @@ exports.verifyEmail = async (req, res) => {
     if (!user) {
       return res
         .status(400)
-        .send("Verification link is invalid or has expired.");
+        .json({ message: "Verification link is invalid or has expired." });
     }
 
     user.emailVerified = true;
     user.emailVerificationToken = "";
     await user.save();
 
-    res.send("Email verified successfully. You may now login.");
+    res.json({ message: "Email verified successfully. You may now login." });
   } catch (error) {
     console.error("Verification error:", error);
     if (error.name === "TokenExpiredError") {
       res
         .status(400)
-        .send("Your verification link has expired. Please sign up again.");
+        .json({
+          message: "Your verification link has expired. Please sign up again.",
+        });
     } else {
-      res.status(500).send("Internal Server Error");
+      res.status(500).json({ message: "Internal Server Error" });
     }
   }
 };
@@ -298,7 +308,9 @@ exports.forgotPassword = async (req, res) => {
   try {
     const user = await User.findOne({ email: req.body.email });
     if (!user) {
-      return res.status(404).send("No account with that email address exists.");
+      return res
+        .status(404)
+        .json({ message: "No account with that email address exists." });
     }
 
     // Generate a token with jwt or any other method you prefer
@@ -313,12 +325,13 @@ exports.forgotPassword = async (req, res) => {
     const resetUrl = `${process.env.CLIENT_URL}/reset-password/${resetToken}`;
     await emailService.sendPasswordResetEmail(user.email, resetUrl);
 
-    res.send(
-      "An email has been sent to your email address with further instructions."
-    );
+    res.json({
+      message:
+        "An email has been sent to your email address with further instructions.",
+    });
   } catch (error) {
     console.error("Password reset error:", error);
-    res.status(500).send("Error sending password reset email.");
+    res.status(500).json({ message: "Error sending password reset email." });
   }
 };
 
@@ -333,7 +346,7 @@ exports.resetPassword = async (req, res) => {
     if (!user) {
       return res
         .status(400)
-        .send("Password reset token is invalid or has expired.");
+        .json({ message: "Password reset token is invalid or has expired." });
     }
 
     user.password = await bcrypt.hash(req.body.password, 10);
@@ -341,9 +354,9 @@ exports.resetPassword = async (req, res) => {
     user.passwordResetExpires = undefined;
     await user.save();
 
-    res.send("Your password has been changed successfully.");
+    res.json({ message: "Your password has been changed successfully." });
   } catch (error) {
     console.error("Error resetting password:", error);
-    res.status(500).send("Error resetting password.");
+    res.status(500).json({ message: "Error resetting password." });
   }
 };

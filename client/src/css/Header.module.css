@@ -109,14 +109,31 @@
     border: none;
     border-radius: 15px;
     cursor: pointer;
+
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 65px;
+    height: 35px;
+
+    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
   }
 
   .accept {
     background-color: #22c55e;
   }
 
+  .accept:hover{
+    background-color: #10b981;
+  }
+
   .reject {
     background-color: #ef4444;
+  }
+
+  .reject:hover {
+    background-color: #dc2626;
   }
   
 

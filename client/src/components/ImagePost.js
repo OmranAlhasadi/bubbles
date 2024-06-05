@@ -9,6 +9,8 @@ import CommentSection from "./CommentSection";
 
 import { toast } from "react-toastify";
 
+import { CircleLoader } from "react-spinners";
+
 const ImagePost = ({ post, isNew = false, onDelete }) => {
   const [showTextbox, setShowTextbox] = useState(false);
   const [showComments, setShowComments] = useState(false);
@@ -23,6 +25,10 @@ const ImagePost = ({ post, isNew = false, onDelete }) => {
   const [isLikeHovered, setIsLikeHovered] = useState(false);
   const [likeCount, setLikeCount] = useState(post.likes.length);
   const [commentCount, setCommentCount] = useState(post.comments.length);
+
+  const [isLiking, setIsLiking] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [isCommenting, setIsCommenting] = useState(false);
 
   const [visible, setVisible] = useState(false);
   const observerRef = useRef(null); // Reference for the observer
@@ -63,6 +69,8 @@ const ImagePost = ({ post, isNew = false, onDelete }) => {
   };
 
   const handleLikeButton = async () => {
+    setIsLiking(true);
+
     if (!isLiked) {
       try {
         const response = await fetch(
@@ -86,6 +94,8 @@ const ImagePost = ({ post, isNew = false, onDelete }) => {
         toast.success("Post liked");
       } catch (error) {
         toast.error("Error liking post");
+      } finally {
+        setIsLiking(false);
       }
     } else if (isLiked) {
       try {
@@ -110,8 +120,11 @@ const ImagePost = ({ post, isNew = false, onDelete }) => {
         setLikeCount((prev) => --prev);
       } catch (error) {
         toast.error("Error unliking post");
+      } finally {
+        setIsLiking(false);
       }
     } else {
+      setIsLiking(false);
       toast.error("Error handling liked state");
     }
   };
@@ -122,8 +135,14 @@ const ImagePost = ({ post, isNew = false, onDelete }) => {
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
-  const onDeleteClick = () => {
-    onDelete(post._id);
+  const onDeleteClick = async () => {
+    setIsDeleting(true);
+
+    try {
+      await onDelete(post._id);
+    } catch (e) {
+      setIsDeleting(false);
+    }
   };
 
   const postComment = async (commentText) => {
@@ -157,7 +176,7 @@ const ImagePost = ({ post, isNew = false, onDelete }) => {
       setComments((prev) => [...prev, newComment]);
       setCommentCount((prev) => ++prev);
     } catch (error) {
-      toast.error("Error posting comment");
+      toast.error(error.message || "Error posting comment");
     }
   };
 
@@ -174,7 +193,8 @@ const ImagePost = ({ post, isNew = false, onDelete }) => {
       );
 
       if (!response.ok) {
-        throw new Error("Could not delete comment");
+        const error = await response.json();
+        throw new Error(error.message || "Could not delete comment");
       }
 
       toast.success("Comment deleted successfully");
@@ -194,7 +214,8 @@ const ImagePost = ({ post, isNew = false, onDelete }) => {
       }, 500); //duration to wait for animation to finish
       setCommentCount((prev) => --prev);
     } catch (error) {
-      toast.error("Error deleting post");
+      toast.error(error.message || "Error deleting comment");
+      throw error;
     }
   };
 
@@ -240,7 +261,7 @@ const ImagePost = ({ post, isNew = false, onDelete }) => {
       } ${visible ? styles.expanded : styles.bubble}`}
     >
       {visible ? (
-        <div className={styles.container}>
+        <div className={`${styles.container} ${isDeleting ? "disabled" : ""}`}>
           <div className={styles.postHeader}>
             <div className={styles.info}>
               <img
@@ -252,16 +273,20 @@ const ImagePost = ({ post, isNew = false, onDelete }) => {
               </a>
               <span>{formatDate(post.createdAt)}</span>
             </div>
-            {post.author && post.author.username === user.username && (
-              <svg
-                className={styles.trash}
-                onClick={onDeleteClick}
-                viewBox="0 0 16 16"
-              >
-                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
-                <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
-              </svg>
-            )}
+            {post.author &&
+              post.author.username === user.username &&
+              (isDeleting ? (
+                <CircleLoader color="#b91c1c" size="20px" />
+              ) : (
+                <svg
+                  className={styles.trash}
+                  onClick={onDeleteClick}
+                  viewBox="0 0 16 16"
+                >
+                  <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
+                  <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
+                </svg>
+              ))}
           </div>
           {post.image && (
             <img
@@ -291,15 +316,23 @@ const ImagePost = ({ post, isNew = false, onDelete }) => {
             <div
               className={`${styles.likeButton} ${
                 showTextbox ? styles.isCommenting : ""
-              }    ${isLiked ? styles.liked : ""} `}
+              }    ${isLiked ? styles.liked : ""} ${
+                isLiking ? "disabled" : ""
+              }`}
               onClick={handleLikeButton}
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
             >
-              {renderLikeSVG()}
-              <div className={styles.buttonText}>
-                {isLiked ? "Unlike" : "Like"}
-              </div>
+              {isLiking ? (
+                <CircleLoader size="20px" color="#c084fc" />
+              ) : (
+                <>
+                  {renderLikeSVG()}
+                  <div className={styles.buttonText}>
+                    {isLiked ? "Unlike" : "Like"}
+                  </div>
+                </>
+              )}
             </div>
             <div
               className={`${styles.commentButton} ${

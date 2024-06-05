@@ -9,6 +9,8 @@ import { useNavigate, Link } from "react-router-dom";
 
 import { toast } from "react-toastify";
 
+import { CircleLoader } from "react-spinners";
+
 const Header = () => {
   const { user, updateUser, logoutUser } = useContext(UserContext);
   const navigate = useNavigate();
@@ -17,9 +19,19 @@ const Header = () => {
   const requestsRef = useRef();
   const svgRef = useRef();
 
+  const [loadingAccept, setLoadingAccept] = useState({});
+  const [loadingReject, setLoadingReject] = useState({});
+
   // toggle friend request list
   const toggleRequests = () => {
     setShowRequests((showRequests) => !showRequests);
+  };
+
+  const isAnyRequestLoading = () => {
+    return (
+      Object.values(loadingAccept).some((isLoading) => isLoading) ||
+      Object.values(loadingReject).some((isLoading) => isLoading)
+    );
   };
 
   const handleProfileClick = () => {
@@ -77,6 +89,8 @@ const Header = () => {
       return;
     }
 
+    setLoadingAccept((prev) => ({ ...prev, [requesterUsername]: true }));
+
     try {
       const response = await fetch(
         `${process.env.REACT_APP_API_URL}/api/user/accept-request/${requesterUsername}`,
@@ -87,7 +101,8 @@ const Header = () => {
       );
 
       if (!response.ok) {
-        throw new Error("Error accepting friend request");
+        const error = await response.json();
+        throw new Error(error.message || "Error accepting friend request");
       }
 
       const newFriend = await response.json();
@@ -100,12 +115,16 @@ const Header = () => {
         friends: [...user.friends, newFriend],
       });
     } catch (error) {
-      toast.error("Error accepting friend request");
+      toast.error(error.message || "Error accepting friend request");
+    } finally {
+      setLoadingAccept((prev) => ({ ...prev, [requesterUsername]: false }));
     }
   };
 
   // Function to handle rejecting a friend request
   const handleRejectRequest = async (requesterUsername) => {
+    setLoadingReject((prev) => ({ ...prev, [requesterUsername]: true }));
+
     try {
       const response = await fetch(
         `${process.env.REACT_APP_API_URL}/api/user/reject-request/${requesterUsername}`,
@@ -115,7 +134,8 @@ const Header = () => {
         }
       );
       if (!response.ok) {
-        throw new Error("Error rejecting request");
+        const error = await response.json();
+        throw new Error(error.message || "Error rejecting request");
       }
       toast.success("Request rejected");
       updateUser({
@@ -124,7 +144,9 @@ const Header = () => {
         ),
       });
     } catch (error) {
-      toast.error("Error rejecting friend request");
+      toast.error(error.message || "Error rejecting friend request");
+    } finally {
+      setLoadingReject((prev) => ({ ...prev, [requesterUsername]: false }));
     }
   };
 
@@ -161,7 +183,12 @@ const Header = () => {
           <path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m-5 6s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zM11 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5m.5 2.5a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1zm2 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1zm0 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1z" />
         </svg>
         {showRequests && (
-          <div className={styles.friendRequestsList} ref={requestsRef}>
+          <div
+            className={`${styles.friendRequestsList} ${
+              isAnyRequestLoading() ? "disabled" : ""
+            }`}
+            ref={requestsRef}
+          >
             {user.friendRequests.length === 0 ? (
               <div className={styles.noRequestsMessage}>No friend requests</div>
             ) : (
@@ -183,13 +210,21 @@ const Header = () => {
                         className={styles.accept}
                         onClick={() => handleAcceptRequest(request.username)}
                       >
-                        Accept
+                        {loadingAccept[request.username] ? (
+                          <CircleLoader size="20px" color="white" />
+                        ) : (
+                          "Accept"
+                        )}
                       </button>
                       <button
                         className={styles.reject}
                         onClick={() => handleRejectRequest(request.username)}
                       >
-                        Reject
+                        {loadingReject[request.username] ? (
+                          <CircleLoader size="20px" color="white" />
+                        ) : (
+                          "Reject"
+                        )}
                       </button>
                     </div>
                   </div>

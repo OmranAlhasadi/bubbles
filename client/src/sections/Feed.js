@@ -109,7 +109,8 @@ const Feed = ({ specificUser = false }) => {
       );
 
       if (!response.ok) {
-        throw new Error("Could not delete post");
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Could not delete post");
       }
 
       setPosts((prevPosts) =>
@@ -128,7 +129,8 @@ const Feed = ({ specificUser = false }) => {
 
       toast.success("Post deleted successfully!");
     } catch (error) {
-      toast.error("Error deleting post");
+      toast.error(error.message || "Error deleting post");
+      throw error;
     }
   };
 

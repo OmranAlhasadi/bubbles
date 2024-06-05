@@ -9,10 +9,13 @@ import "@uploadthing/react/styles.css";
 import styles from "../css/SettingsPage.module.css";
 
 import { toast } from "react-toastify";
+import { CircleLoader } from "react-spinners";
 
 const SettingsPage = () => {
   const { user, updateUser } = useContext(UserContext);
   const [text, setText] = useState(user.aboutMe ? user.aboutMe : "");
+
+  const [isUpdatingAbtMe, setIsUpdatingAbtMe] = useState(false);
 
   const handleClientUploadComplete = async (res) => {
     if (res[0].url) {
@@ -32,12 +35,14 @@ const SettingsPage = () => {
         const data = await response.json();
         if (response.ok) {
           updateUser(data.user); // Update user context with new user data
+          console.log(data.user);
+          console.log(user.profileImg);
           toast.success("Profile picture updated successfully!");
         } else {
           throw new Error(data.message);
         }
       } catch (error) {
-        toast.error("Failed to update profile picture.");
+        toast.error(error.message || "Failed to update profile picture.");
       }
     } else {
       toast.error("Upload completed, but no image URL returned.");
@@ -54,6 +59,8 @@ const SettingsPage = () => {
 
   const handleAboutMe = async (e) => {
     e.preventDefault();
+    setIsUpdatingAbtMe(true);
+
     try {
       const aboutBody = {
         content: text,
@@ -68,16 +75,17 @@ const SettingsPage = () => {
           body: JSON.stringify(aboutBody),
         }
       );
-
+      const data = await response.json();
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        throw new Error(data.message);
       }
       toast.success("About Me updated successfully!");
-      const data = await response.json();
 
       updateUser(data.user);
     } catch (error) {
-      toast.error("Error updating About Me");
+      toast.error(error.message || "Error updating About Me");
+    } finally {
+      setIsUpdatingAbtMe(false);
     }
   };
 
@@ -111,7 +119,11 @@ const SettingsPage = () => {
               }} */
             />
           </div>
-          <div className={styles.aboutMeContainer}>
+          <div
+            className={`${styles.aboutMeContainer} ${
+              isUpdatingAbtMe ? "disabled" : ""
+            }`}
+          >
             <h1 className={styles.abtMeHeader}>Update About Me</h1>
             <form
               className={styles.abtMeFormContainer}
@@ -124,7 +136,11 @@ const SettingsPage = () => {
                 onChange={(e) => setText(e.target.value)}
               ></textarea>
               <button className={styles.abtMeButton} type="submit">
-                Update
+                {isUpdatingAbtMe ? (
+                  <CircleLoader size="25px" color="white" />
+                ) : (
+                  "Update"
+                )}
               </button>
             </form>
           </div>

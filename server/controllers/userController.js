@@ -181,7 +181,7 @@ module.exports.getNewUsers = async (req, res) => {
     res.json(newUsersData);
   } catch (err) {
     console.error(err.message);
-    res.status(500).send("Server Error");
+    res.status(500).json({ message: "Server Error" });
   }
 };
 
@@ -214,7 +214,7 @@ module.exports.getFriends = async (req, res) => {
 
 module.exports.sendFriendRequest = async (req, res) => {
   const userId = req.userId; // User ID of the user sending the request
-  console.log(userId);
+
   const recieverUsername = req.params.recieverUsername; // Username of the user who will recieve the request
 
   try {
@@ -222,7 +222,7 @@ module.exports.sendFriendRequest = async (req, res) => {
     const reciever = await User.findOne({ username: recieverUsername });
 
     if (!user || !reciever) {
-      return res.status(404).send("User not found.");
+      return res.status(404).json({ message: "User not found." });
     }
 
     // Check if the reciever's ID is in the user's sentRequests
@@ -231,7 +231,7 @@ module.exports.sendFriendRequest = async (req, res) => {
       user.sentRequests.includes(reciever._id) ||
       reciever.friendRequests.includes(user._id)
     ) {
-      return res.status(400).send("Friend request already sent.");
+      return res.status(400).json({ message: "Friend request already sent." });
     }
 
     // Add the request to sentRequests of the sender
@@ -253,7 +253,7 @@ module.exports.sendFriendRequest = async (req, res) => {
     res.status(200).json(newRequest);
   } catch (error) {
     console.error(error);
-    res.status(500).send("Error sending friend request");
+    res.status(500).json({ message: "Error sending friend request" });
   }
 };
 
@@ -266,7 +266,7 @@ module.exports.acceptFriendRequest = async (req, res) => {
     const requester = await User.findOne({ username: requesterUsername });
 
     if (!user || !requester) {
-      return res.status(404).send("User not found.");
+      return res.status(404).json({ message: "User not found." });
     }
 
     // Check if the requester's ID is in the user's friendRequests
@@ -275,7 +275,7 @@ module.exports.acceptFriendRequest = async (req, res) => {
       !user.friendRequests.includes(requester._id) ||
       !requester.sentRequests.includes(user._id)
     ) {
-      return res.status(400).send("Invalid friend request.");
+      return res.status(400).json({ message: "Invalid friend request." });
     }
 
     // Remove the request from friendRequests and add to friends for the recipient
@@ -300,7 +300,7 @@ module.exports.acceptFriendRequest = async (req, res) => {
     res.status(200).json(newFriend);
   } catch (error) {
     console.error(error);
-    res.status(500).send("Error accepting friend request");
+    res.status(500).json({ message: "Error accepting friend request" });
   }
 };
 
@@ -313,7 +313,7 @@ module.exports.rejectFriendRequest = async (req, res) => {
     const requester = await User.findOne({ username: requesterUsername });
 
     if (!user || !requester) {
-      return res.status(404).send("User not found.");
+      return res.status(404).json({ message: "User not found." });
     }
 
     // Check if the requester's ID is in the user's friendRequests
@@ -322,7 +322,7 @@ module.exports.rejectFriendRequest = async (req, res) => {
       !user.friendRequests.includes(requester._id) ||
       !requester.sentRequests.includes(user._id)
     ) {
-      return res.status(400).send("Invalid friend request.");
+      return res.status(400).json({ message: "Invalid friend request." });
     }
 
     // Remove the request from friendRequests of the recipient
@@ -335,10 +335,10 @@ module.exports.rejectFriendRequest = async (req, res) => {
       $pull: { sentRequests: user._id },
     });
 
-    res.status(200).send("Friend request rejected.");
+    res.status(200).json({ message: "Friend request rejected." });
   } catch (error) {
     console.error(error);
-    res.status(500).send("Error rejecting friend request");
+    res.status(500).json({ message: "Error rejecting friend request" });
   }
 };
 
@@ -347,25 +347,24 @@ module.exports.updateProfilePicture = async (req, res) => {
     const userId = req.userId;
     const { imageUrl } = req.body;
 
-    console.log(imageUrl);
-
     const user = await User.findByIdAndUpdate(
       userId,
       { profileImg: imageUrl },
       { new: true }
     );
     if (!user) {
-      return res.status(404).send("User not found");
+      return res.status(404).json({ message: "User not found" });
     }
 
-    console.log(user);
+    const returnedUser = { profileImg: user.profileImg };
 
-    res
-      .status(200)
-      .json({ message: "Profile picture updated successfully", user });
+    res.status(200).json({
+      message: "Profile picture updated successfully",
+      user: returnedUser,
+    });
   } catch (error) {
     console.error("Failed to update profile picture:", error);
-    res.status(500).send("Failed to update profile picture");
+    res.status(500).json({ message: "Failed to update profile picture" });
   }
 };
 
@@ -380,12 +379,16 @@ module.exports.updateAboutMe = async (req, res) => {
       { new: true }
     );
     if (!user) {
-      return res.status(404).send("User not found");
+      return res.status(404).json({ message: "User not found" });
     }
 
-    res.status(200).json({ message: "AboutMe updated successfully", user });
+    const returnedUser = { aboutMe: user.aboutMe };
+
+    res
+      .status(200)
+      .json({ message: "AboutMe updated successfully", user: returnedUser });
   } catch (error) {
     console.error("Failed to update aboutMe:", error);
-    res.status(500).send("Failed to update aboutMe");
+    res.status(500).json({ message: "Failed to update aboutMe" });
   }
 };

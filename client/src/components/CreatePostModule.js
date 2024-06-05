@@ -5,11 +5,17 @@ import { generateUploadButton } from "@uploadthing/react";
 
 import { toast } from "react-toastify";
 
+import CircleLoader from "react-spinners/CircleLoader";
+
 const CreatePostModule = ({ passNewPost }) => {
   const [text, setText] = useState("");
   const [imgUrl, setImgUrl] = useState("");
 
+  const [isPosting, setIsPosting] = useState(false);
+
   const handleCreatePost = async () => {
+    setIsPosting(true);
+
     try {
       const postBody = {
         content: text,
@@ -32,10 +38,13 @@ const CreatePostModule = ({ passNewPost }) => {
 
       let newPost = await response.json();
       cleanUp();
+
       await passNewPost(newPost);
       toast.success("Post added successfully!");
     } catch {
       toast.error("Error creating post");
+    } finally {
+      setIsPosting(false);
     }
   };
 
@@ -114,7 +123,9 @@ const CreatePostModule = ({ passNewPost }) => {
           <img className={styles.postImg} src={imgUrl} />
         </div>
       )}
-      <div className={styles.buttonsContainer}>
+      <div
+        className={`${styles.buttonsContainer} ${isPosting ? "disabled" : ""}`}
+      >
         <UploadButton
           endpoint="imageUploader"
           className={styles.uploadButton}
@@ -137,8 +148,12 @@ const CreatePostModule = ({ passNewPost }) => {
             },
           }}
         />
-        <button className={styles.postButton} onClick={handleCreatePost}>
-          Post
+        <button
+          disabled={isPosting}
+          className={styles.postButton}
+          onClick={handleCreatePost}
+        >
+          {isPosting ? <CircleLoader color="#c084fc" size="20px" /> : "Post"}
         </button>
       </div>
     </div>

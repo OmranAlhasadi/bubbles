@@ -2,6 +2,8 @@ import styles from "../css/NewUsers.module.css";
 import { useState, useEffect } from "react";
 import SpinningCircleLoader from "./SpinningCircleLoader";
 
+import { toast } from "react-toastify";
+
 const NewUsers = () => {
   const [loading, setLoading] = useState(true);
   const [users, setUsers] = useState([]);
@@ -17,14 +19,15 @@ const NewUsers = () => {
         );
 
         if (!res.ok) {
-          throw new Error(`HTTP error! status: ${res.status}`);
+          const error = await res.json();
+          throw new Error(error.message || "Failed to fetch new Users");
         }
 
         const data = await res.json();
         setUsers(data);
         setLoading(false);
       } catch (error) {
-        alert("Error fetching new Users");
+        toast.error(error.message || "Error fetching new Users");
         setLoading(false);
       }
     };

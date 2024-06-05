@@ -22,7 +22,6 @@ const ProtectedRoute = ({ children }) => {
           const data = await response.json();
           if (data.isAuthenticated) {
             updateUser(data.user);
-            console.log(data.user);
           } else {
             setIsLoading(false);
           }

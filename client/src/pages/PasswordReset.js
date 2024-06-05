@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import styles from "../css/PasswordReset.module.css";
 
 import { toast } from "react-toastify";
+import { CircleLoader } from "react-spinners";
 
 function PasswordReset() {
   const [password, setPassword] = useState("");
@@ -12,6 +13,8 @@ function PasswordReset() {
   const [isResetSuccessful, setIsResetSuccessful] = useState(false);
   const navigate = useNavigate();
   const { token } = useParams();
+
+  const [requesting, setRequesting] = useState(false);
 
   const validateFields = () => {
     let isValid = true;
@@ -47,6 +50,8 @@ function PasswordReset() {
     e.preventDefault();
 
     if (validateFields()) {
+      setRequesting(true);
+
       try {
         const response = await fetch(
           `${process.env.REACT_APP_API_URL}/api/auth/reset-password/${token}`,
@@ -60,13 +65,14 @@ function PasswordReset() {
           setIsResetSuccessful(true); // Set success state
           toast.success("Password reset successfully!");
         } else {
-          throw new Error("Failed to reset password");
+          const errorData = await response.json();
+          throw new Error(errorData.message || "Failed to reset password");
         }
       } catch (error) {
-        setPasswordError(
-          "Failed to reset password, please check network connection and try again."
-        );
-        toast.error("Error resetting password");
+        setPasswordError(error.message);
+        toast.error(error.message || "Error resetting password");
+      } finally {
+        setRequesting(false);
       }
     }
   };
@@ -107,7 +113,10 @@ function PasswordReset() {
 
   return (
     <div className={styles.container}>
-      <form onSubmit={handleSubmit} className={styles.formContainer}>
+      <form
+        onSubmit={handleSubmit}
+        className={`${styles.formContainer} ${requesting ? "disabled" : ""}`}
+      >
         <div className={styles.fieldContainer}>
           <label className={styles.fieldLabel} htmlFor="password">
             Password
@@ -141,7 +150,11 @@ function PasswordReset() {
           )}
         </div>
         <button type="submit" className={styles.formButton}>
-          Reset Password
+          {requesting ? (
+            <CircleLoader size="20px" color="#c084fc" />
+          ) : (
+            "Reset Password"
+          )}
         </button>
       </form>
     </div>

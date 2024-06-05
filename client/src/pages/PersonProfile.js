@@ -11,6 +11,7 @@ import theif from "../images/thief.jpeg";
 import LoadingPage from "./LoadingPage";
 
 import { toast } from "react-toastify";
+import { CircleLoader } from "react-spinners";
 
 const getRelationshipStatus = (user, personUsername) => {
   if (user.friends.some((friend) => friend.username === personUsername)) {
@@ -33,6 +34,8 @@ const PersonProfile = () => {
   const { user, updateUser } = useContext(UserContext);
   const [person, setPerson] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  const [sendingRequest, setSendingRequest] = useState(false);
 
   const { username } = useParams();
 
@@ -98,17 +101,25 @@ const PersonProfile = () => {
       default:
         return (
           <button
-            className={styles.addFriendButton}
+            className={`${styles.addFriendButton} ${
+              sendingRequest ? "disabled" : ""
+            }`}
             onClick={() => handleSendRequest(person.username)}
           >
-            <svg className={styles.addFriendSVG} viewBox="0 0 16 16">
-              <path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H1s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C9.516 10.68 8.289 10 6 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664z" />
-              <path
-                fill-rule="evenodd"
-                d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5"
-              />
-            </svg>
-            <span className={styles.addFriendText}>Add Friend</span>
+            {sendingRequest ? (
+              <CircleLoader size="30px" color="white" />
+            ) : (
+              <>
+                <svg className={styles.addFriendSVG} viewBox="0 0 16 16">
+                  <path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H1s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C9.516 10.68 8.289 10 6 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664z" />
+                  <path
+                    fill-rule="evenodd"
+                    d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5"
+                  />
+                </svg>
+                <span className={styles.addFriendText}>Add Friend</span>
+              </>
+            )}
           </button>
         );
     }
@@ -116,6 +127,8 @@ const PersonProfile = () => {
 
   // Function to handle sending a friend request
   const handleSendRequest = async (recieverUsername) => {
+    setSendingRequest(true);
+
     try {
       const response = await fetch(
         `${process.env.REACT_APP_API_URL}/api/user/send-request/${recieverUsername}`,
@@ -125,7 +138,8 @@ const PersonProfile = () => {
         }
       );
       if (!response.ok) {
-        throw new Error("Error sending request");
+        const error = await response.json();
+        throw new Error(error.message || "Error sending request");
       }
       const newRequest = await response.json();
 
@@ -135,7 +149,9 @@ const PersonProfile = () => {
         sentRequests: [...user.sentRequests, newRequest],
       });
     } catch (error) {
-      toast.error("Error sending friend request");
+      toast.error(error.message || "Error sending friend request");
+    } finally {
+      setSendingRequest(false);
     }
   };
 

@@ -17,14 +17,14 @@ export const UserProvider = ({ children }) => {
           credentials: "include",
         }
       );
-
-      if (!response.ok) throw new Error("Login failed");
-
       const data = await response.json();
+      if (!response.ok) throw new Error(data.message || "Login failed");
+
       setUser(data.user); // Set user in context
       return true;
     } catch (error) {
       console.error("Error logging in:", error);
+      throw error;
       return false;
     }
   };
@@ -41,14 +41,15 @@ export const UserProvider = ({ children }) => {
           credentials: "include",
         }
       );
-
-      if (!response.ok) throw new Error("Login Example User failed");
-
       const data = await response.json();
+      if (!response.ok)
+        throw new Error(data.message || "Login Example User failed");
+
       setUser(data.user); // Set user in context
       return true;
     } catch (error) {
       console.error("Error logging in:", error);
+      throw error;
       return false;
     }
   };
@@ -65,13 +66,14 @@ export const UserProvider = ({ children }) => {
           credentials: "include",
         }
       );
-
-      if (!response.ok) throw new Error("Signup failed");
-
       const data = await response.json();
+      if (!response.ok) throw new Error(data.message || "Signup failed");
+
       setUser(data.user); // Set user in context
+      return true;
     } catch (error) {
       console.error("Error signing up:", error);
+      throw error;
     }
   };
 
@@ -91,16 +93,29 @@ export const UserProvider = ({ children }) => {
   // Function to handle user logout
   const forgotPassword = async (email) => {
     try {
-      await fetch(`${process.env.REACT_APP_API_URL}/api/auth/forgot-password`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email: email }),
-        credentials: "include",
-      });
+      const response = await fetch(
+        `${process.env.REACT_APP_API_URL}/api/auth/forgot-password`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email: email }),
+          credentials: "include",
+        }
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error("Error response:", errorData);
+        throw new Error(errorData.message || "Request failed");
+      }
+
+      return true;
     } catch (error) {
       console.error("Error sending request", error);
+      throw error;
+      return false;
     }
   };
 
@@ -110,7 +125,7 @@ export const UserProvider = ({ children }) => {
   };
 
   // Check user authentication status
-  useEffect(() => {
+  /* useEffect(() => {
     const checkAuthStatus = async () => {
       try {
         const response = await fetch(
@@ -135,7 +150,7 @@ export const UserProvider = ({ children }) => {
     };
 
     checkAuthStatus();
-  }, []);
+  }, []); */
   return (
     <UserContext.Provider
       value={{

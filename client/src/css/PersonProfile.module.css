@@ -82,15 +82,20 @@
 
 .addFriendButton{
     display: flex;
-    
+    align-items: center;
+    justify-content: center;
+
     box-sizing: border-box;
     padding: 1rem;
     gap: 10px;
 
-    border-radius: 25px;
-    background-color: #ddd6fe;
+    width: 151px;
+    height: 65px;
 
-    transition: background-color 0.4s ease-in-out; 
+    border-radius: 25px;
+    background-color: #a78bfa;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out; 
 }
 
 .addFriendSVG{

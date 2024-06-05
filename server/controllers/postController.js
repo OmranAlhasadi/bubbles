@@ -97,11 +97,13 @@ module.exports.deletePost = async (req, res) => {
     const userId = req.userId;
 
     if (!post) {
-      return res.status(404).send("Post not found");
+      return res.status(404).json({ message: "Post not found" });
     }
 
     if (post.author.toString() !== userId) {
-      return res.status(403).send("Not authorized to delete this post");
+      return res
+        .status(403)
+        .json({ message: "Not authorized to delete this post" });
     }
 
     // Delete all comments associated with the post
@@ -112,10 +114,12 @@ module.exports.deletePost = async (req, res) => {
 
     // Finally, delete the post itself
     await post.deleteOne();
-    res.status(200).send("Post and associated data deleted successfully");
+    res
+      .status(200)
+      .json({ message: "Post and associated data deleted successfully" });
   } catch (error) {
     console.error("Delete Post Error: ", error);
-    res.status(500).send("Server error");
+    res.status(500).json({ message: "Server error" });
   }
 };
 
@@ -138,8 +142,6 @@ module.exports.addComment = async (req, res) => {
     const { content } = req.body;
     const postID = req.params.postID;
 
-    console.log(content);
-
     let newComment = createComment(postID, authorID, content);
     await newComment.save();
 
@@ -147,7 +149,9 @@ module.exports.addComment = async (req, res) => {
     res.status(201).json(newComment);
   } catch (error) {
     console.log(error);
-    res.status(500).send("Server Error: Couldnt create the new comment");
+    res
+      .status(500)
+      .json({ message: "Server Error: Couldnt create the new comment" });
   }
 };
 
@@ -167,21 +171,23 @@ module.exports.deleteComment = async (req, res) => {
     // Find the comment
     const comment = await Comment.findById(commentID);
     if (!comment) {
-      return res.status(404).send("Comment not found");
+      return res.status(404).json({ message: "Comment not found" });
     }
 
     // Check if the user is authorized to delete the comment
     if (comment.author.toString() !== userID) {
-      return res.status(403).send("Not authorized to delete this comment");
+      return res
+        .status(403)
+        .json({ message: "Not authorized to delete this comment" });
     }
 
     // Delete the comment
     await Comment.deleteOne({ _id: commentID });
 
-    res.status(200).send("Comment deleted successfully");
+    res.status(200).json({ message: "Comment deleted successfully" });
   } catch (error) {
     console.error("Delete Comment Error: ", error);
-    res.status(500).send("Server error");
+    res.status(500).json({ message: "Server error" });
   }
 };
 

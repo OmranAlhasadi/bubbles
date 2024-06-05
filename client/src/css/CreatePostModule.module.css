@@ -140,6 +140,10 @@
     color: #6b21a8;
 }
 
+.disabled > * {
+    pointer-events: none;
+}
+
 
 @media (max-width: 352px) {
     .buttonsContainer {

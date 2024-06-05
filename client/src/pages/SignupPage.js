@@ -5,6 +5,8 @@ import { UserContext } from "../contexts/UserContext";
 
 import { toast } from "react-toastify";
 
+import { CircleLoader } from "react-spinners";
+
 const SignupPage = () => {
   const { signupUser } = useContext(UserContext);
   const navigate = useNavigate();
@@ -18,6 +20,8 @@ const SignupPage = () => {
   const [emailError, setEmailError] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
+
+  const [isSigningUp, setIsSigningUp] = useState(false);
 
   const navigateToLogin = () => {
     navigate("/login");
@@ -96,6 +100,8 @@ const SignupPage = () => {
   const handleSignup = async (e) => {
     e.preventDefault();
     if (validateFields()) {
+      setIsSigningUp(true);
+
       try {
         const success = await signupUser({ username, name, email, password });
 
@@ -105,9 +111,15 @@ const SignupPage = () => {
           );
 
           navigate("/");
+        } else {
+          toast.error(
+            "Error Signingup/sending verification link to email gagagagaga"
+          );
         }
       } catch (error) {
         toast.error("Error Signingup/sending verification link to email");
+      } finally {
+        setIsSigningUp(false);
       }
     }
   };
@@ -115,7 +127,10 @@ const SignupPage = () => {
   return (
     <div className={styles.container}>
       <div className={styles.formContainer}>
-        <form className={styles.form} onSubmit={handleSignup}>
+        <form
+          className={`${styles.form} ${isSigningUp ? "disabled" : ""}`}
+          onSubmit={handleSignup}
+        >
           <div className={styles.fieldContainer}>
             <label className={styles.fieldLabel} htmlFor="name">
               Full name
@@ -193,7 +208,11 @@ const SignupPage = () => {
             )}
           </div>
           <button className={styles.formButton} type="submit">
-            Sign up
+            {isSigningUp ? (
+              <CircleLoader size="20px" color="#c084fc" />
+            ) : (
+              "Sign Up"
+            )}
           </button>
           <button
             type="button"
