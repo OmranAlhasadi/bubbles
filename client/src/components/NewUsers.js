@@ -12,7 +12,6 @@ const NewUsers = () => {
 
   useEffect(() => {
     const fetchNewUsers = async () => {
-      await new Promise((resolve) => setTimeout(resolve, 5000));
       try {
         const res = await fetch(
           `${process.env.REACT_APP_API_URL}/api/user/new-users`,

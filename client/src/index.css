@@ -37,6 +37,8 @@
 
 body {
   background-image: radial-gradient( #d8b4fe, #f5d0fe, white);
+
+  min-height: 100vh;
 }
 
 .disabled {

@@ -1,0 +1,118 @@
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-image: linear-gradient(to left top, #5b21b6, #e879f9);
+  }
+  
+  /* Success styles */
+  .successContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background-color: #e2e8f0;
+    border: 2px solid #28a745;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .checkmark {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .checkmarkCircle {
+    stroke: #28a745;
+    stroke-width: 2;
+  }
+  
+  .checkmarkCheck {
+    stroke: #28a745;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  
+  .resetMsg {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-size: 18px;
+    color: #28a745;
+  }
+
+  .formButton{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+
+    border: 2px solid black;
+    border-radius: 15px;
+    font-size: 18px;
+    font-weight: 600;
+    padding: 10px;
+    color: black;
+    background-color: transparent;
+    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+    cursor: pointer;
+
+    width: 100%;
+     
+}
+
+.formButton:hover{
+    background-color: #f3e8ff;
+    border: 2px solid #c084fc;
+    color: #5b21b6;
+}
+  
+  /* Error styles */
+  .errorContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background-color: #f8d7da;
+    border: 2px solid #dc3545;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .cross {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .crossCircle {
+    stroke: #dc3545;
+    stroke-width: 2;
+  }
+  
+  .crossPath {
+    stroke: #dc3545;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  
+  .resetMsg {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-size: 18px;
+    color: #dc3545;
+  }
+  
+  /* Responsive styles */
+  @media (max-width: 600px) {
+    .successContainer, .errorContainer {
+      border: none;
+      box-shadow: none;
+      width: 100%;
+      max-width: none;
+    }
+  }
+  

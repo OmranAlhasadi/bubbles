@@ -40,8 +40,6 @@ const Feed = ({ specificUser = false }) => {
 
   useEffect(() => {
     const fetchPosts = async () => {
-      await new Promise((resolve) => setTimeout(resolve, 5000));
-
       try {
         const response = await fetch(
           `${process.env.REACT_APP_API_URL}/api/posts`,

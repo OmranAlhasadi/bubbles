@@ -107,17 +107,17 @@ const SignupPage = () => {
 
         if (success) {
           toast.success(
-            "Verification link sent to your email please verify so you can login"
+            "Verification link sent to your email please verify so you can login (email might take a minute or two to be recieved)"
           );
 
           navigate("/");
         } else {
-          toast.error(
-            "Error Signingup/sending verification link to email gagagagaga"
-          );
+          toast.error("Error Signingup/sending verification link to email");
         }
       } catch (error) {
-        toast.error("Error Signingup/sending verification link to email");
+        toast.error(
+          error.message || "Error Signingup/sending verification link to email"
+        );
       } finally {
         setIsSigningUp(false);
       }

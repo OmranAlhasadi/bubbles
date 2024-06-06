@@ -23,7 +23,17 @@ exports.registerUser = async (req, res) => {
       }
       return res
         .status(400)
-        .json({ message: "User already exists and is verified." });
+        .json({
+          message: "User with that email already exists and is verified.",
+        });
+    }
+
+    // Check if the username already exists
+    const existingUsernameUser = await User.findOne({
+      username: req.body.username,
+    });
+    if (existingUsernameUser) {
+      return res.status(400).json({ message: "Username already exists." });
     }
 
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
@@ -77,16 +87,18 @@ exports.loginUser = async (req, res) => {
         { expiresIn: "1h" }
       );
 
+      // Update the user with the new email verification token
+      user.emailVerificationToken = emailVerificationToken;
+      await user.save();
+
       await emailService.sendVerificationEmail(
         user.email,
         emailVerificationToken
       );
 
-      return res
-        .status(401)
-        .json({
-          message: "Email not verified yet, verification link sent to email",
-        });
+      return res.status(401).json({
+        message: "Email not verified yet, verification link sent to email",
+      });
     }
 
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
@@ -291,13 +303,10 @@ exports.verifyEmail = async (req, res) => {
 
     res.json({ message: "Email verified successfully. You may now login." });
   } catch (error) {
-    console.error("Verification error:", error);
     if (error.name === "TokenExpiredError") {
-      res
-        .status(400)
-        .json({
-          message: "Your verification link has expired. Please sign up again.",
-        });
+      res.status(400).json({
+        message: "Your verification link has expired. Please sign up again.",
+      });
     } else {
       res.status(500).json({ message: "Internal Server Error" });
     }

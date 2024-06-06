@@ -11,7 +11,6 @@ const ProtectedRoute = ({ children }) => {
   useEffect(() => {
     if (!user) {
       const checkAuthStatus = async () => {
-        await new Promise((resolve) => setTimeout(resolve, 5000));
         try {
           const response = await fetch(
             `${process.env.REACT_APP_API_URL}/api/auth/status`,
