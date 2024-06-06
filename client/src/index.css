@@ -36,7 +36,7 @@
 
 
 body {
-  
+  background-image: radial-gradient( #d8b4fe, #f5d0fe, white);
 }
 
 .disabled {
@@ -46,6 +46,22 @@ body {
 .disabled > * {
   pointer-events: none;
 }
+
+/* Disable hover effects on touch screens/smaller screens */
+/* @media (hover: none) and (pointer: coarse) {
+  *:hover {
+    background-color: inherit !important;
+    color: inherit !important;
+    border: inherit !important;
+    box-shadow: inherit !important;
+    transform: inherit !important;
+    text-decoration: none !important;
+    animation: none !important;
+    transition: none !important;
+    fill: inherit !important;
+  }
+} */
+
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',

@@ -11,6 +11,8 @@ import styles from "../css/SettingsPage.module.css";
 import { toast } from "react-toastify";
 import { CircleLoader } from "react-spinners";
 
+import defaultProfile from "../images/default3.png";
+
 const SettingsPage = () => {
   const { user, updateUser } = useContext(UserContext);
   const [text, setText] = useState(user.aboutMe ? user.aboutMe : "");
@@ -35,8 +37,7 @@ const SettingsPage = () => {
         const data = await response.json();
         if (response.ok) {
           updateUser(data.user); // Update user context with new user data
-          console.log(data.user);
-          console.log(user.profileImg);
+
           toast.success("Profile picture updated successfully!");
         } else {
           throw new Error(data.message);
@@ -102,7 +103,10 @@ const SettingsPage = () => {
       <div className={styles.container}>
         <div className={styles.settingsContainer}>
           <div className={styles.profileContainer}>
-            <img className={styles.profile} src={user.profileImg}></img>
+            <img
+              className={styles.profile}
+              src={user.profileImg || defaultProfile}
+            ></img>
             <UploadButton
               endpoint="imageUploader"
               className={styles.uploadButton}

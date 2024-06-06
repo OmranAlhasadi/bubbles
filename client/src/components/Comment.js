@@ -4,6 +4,8 @@ import { UserContext } from "../contexts/UserContext";
 
 import { CircleLoader } from "react-spinners";
 
+import defaultProfile from "../images/default3.png";
+
 const Comment = ({ comment, isNew = false, onDelete }) => {
   const { user, updateUser } = useContext(UserContext);
 
@@ -25,7 +27,10 @@ const Comment = ({ comment, isNew = false, onDelete }) => {
         comment.deleting ? styles.deleting : ""
       } ${isDeleting ? "disabled" : ""}`}
     >
-      <img className={styles.profile} src={comment.author.profileImg}></img>
+      <img
+        className={styles.profile}
+        src={comment.author.profileImg || defaultProfile}
+      ></img>
       <div className={styles.contentContainer}>
         <div className={styles.content}>
           <span className={styles.username}>{comment.author.username}</span>

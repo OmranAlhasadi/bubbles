@@ -11,6 +11,8 @@ import { toast } from "react-toastify";
 
 import { CircleLoader } from "react-spinners";
 
+import defaultProfile from "../images/default3.png";
+
 const ImagePost = ({ post, isNew = false, onDelete }) => {
   const [showTextbox, setShowTextbox] = useState(false);
   const [showComments, setShowComments] = useState(false);
@@ -91,7 +93,7 @@ const ImagePost = ({ post, isNew = false, onDelete }) => {
         toggleLikeButton();
         setLikeCount((prev) => ++prev);
 
-        toast.success("Post liked");
+        /* toast.success("Post liked"); */
       } catch (error) {
         toast.error("Error liking post");
       } finally {
@@ -114,7 +116,7 @@ const ImagePost = ({ post, isNew = false, onDelete }) => {
           throw new Error("Failed to unlike the post");
         }
 
-        toast.success("Post unliked");
+        /* toast.success("Post unliked"); */
 
         toggleLikeButton();
         setLikeCount((prev) => --prev);
@@ -266,7 +268,7 @@ const ImagePost = ({ post, isNew = false, onDelete }) => {
             <div className={styles.info}>
               <img
                 className={styles.profile}
-                src={post.author.profileImg}
+                src={post.author.profileImg || defaultProfile}
               ></img>
               <a href={`/profile/${post.author.username}`}>
                 {post.author ? post.author.username : "Unknown"}

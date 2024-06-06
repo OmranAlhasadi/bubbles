@@ -1,5 +1,7 @@
 import { createContext, useState, useEffect } from "react";
 
+import defaultProfile from "../images/default3.png";
+
 export const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
@@ -19,6 +21,10 @@ export const UserProvider = ({ children }) => {
       );
       const data = await response.json();
       if (!response.ok) throw new Error(data.message || "Login failed");
+
+      if (!data.user.profileImg) {
+        data.user.profileImg = defaultProfile;
+      }
 
       setUser(data.user); // Set user in context
       return true;
@@ -44,6 +50,10 @@ export const UserProvider = ({ children }) => {
       const data = await response.json();
       if (!response.ok)
         throw new Error(data.message || "Login Example User failed");
+
+      if (!data.user.profileImg) {
+        data.user.profileImg = defaultProfile;
+      }
 
       setUser(data.user); // Set user in context
       return true;

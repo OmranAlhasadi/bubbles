@@ -18,6 +18,8 @@ import CombinedModule from "../components/CombinedModule";
 
 import { toast } from "react-toastify";
 
+import LoadingComponent from "../components/LoadingComponent";
+
 const Feed = ({ specificUser = false }) => {
   const { username } = useParams();
 
@@ -34,10 +36,12 @@ const Feed = ({ specificUser = false }) => {
   //rendering combined modal if small screen
 
   const { width } = useWindowSize();
-  const isMobile = width <= 826;
+  const isMobile = width <= 853;
 
   useEffect(() => {
     const fetchPosts = async () => {
+      await new Promise((resolve) => setTimeout(resolve, 5000));
+
       try {
         const response = await fetch(
           `${process.env.REACT_APP_API_URL}/api/posts`,
@@ -135,7 +139,21 @@ const Feed = ({ specificUser = false }) => {
   };
 
   if (loading) {
-    return <LoadingBubbles />;
+    return (
+      <div className={`${styles.container} disabled`}>
+        {isMobile ? (
+          !specificUser && <CombinedModule passNewPost={showNewPost} />
+        ) : (
+          <>
+            {!specificUser && <CreatePostButton handleClick={openModal} />}
+            <Modal open={isOpen} onClose={closeModal}>
+              <CreatePostModule passNewPost={showNewPost} />
+            </Modal>
+          </>
+        )}
+        <LoadingComponent text="Loading Posts..." loaderSize="60px" />
+      </div>
+    );
   }
 
   return (

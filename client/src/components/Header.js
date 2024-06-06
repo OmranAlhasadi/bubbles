@@ -11,6 +11,8 @@ import { toast } from "react-toastify";
 
 import { CircleLoader } from "react-spinners";
 
+import defaultProfile from "../images/default3.png";
+
 const Header = () => {
   const { user, updateUser, logoutUser } = useContext(UserContext);
   const navigate = useNavigate();
@@ -169,7 +171,7 @@ const Header = () => {
 
       <div className={styles.buttonsContainer}>
         <img
-          src={user.profileImg}
+          src={user.profileImg || defaultProfile}
           id={styles.profile}
           onClick={handleProfileClick}
         ></img>
@@ -195,7 +197,7 @@ const Header = () => {
               user.friendRequests.map((request) => (
                 <div key={request.username} className={styles.requestItem}>
                   <img
-                    src={request.profileImg}
+                    src={request.profileImg || defaultProfile}
                     alt={request.username}
                     onClick={() =>
                       (window.location.href = `/profile/${request.username}`)

@@ -1,8 +1,10 @@
 import styles from "../css/NewUsers.module.css";
 import { useState, useEffect } from "react";
-import SpinningCircleLoader from "./SpinningCircleLoader";
+import LoadingComponent from "./LoadingComponent";
 
 import { toast } from "react-toastify";
+
+import defaultProfile from "../images/default3.png";
 
 const NewUsers = () => {
   const [loading, setLoading] = useState(true);
@@ -10,6 +12,7 @@ const NewUsers = () => {
 
   useEffect(() => {
     const fetchNewUsers = async () => {
+      await new Promise((resolve) => setTimeout(resolve, 5000));
       try {
         const res = await fetch(
           `${process.env.REACT_APP_API_URL}/api/user/new-users`,
@@ -36,7 +39,9 @@ const NewUsers = () => {
   }, []);
 
   return loading ? (
-    <SpinningCircleLoader />
+    <div className={styles.loaderContainer}>
+      <LoadingComponent loaderSize="50px" text="Loading new Users..." />
+    </div>
   ) : (
     <div className={styles.container}>
       <div className={styles.header}>New Users</div>
@@ -45,7 +50,7 @@ const NewUsers = () => {
           <li className={styles.userItem} key={user.username}>
             <img
               className={styles.profileImg}
-              src={user.profileImg}
+              src={user.profileImg || defaultProfile}
               alt={user.username}
             />
             <a className={styles.userName} href={user.profileLink}>

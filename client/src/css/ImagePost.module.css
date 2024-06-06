@@ -369,6 +369,17 @@
         border-radius: 0px;
     
     }
+
+    .postHeader {
+        border-radius: 0px;
+    }
+
+    .expanded {
+        border-radius: 0px;
+    }
 }
+
+
+
 
 

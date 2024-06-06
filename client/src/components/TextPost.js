@@ -7,6 +7,8 @@ import CommentBox from "./CommentBox";
 import { UserContext } from "../contexts/UserContext";
 import CommentSection from "./CommentSection";
 
+import defaultProfile from "../images/default3.png";
+
 const TextPost = ({ post, isNew = false, onDelete }) => {
   const [showTextbox, setShowTextbox] = useState(false);
   const [showComments, setShowComments] = useState(false);
@@ -226,7 +228,10 @@ const TextPost = ({ post, isNew = false, onDelete }) => {
       <div className={styles.container}>
         <div className={styles.postHeader}>
           <div className={styles.info}>
-            <img className={styles.profile} src={post.author.profileImg}></img>
+            <img
+              className={styles.profile}
+              src={post.author.profileImg || defaultProfile}
+            ></img>
             <a href={`/profile/${post.author.username}`}>
               {post.author ? post.author.username : "Unknown"}
             </a>

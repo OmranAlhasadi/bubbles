@@ -10,11 +10,15 @@ import Feed from "../sections/Feed";
 import theif from "../images/thief.jpeg";
 import LoadingBubbles from "../components/LoadingBubbles";
 
+import LoadingPage from "./LoadingPage";
+
+import defaultProfile from "../images/default3.png";
+
 const Profile = () => {
   const { user, updateUser } = useContext(UserContext);
 
   if (user === null) {
-    return <LoadingBubbles size="200px" />;
+    return <LoadingPage />;
   }
 
   return (
@@ -23,7 +27,10 @@ const Profile = () => {
       <div className={styles.container}>
         <div className={styles.userContainer}>
           <div className={styles.profile}>
-            <img className={styles.userPicture} src={user.profileImg} />
+            <img
+              className={styles.userPicture}
+              src={user.profileImg || defaultProfile}
+            />
             <div className={styles.usernameContainer}>
               <span className={styles.username}>{user.username}</span>
             </div>

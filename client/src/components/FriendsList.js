@@ -7,6 +7,8 @@ import LoadingRippleBubbles from "./LoadingRippleBubbles";
 import { UserContext } from "../contexts/UserContext";
 import { useParams } from "react-router-dom";
 
+import defaultProfile from "../images/default3.png";
+
 const FriendsList = ({ otherUser = false }) => {
   const { username } = useParams();
   let [friends, setFriends] = useState(null);
@@ -56,7 +58,7 @@ const FriendsList = ({ otherUser = false }) => {
       <ul className={styles.list}>
         {friends.map((friend) => (
           <li key={friend.username} className={styles.item}>
-            <img src={friend.profileImg}></img>
+            <img src={friend.profileImg || defaultProfile}></img>
             <a href={friend.profileLink}>{friend.username}</a>
           </li>
         ))}

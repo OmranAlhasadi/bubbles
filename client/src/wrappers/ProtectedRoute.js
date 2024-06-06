@@ -2,6 +2,8 @@ import React, { useContext, useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { UserContext } from "../contexts/UserContext";
 
+import LoadingPage from "../pages/LoadingPage";
+
 const ProtectedRoute = ({ children }) => {
   const { user, updateUser } = useContext(UserContext);
   const [isLoading, setIsLoading] = useState(true);
@@ -9,6 +11,7 @@ const ProtectedRoute = ({ children }) => {
   useEffect(() => {
     if (!user) {
       const checkAuthStatus = async () => {
+        await new Promise((resolve) => setTimeout(resolve, 5000));
         try {
           const response = await fetch(
             `${process.env.REACT_APP_API_URL}/api/auth/status`,
@@ -38,7 +41,7 @@ const ProtectedRoute = ({ children }) => {
   }, [user, updateUser]);
 
   if (isLoading) {
-    return <div>Loading...</div>; // Or any loading indicator
+    return <LoadingPage />;
   }
 
   return user ? children : <Navigate to="/login" />;

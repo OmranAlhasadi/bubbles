@@ -13,6 +13,8 @@ import LoadingPage from "./LoadingPage";
 import { toast } from "react-toastify";
 import { CircleLoader } from "react-spinners";
 
+import defaultProfile from "../images/default3.png";
+
 const getRelationshipStatus = (user, personUsername) => {
   if (user.friends.some((friend) => friend.username === personUsername)) {
     return "alreadyFriends";
@@ -161,7 +163,10 @@ const PersonProfile = () => {
       <div className={styles.container}>
         <div className={styles.userContainer}>
           <div className={styles.profile}>
-            <img className={styles.userPicture} src={person.profileImg} />
+            <img
+              className={styles.userPicture}
+              src={person.profileImg || defaultProfile}
+            />
             <div className={styles.usernameContainer}>
               <span className={styles.username}>{person.username}</span>
             </div>
