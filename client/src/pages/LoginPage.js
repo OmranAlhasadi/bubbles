@@ -103,7 +103,7 @@ const LoginPage = () => {
         >
           <div className={styles.fieldContainer}>
             <label className={styles.fieldLabel} htmlFor="username">
-              Username
+              Username or E-mail
             </label>
             <input
               className={styles.inputField}

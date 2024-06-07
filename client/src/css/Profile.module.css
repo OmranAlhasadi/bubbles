@@ -29,12 +29,16 @@
 
 .profile{
     align-self: center;
-    justify-self: flex-start;
+    /* justify-self: flex-start; */
     display: flex;
+
+    justify-content: center;
+    align-items: center;
 
     gap: 2rem;
 
     padding: 15px;
+    flex-wrap: wrap;
 }
 
 .userPicture{
@@ -87,6 +91,14 @@
 @media (max-width:540px) {
     .userContainer{
         flex-direction: column;
+    }
+
+    .username{
+        font-size: 1.5rem;
+    }
+
+    .userPicture{
+        width: 70px;
     }
 }
 

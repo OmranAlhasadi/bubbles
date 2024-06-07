@@ -17,6 +17,10 @@ const CreatePostModule = ({ passNewPost }) => {
     setIsPosting(true);
 
     try {
+      if (!imgUrl && !text.trim()) {
+        throw new Error("Post text cannot be empty if no image is attached");
+      }
+
       const postBody = {
         content: text,
         imageURL: imgUrl,
@@ -33,7 +37,8 @@ const CreatePostModule = ({ passNewPost }) => {
       );
 
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        let error = await response.json();
+        throw new Error(error.message || "Error creating post check network");
       }
 
       let newPost = await response.json();
@@ -41,8 +46,8 @@ const CreatePostModule = ({ passNewPost }) => {
 
       await passNewPost(newPost);
       toast.success("Post added successfully!");
-    } catch {
-      toast.error("Error creating post");
+    } catch (e) {
+      toast.error(e.message || "Error creating post check network");
     } finally {
       setIsPosting(false);
     }

@@ -21,11 +21,9 @@ exports.registerUser = async (req, res) => {
           .status(200)
           .json({ message: "A new verification email has been sent." });
       }
-      return res
-        .status(400)
-        .json({
-          message: "User with that email already exists and is verified.",
-        });
+      return res.status(400).json({
+        message: "User with that email already exists and is verified.",
+      });
     }
 
     // Check if the username already exists
@@ -45,7 +43,7 @@ exports.registerUser = async (req, res) => {
     const user = new User({
       ...req.body,
       password: hashedPassword,
-      aboutMe: "",
+      aboutMe: "Hello, I am a new Bubbles user!",
       profileImg: "",
       friends: [],
       friendRequests: [],
@@ -71,7 +69,11 @@ exports.registerUser = async (req, res) => {
 //sign in
 exports.loginUser = async (req, res) => {
   try {
-    const user = await User.findOne({ username: req.body.username })
+    const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(req.body.username);
+
+    const user = await User.findOne(
+      isEmail ? { email: req.body.username } : { username: req.body.username }
+    )
       .populate("friends", "username profileImg")
       .populate("friendRequests", "username profileImg")
       .populate("sentRequests", "username profileImg");

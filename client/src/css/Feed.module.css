@@ -9,6 +9,18 @@
     padding-top: 2rem;
 }
 
+
+.noPostsMessage {
+    text-align: center;
+    box-sizing: border-box;
+    padding: 15px;
+    font-size: 1.2rem;
+    color: black;
+    font-weight: 600;
+
+   
+}
+
 @media (min-width: 768px) {
     .container {
         max-width: 520px;

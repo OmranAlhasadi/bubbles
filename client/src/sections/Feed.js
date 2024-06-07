@@ -166,7 +166,9 @@ const Feed = ({ specificUser = false }) => {
           </Modal>
         </>
       )}
-
+      {posts.length == 0 && (
+        <div className={styles.noPostsMessage}> No posts to show </div>
+      )}
       {posts.map((post, index) => {
         return post.image ? (
           <ImagePost

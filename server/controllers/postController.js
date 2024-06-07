@@ -87,7 +87,9 @@ module.exports.postPost = async (req, res) => {
     res.status(201).json(newPost);
   } catch (error) {
     console.log(error);
-    res.status(500).send("Server Error: Couldnt create the new post");
+    res
+      .status(500)
+      .json({ message: "Server Error: Couldnt create the new post" });
   }
 };
 

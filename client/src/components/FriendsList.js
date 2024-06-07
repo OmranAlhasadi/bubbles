@@ -9,6 +9,8 @@ import { useParams } from "react-router-dom";
 
 import defaultProfile from "../images/default3.png";
 
+import LoadingComponent from "./LoadingComponent";
+
 const FriendsList = ({ otherUser = false }) => {
   const { username } = useParams();
   let [friends, setFriends] = useState(null);
@@ -45,9 +47,7 @@ const FriendsList = ({ otherUser = false }) => {
     return (
       <div className={styles.container}>
         <div className={styles.title}>Friends List</div>
-        <div className={styles.isLoading}>
-          <LoadingRippleBubbles size={"140px"} />
-        </div>
+        <LoadingComponent size="50px" />
       </div>
     );
   }
@@ -56,6 +56,9 @@ const FriendsList = ({ otherUser = false }) => {
     <div className={styles.container}>
       <div className={styles.title}>Friends List</div>
       <ul className={styles.list}>
+        {friends.length == 0 && (
+          <div className={styles.noFriendsMessage}>No friends yet :(</div>
+        )}
         {friends.map((friend) => (
           <li key={friend.username} className={styles.item}>
             <img src={friend.profileImg || defaultProfile}></img>

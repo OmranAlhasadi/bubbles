@@ -166,7 +166,7 @@ module.exports.getExample2 = async (req, res) => {
 module.exports.getNewUsers = async (req, res) => {
   try {
     // Fetch the 5 most recently created users
-    const newUsers = await User.find({})
+    const newUsers = await User.find({ emailVerified: true })
       .sort({ createdAt: -1 })
       .limit(5)
       .select("username profileImg")

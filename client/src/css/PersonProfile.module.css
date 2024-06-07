@@ -28,12 +28,17 @@
 
 .profile{
     align-self: center;
-    justify-self: flex-start;
+    /* justify-self: flex-start; */
     display: flex;
+    
+    justify-content: center;
+    align-items: center;
 
     gap: 2rem;
 
     padding: 15px;
+
+    flex-wrap: wrap;
 }
 
 .userPicture{
@@ -149,7 +154,7 @@
     }
 
     .username{
-        font-size: 1.3rem;
+        font-size: 1.5rem;
     }
 
     .userPicture{

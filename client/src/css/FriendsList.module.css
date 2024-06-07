@@ -56,3 +56,10 @@
     justify-self: center;
     align-self: center;
 }
+
+.noFriendsMessage {
+    text-align: center;
+    padding: 15px;
+    font-size: 1.1rem;
+    color: #6b7280; 
+}

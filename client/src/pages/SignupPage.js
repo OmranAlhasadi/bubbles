@@ -46,6 +46,13 @@ const SignupPage = () => {
       setUsernameError("");
     }
 
+    if (username.length > 17) {
+      setUsernameError("Username cannot be more than 17 characters long");
+      isValid = false;
+    } else {
+      setUsernameError("");
+    }
+
     if (!email.trim()) {
       setEmailError("Email cannot be empty.");
       isValid = false;
@@ -55,6 +62,9 @@ const SignupPage = () => {
 
     if (!password.trim()) {
       setPasswordError("Password cannot be empty.");
+      isValid = false;
+    } else if (!/[A-Z]/.test(password)) {
+      setPasswordError("Password must contain at least one capital letter.");
       isValid = false;
     } else {
       setPasswordError("");
