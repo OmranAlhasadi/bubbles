@@ -86,7 +86,6 @@ module.exports.postPost = async (req, res) => {
 
     res.status(201).json(newPost);
   } catch (error) {
-    console.log(error);
     res
       .status(500)
       .json({ message: "Server Error: Couldnt create the new post" });
@@ -150,7 +149,6 @@ module.exports.addComment = async (req, res) => {
     newComment = await newComment.populate("author", "username profileImg");
     res.status(201).json(newComment);
   } catch (error) {
-    console.log(error);
     res
       .status(500)
       .json({ message: "Server Error: Couldnt create the new comment" });

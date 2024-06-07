@@ -14,7 +14,7 @@ const uploadRouter = {
       return {};
     })
     .onUploadComplete((data) => {
-      console.log("upload completed", data);
+      /* console.log("upload completed", data); */
     }),
 };
 
