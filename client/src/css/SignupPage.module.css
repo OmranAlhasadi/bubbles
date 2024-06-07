@@ -97,8 +97,9 @@
 .loginButton {
     border: none;
     cursor: pointer;
+    font-size: 14px;
     background-color: transparent;
-    color: rgb(148, 148, 148);
+    color: #f0abfc;
     
 }
 
