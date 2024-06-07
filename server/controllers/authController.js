@@ -217,8 +217,12 @@ exports.loginExampleUser = async (req, res) => {
 
 // Logout user
 exports.logoutUser = (req, res) => {
-  res.clearCookie("token");
-  res.status(200).json({ message: "Logged out successfully" });
+  try {
+    res.clearCookie("token");
+    res.status(200).json({ message: "Logged out successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Error logging out" });
+  }
 };
 
 // Check auth status

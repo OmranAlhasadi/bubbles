@@ -29,7 +29,7 @@ const ProtectedRoute = ({ children }) => {
           }
         } catch (error) {
           setIsLoading(false);
-          console.error("Error checking auth status:", error);
+          /* console.error("Error checking auth status:", error); */
         }
       };
 

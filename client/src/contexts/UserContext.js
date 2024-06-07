@@ -90,13 +90,20 @@ export const UserProvider = ({ children }) => {
   // Function to handle user logout
   const logoutUser = async () => {
     try {
-      await fetch(`${process.env.REACT_APP_API_URL}/api/auth/logout`, {
-        method: "GET",
-        credentials: "include",
-      });
+      const res = await fetch(
+        `${process.env.REACT_APP_API_URL}/api/auth/logout`,
+        {
+          method: "GET",
+          credentials: "include",
+        }
+      );
       setUser(null); // Clear user in context
+      if (!res.ok) {
+        const error = await res.json();
+        throw new Error(error.message || "Logout failed, check network");
+      }
     } catch (error) {
-      console.error("Error logging out", error);
+      throw error;
     }
   };
 
